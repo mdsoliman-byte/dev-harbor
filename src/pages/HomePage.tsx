@@ -1,5 +1,4 @@
-
-import { ArrowRight, ArrowDown, Github, ExternalLink } from 'lucide-react';
+import { ArrowRight, ArrowDown, Github, ExternalLink, Code } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
