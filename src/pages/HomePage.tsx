@@ -1,9 +1,13 @@
-import { ArrowRight, ArrowDown, Github, ExternalLink, Code } from 'lucide-react';
+
+import { ArrowRight, ArrowDown, Github, ExternalLink, Code, Database, BarChart, PenTool, Terminal } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
+import { useTheme } from '@/components/ThemeProvider';
 
 const HomePage = () => {
+  const { theme } = useTheme();
+  
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
@@ -18,15 +22,15 @@ const HomePage = () => {
             className="max-w-3xl"
           >
             <div className="inline-block px-3 py-1 mb-6 border border-border rounded-full bg-background/50 backdrop-blur-sm">
-              <p className="text-sm font-medium text-muted-foreground">Frontend Developer</p>
+              <p className="text-sm font-medium text-muted-foreground">Data Scientist & Programmer</p>
             </div>
             
             <h1 className="text-4xl md:text-6xl font-display font-bold tracking-tight">
-              Creating beautiful digital experiences with precision & purpose
+              Transforming data into insights with Python & R expertise
             </h1>
             
             <p className="mt-6 text-lg text-muted-foreground leading-relaxed">
-              I'm John Doe, a frontend developer focused on building elegant, intuitive, and high-performing web applications that solve real problems.
+              I'm MD SOLIMAN, a data scientist specializing in machine learning, statistical analysis, and data visualization, creating impactful solutions to complex data problems.
             </p>
             
             <div className="mt-10 flex flex-wrap gap-4">
@@ -70,7 +74,26 @@ const HomePage = () => {
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {[1, 2, 3].map((i) => (
+            {[
+              {
+                title: "Predictive Analytics Dashboard",
+                description: "A machine learning-powered dashboard for financial forecasting using Python, scikit-learn, and Streamlit.",
+                tags: ["Python", "Machine Learning", "Streamlit"],
+                icon: <BarChart className="h-6 w-6 text-primary" />
+              },
+              {
+                title: "Natural Language Processing Tool",
+                description: "Text analysis tool for sentiment analysis and entity recognition using NLTK, spaCy, and Hugging Face transformers.",
+                tags: ["Python", "NLP", "Deep Learning"],
+                icon: <PenTool className="h-6 w-6 text-primary" />
+              },
+              {
+                title: "Data Pipeline Automation",
+                description: "Automated ETL process for big data processing using Pandas, Airflow, and SQL with cloud integration.",
+                tags: ["Python", "SQL", "Airflow"],
+                icon: <Database className="h-6 w-6 text-primary" />
+              }
+            ].map((project, i) => (
               <motion.div 
                 key={i}
                 initial={{ opacity: 0, y: 20 }}
@@ -81,20 +104,20 @@ const HomePage = () => {
               >
                 <div className="aspect-video bg-muted/30 relative">
                   <div className="absolute inset-0 flex items-center justify-center text-muted-foreground">
-                    Project {i} Image
+                    {project.icon}
                   </div>
                 </div>
                 
                 <div className="p-6">
                   <div className="flex flex-wrap gap-2 mb-4">
-                    <span className="px-2 py-1 text-xs font-medium bg-primary/10 text-primary rounded-full">React</span>
-                    <span className="px-2 py-1 text-xs font-medium bg-primary/10 text-primary rounded-full">TypeScript</span>
-                    <span className="px-2 py-1 text-xs font-medium bg-primary/10 text-primary rounded-full">TailwindCSS</span>
+                    {project.tags.map(tag => (
+                      <span key={tag} className="px-2 py-1 text-xs font-medium bg-primary/10 text-primary rounded-full">{tag}</span>
+                    ))}
                   </div>
                   
-                  <h3 className="text-xl font-semibold mb-2">Project Title {i}</h3>
+                  <h3 className="text-xl font-semibold mb-2">{project.title}</h3>
                   <p className="text-muted-foreground text-sm mb-4">
-                    A brief description of the project and the problem it solves. Highlighting key features and technologies used.
+                    {project.description}
                   </p>
                   
                   <div className="flex items-center space-x-4">
@@ -132,9 +155,16 @@ const HomePage = () => {
           </div>
           
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 md:gap-6">
-            {['React', 'TypeScript', 'JavaScript', 'HTML/CSS', 'Node.js', 'Next.js'].map((skill, i) => (
+            {[
+              { name: 'Python', icon: <Terminal className="h-6 w-6 text-primary" /> },
+              { name: 'R Language', icon: <Code className="h-6 w-6 text-primary" /> },
+              { name: 'Machine Learning', icon: <BarChart className="h-6 w-6 text-primary" /> },
+              { name: 'SQL & NoSQL', icon: <Database className="h-6 w-6 text-primary" /> },
+              { name: 'Data Visualization', icon: <PenTool className="h-6 w-6 text-primary" /> },
+              { name: 'Statistical Analysis', icon: <BarChart className="h-6 w-6 text-primary" /> }
+            ].map((skill, i) => (
               <motion.div 
-                key={skill}
+                key={skill.name}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.3, delay: i * 0.05 }}
@@ -142,9 +172,9 @@ const HomePage = () => {
                 className="flex flex-col items-center justify-center p-6 bg-secondary/30 rounded-lg border border-border hover-expand"
               >
                 <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-3">
-                  <Code className="h-6 w-6 text-primary" />
+                  {skill.icon}
                 </div>
-                <h3 className="text-center font-medium">{skill}</h3>
+                <h3 className="text-center font-medium">{skill.name}</h3>
               </motion.div>
             ))}
           </div>
@@ -155,9 +185,9 @@ const HomePage = () => {
       <section className="py-24 px-4 md:px-8 lg:px-16 bg-primary/5">
         <div className="container mx-auto">
           <div className="max-w-3xl mx-auto text-center">
-            <h2 className="text-3xl md:text-4xl font-display font-bold mb-6">Interested in working together?</h2>
+            <h2 className="text-3xl md:text-4xl font-display font-bold mb-6">Let's collaborate on data-driven solutions</h2>
             <p className="text-lg text-muted-foreground mb-10">
-              I'm always open to discussing new projects, creative ideas or opportunities to be part of your vision.
+              I'm always open to discussing new data science projects, research collaborations, or opportunities to be part of your data analytics vision.
             </p>
             
             <Button asChild size="lg" className="group">

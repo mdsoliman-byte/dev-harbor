@@ -1,64 +1,66 @@
 
 import { motion } from 'framer-motion';
-import { Code, Server, Layout, Database, Terminal, Workflow } from 'lucide-react';
+import { Code, Server, Database, Terminal, BarChart, ChartPie, Brain, Flask, FileCode, ChartBar } from 'lucide-react';
+import { useTheme } from '@/components/ThemeProvider';
 
 const skillCategories = [
   {
-    id: 'frontend',
-    title: 'Frontend Development',
-    icon: Layout,
+    id: 'programming',
+    title: 'Programming Languages',
+    icon: Terminal,
     skills: [
-      { name: 'React', level: 90 },
-      { name: 'TypeScript', level: 85 },
-      { name: 'JavaScript', level: 95 },
-      { name: 'HTML/CSS', level: 90 },
-      { name: 'TailwindCSS', level: 85 },
-      { name: 'Next.js', level: 80 },
-      { name: 'Vue.js', level: 75 },
-      { name: 'Redux', level: 85 },
+      { name: 'Python', level: 95 },
+      { name: 'R', level: 90 },
+      { name: 'SQL', level: 85 },
+      { name: 'Shell Scripting', level: 80 },
+      { name: 'JavaScript', level: 75 },
+      { name: 'Julia', level: 65 },
     ]
   },
   {
-    id: 'backend',
-    title: 'Backend Development',
-    icon: Server,
+    id: 'ml',
+    title: 'Machine Learning & AI',
+    icon: Brain,
     skills: [
-      { name: 'Node.js', level: 80 },
-      { name: 'Express', level: 85 },
-      { name: 'REST APIs', level: 90 },
-      { name: 'GraphQL', level: 75 },
-      { name: 'Python', level: 70 },
-      { name: 'Django', level: 65 },
+      { name: 'scikit-learn', level: 90 },
+      { name: 'TensorFlow/Keras', level: 85 },
+      { name: 'PyTorch', level: 80 },
+      { name: 'Natural Language Processing', level: 85 },
+      { name: 'Computer Vision', level: 75 },
+      { name: 'Time Series Analysis', level: 90 },
     ]
   },
   {
-    id: 'database',
-    title: 'Databases',
+    id: 'dataanalysis',
+    title: 'Data Analysis & Visualization',
+    icon: ChartPie,
+    skills: [
+      { name: 'Pandas', level: 95 },
+      { name: 'NumPy', level: 90 },
+      { name: 'Matplotlib/Seaborn', level: 90 },
+      { name: 'ggplot2', level: 85 },
+      { name: 'Tableau', level: 80 },
+      { name: 'D3.js', level: 70 },
+    ]
+  },
+  {
+    id: 'dataengineering',
+    title: 'Data Engineering',
     icon: Database,
     skills: [
-      { name: 'MongoDB', level: 85 },
-      { name: 'PostgreSQL', level: 80 },
-      { name: 'MySQL', level: 75 },
-      { name: 'Firebase', level: 85 },
-      { name: 'Supabase', level: 80 },
-    ]
-  },
-  {
-    id: 'tools',
-    title: 'Tools & Methods',
-    icon: Workflow,
-    skills: [
-      { name: 'Git & GitHub', level: 90 },
-      { name: 'Docker', level: 75 },
-      { name: 'CI/CD', level: 80 },
-      { name: 'Agile/Scrum', level: 85 },
-      { name: 'Jest/Testing', level: 80 },
-      { name: 'Figma/Design', level: 75 },
+      { name: 'PostgreSQL/MySQL', level: 85 },
+      { name: 'MongoDB', level: 80 },
+      { name: 'Apache Spark', level: 75 },
+      { name: 'Airflow', level: 70 },
+      { name: 'ETL Pipeline Design', level: 85 },
+      { name: 'Data Warehousing', level: 80 },
     ]
   }
 ];
 
 const SkillsPage = () => {
+  const { theme } = useTheme();
+  
   return (
     <div className="min-h-screen py-16 px-4 md:px-8 lg:px-16">
       <div className="container mx-auto">
@@ -70,8 +72,8 @@ const SkillsPage = () => {
         >
           <h1 className="text-4xl md:text-5xl font-display font-bold mb-6">Skills & Expertise</h1>
           <p className="text-lg text-muted-foreground">
-            A comprehensive overview of my technical skills and areas of expertise. 
-            I continuously learn and adapt to stay current with emerging technologies.
+            A comprehensive overview of my technical skills in data science, machine learning, and programming.
+            I continuously enhance my knowledge and adapt to emerging technologies in the data science ecosystem.
           </p>
         </motion.div>
         
@@ -129,27 +131,27 @@ const SkillsPage = () => {
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="bg-secondary/30 rounded-lg p-6 border border-border">
-              <h3 className="text-xl font-semibold mb-2">Bachelor of Science in Computer Science</h3>
-              <p className="text-muted-foreground mb-1">University of Technology</p>
-              <p className="text-sm text-muted-foreground">2015 - 2019</p>
+              <h3 className="text-xl font-semibold mb-2">Master of Science in Data Science</h3>
+              <p className="text-muted-foreground mb-1">University of Data Analytics</p>
+              <p className="text-sm text-muted-foreground">2015 - 2017</p>
             </div>
             
             <div className="bg-secondary/30 rounded-lg p-6 border border-border">
-              <h3 className="text-xl font-semibold mb-2">AWS Certified Developer</h3>
-              <p className="text-muted-foreground mb-1">Amazon Web Services</p>
-              <p className="text-sm text-muted-foreground">2021</p>
-            </div>
-            
-            <div className="bg-secondary/30 rounded-lg p-6 border border-border">
-              <h3 className="text-xl font-semibold mb-2">React Certification</h3>
-              <p className="text-muted-foreground mb-1">Meta (Facebook)</p>
-              <p className="text-sm text-muted-foreground">2022</p>
-            </div>
-            
-            <div className="bg-secondary/30 rounded-lg p-6 border border-border">
-              <h3 className="text-xl font-semibold mb-2">Full-Stack Web Development</h3>
-              <p className="text-muted-foreground mb-1">Coursera</p>
+              <h3 className="text-xl font-semibold mb-2">Deep Learning Specialization</h3>
+              <p className="text-muted-foreground mb-1">Coursera (DeepLearning.AI)</p>
               <p className="text-sm text-muted-foreground">2020</p>
+            </div>
+            
+            <div className="bg-secondary/30 rounded-lg p-6 border border-border">
+              <h3 className="text-xl font-semibold mb-2">Professional Certificate in Data Science</h3>
+              <p className="text-muted-foreground mb-1">HarvardX</p>
+              <p className="text-sm text-muted-foreground">2019</p>
+            </div>
+            
+            <div className="bg-secondary/30 rounded-lg p-6 border border-border">
+              <h3 className="text-xl font-semibold mb-2">Machine Learning Engineer Nanodegree</h3>
+              <p className="text-muted-foreground mb-1">Udacity</p>
+              <p className="text-sm text-muted-foreground">2018</p>
             </div>
           </div>
         </motion.div>

@@ -1,10 +1,13 @@
 
 import { motion } from 'framer-motion';
-import { Github, Twitter, Linkedin, Mail, ExternalLink } from 'lucide-react';
+import { Github, Twitter, Linkedin, Mail, ExternalLink, PenTool, Database, BarChart, Flask, Terminal } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
+import { useTheme } from '@/components/ThemeProvider';
 
 const AboutPage = () => {
+  const { theme } = useTheme();
+  
   return (
     <div className="min-h-screen py-16 px-4 md:px-8 lg:px-16">
       <div className="container mx-auto">
@@ -19,14 +22,14 @@ const AboutPage = () => {
             <div className="sticky top-20">
               <div className="aspect-square bg-muted rounded-2xl overflow-hidden mb-6">
                 <img 
-                  src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=1374" 
-                  alt="John Doe"
+                  src="/lovable-uploads/cdd6811a-1348-4f55-8abd-db74cf1f1ad7.png" 
+                  alt="MD SOLIMAN"
                   className="w-full h-full object-cover"
                 />
               </div>
               
-              <h1 className="text-3xl font-display font-bold mb-2">John Doe</h1>
-              <p className="text-lg text-muted-foreground mb-6">Frontend Developer</p>
+              <h1 className="text-3xl font-display font-bold mb-2">MD SOLIMAN</h1>
+              <p className="text-lg text-muted-foreground mb-6">Data Scientist & Programmer</p>
               
               <div className="flex space-x-4 mb-8">
                 <a 
@@ -51,7 +54,7 @@ const AboutPage = () => {
                   <Linkedin className="h-5 w-5" />
                 </a>
                 <a 
-                  href="mailto:contact@johndoe.dev" 
+                  href="mailto:contact@mdsoliman.com" 
                   className="bg-secondary/50 rounded-full p-2 hover:bg-primary/10 transition-colors"
                   aria-label="Email"
                 >
@@ -84,18 +87,19 @@ const AboutPage = () => {
               <h2 className="text-2xl font-display font-bold mb-6">About Me</h2>
               <div className="space-y-4 text-muted-foreground">
                 <p>
-                  Hello! I'm John, a passionate frontend developer based in San Francisco with over 5 years of experience 
-                  creating elegant and functional web applications. I specialize in building modern, responsive interfaces 
-                  that deliver exceptional user experiences.
+                  Hello! I'm MD SOLIMAN, a passionate data scientist with extensive expertise in Python and R programming.
+                  I specialize in developing data-driven solutions that transform complex datasets into actionable insights and
+                  predictive models.
                 </p>
                 <p>
-                  My journey in web development began during college when I built my first website for a local business. 
-                  Since then, I've worked with startups, agencies, and enterprise companies, honing my skills and embracing 
-                  new technologies along the way.
+                  My professional journey began with a strong foundation in statistics and computational methods,
+                  which I've since expanded into developing advanced machine learning models and data visualization tools.
+                  I'm particularly interested in the intersection of data science and real-world problem-solving.
                 </p>
                 <p>
-                  I believe that great software is not just about writing code—it's about solving problems and creating 
-                  meaningful experiences for users. This philosophy guides my approach to every project I undertake.
+                  I believe that effective data science goes beyond technical implementation—it's about asking the right questions,
+                  understanding the domain, and communicating insights in ways that drive meaningful decisions. This philosophy
+                  guides my approach to every project I undertake.
                 </p>
               </div>
             </section>
@@ -105,40 +109,40 @@ const AboutPage = () => {
               <div className="space-y-8">
                 <div className="border-l-2 border-border pl-5 relative">
                   <div className="absolute w-3 h-3 bg-primary rounded-full -left-[7px] top-1" />
-                  <h3 className="text-xl font-semibold">Senior Frontend Developer</h3>
-                  <p className="text-primary font-medium mb-1">TechCorp Inc.</p>
+                  <h3 className="text-xl font-semibold">Senior Data Scientist</h3>
+                  <p className="text-primary font-medium mb-1">DataTech Solutions</p>
                   <p className="text-sm text-muted-foreground mb-3">Jan 2021 - Present</p>
                   <ul className="list-disc list-inside text-muted-foreground space-y-2">
-                    <li>Lead the frontend development of the company's flagship product</li>
-                    <li>Implemented a new component library that improved development speed by 40%</li>
-                    <li>Mentored junior developers and conducted code reviews</li>
-                    <li>Collaborated with designers and product managers to deliver high-quality user experiences</li>
+                    <li>Lead a team of data scientists in developing predictive analytics models for financial services</li>
+                    <li>Designed and implemented machine learning pipelines that improved forecast accuracy by 35%</li>
+                    <li>Created data visualization dashboards for executive decision-making</li>
+                    <li>Mentored junior data scientists and conducted code reviews for Python and R projects</li>
                   </ul>
                 </div>
                 
                 <div className="border-l-2 border-border pl-5 relative">
                   <div className="absolute w-3 h-3 bg-primary rounded-full -left-[7px] top-1" />
-                  <h3 className="text-xl font-semibold">Frontend Developer</h3>
-                  <p className="text-primary font-medium mb-1">WebSolutions Agency</p>
+                  <h3 className="text-xl font-semibold">Data Scientist</h3>
+                  <p className="text-primary font-medium mb-1">Analytics Innovations</p>
                   <p className="text-sm text-muted-foreground mb-3">Mar 2019 - Dec 2020</p>
                   <ul className="list-disc list-inside text-muted-foreground space-y-2">
-                    <li>Developed responsive web applications for various clients</li>
-                    <li>Worked with React, TypeScript, and modern CSS frameworks</li>
-                    <li>Optimized website performance and accessibility</li>
-                    <li>Participated in client meetings and technical planning sessions</li>
+                    <li>Developed statistical models and machine learning algorithms for client projects</li>
+                    <li>Built ETL pipelines and automated data processing workflows using Python</li>
+                    <li>Conducted exploratory data analysis and feature engineering on diverse datasets</li>
+                    <li>Created reproducible research reports using R Markdown and Jupyter Notebooks</li>
                   </ul>
                 </div>
                 
                 <div className="border-l-2 border-border pl-5 relative">
                   <div className="absolute w-3 h-3 bg-primary rounded-full -left-[7px] top-1" />
-                  <h3 className="text-xl font-semibold">Junior Web Developer</h3>
-                  <p className="text-primary font-medium mb-1">StartUp Labs</p>
+                  <h3 className="text-xl font-semibold">Data Analyst</h3>
+                  <p className="text-primary font-medium mb-1">Research Institute</p>
                   <p className="text-sm text-muted-foreground mb-3">Jun 2017 - Feb 2019</p>
                   <ul className="list-disc list-inside text-muted-foreground space-y-2">
-                    <li>Built and maintained websites for early-stage startups</li>
-                    <li>Created interactive UI components and animations</li>
-                    <li>Implemented responsive designs from Figma mockups</li>
-                    <li>Participated in agile development processes</li>
+                    <li>Analyzed research data using statistical methods and visualization techniques</li>
+                    <li>Developed R scripts for data cleaning and preliminary analysis</li>
+                    <li>Assisted in designing experimental studies and survey methodologies</li>
+                    <li>Created data visualizations and statistical reports for publication</li>
                   </ul>
                 </div>
               </div>
@@ -149,44 +153,54 @@ const AboutPage = () => {
               <div className="space-y-8">
                 <div className="border-l-2 border-border pl-5 relative">
                   <div className="absolute w-3 h-3 bg-primary rounded-full -left-[7px] top-1" />
-                  <h3 className="text-xl font-semibold">Bachelor of Science in Computer Science</h3>
-                  <p className="text-primary font-medium mb-1">University of Technology</p>
-                  <p className="text-sm text-muted-foreground mb-3">2013 - 2017</p>
+                  <h3 className="text-xl font-semibold">Master of Science in Data Science</h3>
+                  <p className="text-primary font-medium mb-1">University of Data Analytics</p>
+                  <p className="text-sm text-muted-foreground mb-3">2015 - 2017</p>
                   <p className="text-muted-foreground">
-                    Graduated with honors. Specialized in web technologies and user interface design.
+                    Graduated with distinction. Specialized in machine learning algorithms and statistical computing.
+                  </p>
+                </div>
+                
+                <div className="border-l-2 border-border pl-5 relative">
+                  <div className="absolute w-3 h-3 bg-primary rounded-full -left-[7px] top-1" />
+                  <h3 className="text-xl font-semibold">Bachelor of Science in Computer Science</h3>
+                  <p className="text-primary font-medium mb-1">Technical University</p>
+                  <p className="text-sm text-muted-foreground mb-3">2011 - 2015</p>
+                  <p className="text-muted-foreground">
+                    Graduated with honors. Focus on computational methods and programming.
                   </p>
                 </div>
               </div>
             </section>
             
             <section>
-              <h2 className="text-2xl font-display font-bold mb-6">Interests & Hobbies</h2>
+              <h2 className="text-2xl font-display font-bold mb-6">Interests & Specializations</h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="bg-secondary/30 rounded-lg p-5 border border-border">
-                  <h3 className="font-semibold mb-2">Open Source Contribution</h3>
+                  <h3 className="font-semibold mb-2">Machine Learning & AI</h3>
                   <p className="text-sm text-muted-foreground">
-                    I actively contribute to open-source projects and maintain several of my own libraries.
+                    I specialize in developing predictive models, natural language processing, and computer vision solutions using Python frameworks like TensorFlow and PyTorch.
                   </p>
                 </div>
                 
                 <div className="bg-secondary/30 rounded-lg p-5 border border-border">
-                  <h3 className="font-semibold mb-2">Technology Writing</h3>
+                  <h3 className="font-semibold mb-2">Statistical Analysis</h3>
                   <p className="text-sm text-muted-foreground">
-                    I write technical articles and tutorials to share knowledge with the developer community.
+                    Expert in statistical methods, hypothesis testing, and experimental design using R, SciPy, and StatsModels.
                   </p>
                 </div>
                 
                 <div className="bg-secondary/30 rounded-lg p-5 border border-border">
-                  <h3 className="font-semibold mb-2">Photography</h3>
+                  <h3 className="font-semibold mb-2">Data Visualization</h3>
                   <p className="text-sm text-muted-foreground">
-                    I enjoy landscape photography and experimenting with different techniques and styles.
+                    Creating insightful visualizations using tools like Matplotlib, Seaborn, ggplot2, Tableau, and D3.js.
                   </p>
                 </div>
                 
                 <div className="bg-secondary/30 rounded-lg p-5 border border-border">
-                  <h3 className="font-semibold mb-2">Hiking & Travel</h3>
+                  <h3 className="font-semibold mb-2">Big Data Technologies</h3>
                   <p className="text-sm text-muted-foreground">
-                    I love exploring new places, experiencing different cultures, and hiking in nature.
+                    Experience with Hadoop, Spark, and cloud-based data solutions on AWS and Google Cloud Platform.
                   </p>
                 </div>
               </div>

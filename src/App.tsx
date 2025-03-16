@@ -13,28 +13,31 @@ import AboutPage from "./pages/AboutPage";
 import ContactPage from "./pages/ContactPage";
 import NotFound from "./pages/NotFound";
 import { AnimatePresence } from "framer-motion";
+import { ThemeProvider } from "./components/ThemeProvider";
 
 const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <AnimatePresence mode="wait">
-          <Routes>
-            <Route path="/" element={<Layout><HomePage /></Layout>} />
-            <Route path="/projects" element={<Layout><ProjectsPage /></Layout>} />
-            <Route path="/skills" element={<Layout><SkillsPage /></Layout>} />
-            <Route path="/blog" element={<Layout><BlogPage /></Layout>} />
-            <Route path="/about" element={<Layout><AboutPage /></Layout>} />
-            <Route path="/contact" element={<Layout><ContactPage /></Layout>} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </AnimatePresence>
-      </BrowserRouter>
-    </TooltipProvider>
+    <ThemeProvider defaultTheme="light">
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
+          <AnimatePresence mode="wait">
+            <Routes>
+              <Route path="/" element={<Layout><HomePage /></Layout>} />
+              <Route path="/projects" element={<Layout><ProjectsPage /></Layout>} />
+              <Route path="/skills" element={<Layout><SkillsPage /></Layout>} />
+              <Route path="/blog" element={<Layout><BlogPage /></Layout>} />
+              <Route path="/about" element={<Layout><AboutPage /></Layout>} />
+              <Route path="/contact" element={<Layout><ContactPage /></Layout>} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </AnimatePresence>
+        </BrowserRouter>
+      </TooltipProvider>
+    </ThemeProvider>
   </QueryClientProvider>
 );
 
