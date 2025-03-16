@@ -15,7 +15,7 @@ const blogPosts = [
   },
   {
     id: 2,
-    title: 'The Future of React: What's Coming in React 19',
+    title: 'The Future of React: What\'s Coming in React 19',
     excerpt: 'A deep dive into the upcoming features and improvements planned for React 19.',
     date: 'September 28, 2023',
     readTime: '8 min read',
