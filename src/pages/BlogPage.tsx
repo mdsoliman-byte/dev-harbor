@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { CalendarDays, Clock, ChevronRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
-const blogPosts = [
+export const blogPosts = [
   {
     id: 1,
     title: 'Creating Accessible Web Applications',
@@ -11,7 +11,43 @@ const blogPosts = [
     date: 'October 15, 2023',
     readTime: '5 min read',
     category: 'Accessibility',
-    image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=1470'
+    image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=1470',
+    content: `## Accessibility in Web Development
+
+The web is meant to be accessible to everyone, regardless of their abilities or disabilities. Creating accessible web applications is not just a nice-to-have feature; it's a necessity.
+
+### Why Accessibility Matters
+
+Accessibility ensures that people with disabilities can perceive, understand, navigate, and interact with websites and tools. It also benefits people without disabilities, such as those using mobile devices or those with temporary limitations.
+
+### Key WCAG Guidelines
+
+The Web Content Accessibility Guidelines (WCAG) provide a set of recommendations for making web content more accessible. These guidelines are organized around four principles:
+
+1. Perceivable: Information must be presentable to users in ways they can perceive.
+2. Operable: User interface components must be operable by all users.
+3. Understandable: Information and operation must be understandable.
+4. Robust: Content must be robust enough to be interpreted by a wide variety of user agents, including assistive technologies.
+
+### Practical Implementation Steps
+
+```javascript
+// Example of accessible button with proper aria attributes
+const AccessibleButton = () => {
+  return (
+    <button 
+      aria-label="Close dialog"
+      aria-pressed="false"
+      onClick={handleClose}
+    >
+      <svg className="icon" {...props} />
+      Close
+    </button>
+  );
+};
+```
+
+Remember that accessibility is not a one-time task but an ongoing process that should be integrated into your development workflow.`
   },
   {
     id: 2,
@@ -20,7 +56,40 @@ const blogPosts = [
     date: 'September 28, 2023',
     readTime: '8 min read',
     category: 'React',
-    image: 'https://images.unsplash.com/photo-1633356122102-3fe601e05bd2?auto=format&fit=crop&q=80&w=1470'
+    image: 'https://images.unsplash.com/photo-1633356122102-3fe601e05bd2?auto=format&fit=crop&q=80&w=1470',
+    content: `## The Future of React: React 19 Preview
+
+React has been evolving rapidly, and the upcoming React 19 release promises to bring exciting improvements and new features to the popular JavaScript library.
+
+### Performance Improvements
+
+React 19 focuses heavily on performance optimization, with a particular emphasis on reducing bundle sizes and improving rendering speed.
+
+### New Concurrent Features
+
+Building upon the foundations laid in React 18, React 19 is expected to expand concurrent rendering capabilities, making applications even more responsive.
+
+### Enhanced Server Components
+
+Server Components will see significant improvements in React 19, with better integration and more streamlined APIs.
+
+### Code Example: Using React 19 Features
+
+```jsx
+// Example using new React 19 API (hypothetical)
+function MyComponent() {
+  const data = use(fetchData());
+  
+  return (
+    <div>
+      <h1>{data.title}</h1>
+      <p>{data.description}</p>
+    </div>
+  );
+}
+```
+
+These advancements will make React even more powerful and developer-friendly, further cementing its position as one of the leading frontend libraries.`
   },
   {
     id: 3,
@@ -29,7 +98,42 @@ const blogPosts = [
     date: 'September 10, 2023',
     readTime: '6 min read',
     category: 'Performance',
-    image: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&q=80&w=1470'
+    image: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&q=80&w=1470',
+    content: `## Optimizing JavaScript Performance
+
+Performance optimization is crucial for providing the best user experience in web applications. This post explores various techniques to enhance JavaScript performance.
+
+### Code Splitting
+
+Code splitting is an excellent way to reduce initial load times by splitting your JavaScript bundle into smaller chunks that can be loaded on demand.
+
+### Memoization and Caching
+
+Utilizing memoization and caching strategies can significantly reduce computation time for expensive operations.
+
+### Efficient DOM Manipulation
+
+Minimize DOM manipulations and batch updates whenever possible to avoid layout thrashing.
+
+### Example: Using Web Workers
+
+```javascript
+// Offloading heavy computations to a Web Worker
+const worker = new Worker('worker.js');
+
+worker.addEventListener('message', (event) => {
+  console.log('Result from worker:', event.data);
+});
+
+worker.postMessage({
+  type: 'COMPLEX_CALCULATION',
+  data: hugeDataSet
+});
+```
+
+### Profiling and Monitoring
+
+Regularly profile your application using browser developer tools to identify and fix performance bottlenecks. Tools like Lighthouse and WebPageTest can provide valuable insights.`
   },
   {
     id: 4,
@@ -38,7 +142,38 @@ const blogPosts = [
     date: 'August 22, 2023',
     readTime: '7 min read',
     category: 'CSS',
-    image: 'https://images.unsplash.com/photo-1517134191118-9d595e4c8c2b?auto=format&fit=crop&q=80&w=1470'
+    image: 'https://images.unsplash.com/photo-1517134191118-9d595e4c8c2b?auto=format&fit=crop&q=80&w=1470',
+    content: `## Building Responsive UIs with TailwindCSS
+
+TailwindCSS has revolutionized the way developers approach CSS and UI design. This utility-first CSS framework offers unprecedented flexibility and speed in building responsive interfaces.
+
+### Core Concepts
+
+TailwindCSS works on the principle of applying small, single-purpose utility classes directly in your HTML. This approach allows for rapid UI development without leaving your markup.
+
+### Responsive Design with Tailwind
+
+Tailwind makes responsive design incredibly straightforward with its built-in breakpoint prefixes:
+
+- \`sm:\` - Small screens (640px and up)
+- \`md:\` - Medium screens (768px and up)
+- \`lg:\` - Large screens (1024px and up)
+- \`xl:\` - Extra large screens (1280px and up)
+- \`2xl:\` - 2X large screens (1536px and up)
+
+### Example: Responsive Grid Layout
+
+```html
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+  <div class="bg-white p-4 rounded shadow">Item 1</div>
+  <div class="bg-white p-4 rounded shadow">Item 2</div>
+  <div class="bg-white p-4 rounded shadow">Item 3</div>
+</div>
+```
+
+### Customization and Theming
+
+One of Tailwind's greatest strengths is its customizability. The tailwind.config.js file allows you to define your design system including colors, spacing, breakpoints, and more.`
   },
   {
     id: 5,
@@ -47,7 +182,75 @@ const blogPosts = [
     date: 'August 5, 2023',
     readTime: '10 min read',
     category: 'TypeScript',
-    image: 'https://images.unsplash.com/photo-1542831371-29b0f74f9713?auto=format&fit=crop&q=80&w=1470'
+    image: 'https://images.unsplash.com/photo-1542831371-29b0f74f9713?auto=format&fit=crop&q=80&w=1470',
+    content: `## Getting Started with TypeScript in 2023
+
+TypeScript continues to gain popularity among developers for its ability to add static typing to JavaScript, enhancing code quality and developer experience.
+
+### Why TypeScript?
+
+TypeScript offers several advantages:
+- Static type checking
+- Better tooling and IDE support
+- Enhanced code documentation
+- Improved refactoring capabilities
+- Early error detection
+
+### Basic Types
+
+TypeScript provides various built-in types:
+
+```typescript
+// Basic types
+let isDone: boolean = false;
+let decimal: number = 6;
+let color: string = "blue";
+let list: number[] = [1, 2, 3];
+let tuple: [string, number] = ["hello", 10];
+
+// Object type
+interface User {
+  name: string;
+  id: number;
+  active?: boolean; // Optional property
+}
+
+// Function type
+function greet(name: string): string {
+  return \`Hello, \${name}!\`;
+}
+```
+
+### TypeScript with React
+
+TypeScript works exceptionally well with React, providing type safety for props, state, and events:
+
+```typescript
+interface ButtonProps {
+  text: string;
+  onClick: () => void;
+  variant?: 'primary' | 'secondary';
+}
+
+const Button: React.FC<ButtonProps> = ({ 
+  text, 
+  onClick, 
+  variant = 'primary' 
+}) => {
+  return (
+    <button 
+      onClick={onClick}
+      className={\`btn btn-\${variant}\`}
+    >
+      {text}
+    </button>
+  );
+};
+```
+
+### Setting Up a TypeScript Project
+
+Setting up TypeScript has become much easier in 2023, with built-in support in most modern frameworks and build tools.`
   },
   {
     id: 6,
@@ -56,7 +259,59 @@ const blogPosts = [
     date: 'July 18, 2023',
     readTime: '9 min read',
     category: 'Best Practices',
-    image: 'https://images.unsplash.com/photo-1563089145-599997674d42?auto=format&fit=crop&q=80&w=1470'
+    image: 'https://images.unsplash.com/photo-1563089145-599997674d42?auto=format&fit=crop&q=80&w=1470',
+    content: `## The Art of Clean Code
+
+Clean code is not just about making your code work; it's about making it work well for both computers and humans who need to understand and maintain it.
+
+### Principles of Clean Code
+
+#### 1. Readability
+
+Code should be written for humans first, machines second. Use clear variable names, consistent formatting, and logical organization.
+
+#### 2. Simplicity
+
+Embrace simplicity. As Antoine de Saint-Exupéry said, "Perfection is achieved not when there is nothing more to add, but when there is nothing left to take away."
+
+#### 3. DRY (Don't Repeat Yourself)
+
+Duplicated code means duplicated bugs and maintenance. Extract common functionality into reusable functions or components.
+
+### Example: Before and After Refactoring
+
+```javascript
+// Before: Messy, hard-to-maintain code
+function processUserData(data) {
+  let result = [];
+  for (let i = 0; i < data.length; i++) {
+    if (data[i].age > 18) {
+      let item = {
+        name: data[i].name,
+        email: data[i].email,
+        isAdult: true
+      };
+      result.push(item);
+    }
+  }
+  return result;
+}
+
+// After: Clean, maintainable code
+function processUserData(users) {
+  return users
+    .filter(user => user.age > 18)
+    .map(user => ({
+      name: user.name,
+      email: user.email,
+      isAdult: true
+    }));
+}
+```
+
+### Code Reviews and Standards
+
+Establish coding standards for your team and enforce them through regular code reviews. Tools like ESLint, Prettier, and TypeScript can help maintain code quality automatically.`
   }
 ];
 
