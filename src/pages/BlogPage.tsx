@@ -31,7 +31,7 @@ The Web Content Accessibility Guidelines (WCAG) provide a set of recommendations
 
 ### Practical Implementation Steps
 
-```javascript
+\`\`\`javascript
 // Example of accessible button with proper aria attributes
 const AccessibleButton = () => {
   return (
@@ -45,7 +45,7 @@ const AccessibleButton = () => {
     </button>
   );
 };
-```
+\`\`\`
 
 Remember that accessibility is not a one-time task but an ongoing process that should be integrated into your development workflow.`
   },
@@ -75,7 +75,7 @@ Server Components will see significant improvements in React 19, with better int
 
 ### Code Example: Using React 19 Features
 
-```jsx
+\`\`\`jsx
 // Example using new React 19 API (hypothetical)
 function MyComponent() {
   const data = use(fetchData());
@@ -87,7 +87,7 @@ function MyComponent() {
     </div>
   );
 }
-```
+\`\`\`
 
 These advancements will make React even more powerful and developer-friendly, further cementing its position as one of the leading frontend libraries.`
   },
@@ -117,7 +117,7 @@ Minimize DOM manipulations and batch updates whenever possible to avoid layout t
 
 ### Example: Using Web Workers
 
-```javascript
+\`\`\`javascript
 // Offloading heavy computations to a Web Worker
 const worker = new Worker('worker.js');
 
@@ -129,7 +129,7 @@ worker.postMessage({
   type: 'COMPLEX_CALCULATION',
   data: hugeDataSet
 });
-```
+\`\`\`
 
 ### Profiling and Monitoring
 
@@ -163,13 +163,13 @@ Tailwind makes responsive design incredibly straightforward with its built-in br
 
 ### Example: Responsive Grid Layout
 
-```html
+\`\`\`html
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
   <div class="bg-white p-4 rounded shadow">Item 1</div>
   <div class="bg-white p-4 rounded shadow">Item 2</div>
   <div class="bg-white p-4 rounded shadow">Item 3</div>
 </div>
-```
+\`\`\`
 
 ### Customization and Theming
 
@@ -200,7 +200,7 @@ TypeScript offers several advantages:
 
 TypeScript provides various built-in types:
 
-```typescript
+\`\`\`typescript
 // Basic types
 let isDone: boolean = false;
 let decimal: number = 6;
@@ -219,13 +219,13 @@ interface User {
 function greet(name: string): string {
   return \`Hello, \${name}!\`;
 }
-```
+\`\`\`
 
 ### TypeScript with React
 
 TypeScript works exceptionally well with React, providing type safety for props, state, and events:
 
-```typescript
+\`\`\`typescript
 interface ButtonProps {
   text: string;
   onClick: () => void;
@@ -246,7 +246,7 @@ const Button: React.FC<ButtonProps> = ({
     </button>
   );
 };
-```
+\`\`\`
 
 ### Setting Up a TypeScript Project
 
@@ -280,7 +280,7 @@ Duplicated code means duplicated bugs and maintenance. Extract common functional
 
 ### Example: Before and After Refactoring
 
-```javascript
+\`\`\`javascript
 // Before: Messy, hard-to-maintain code
 function processUserData(data) {
   let result = [];
@@ -307,7 +307,7 @@ function processUserData(users) {
       isAdult: true
     }));
 }
-```
+\`\`\`
 
 ### Code Reviews and Standards
 
