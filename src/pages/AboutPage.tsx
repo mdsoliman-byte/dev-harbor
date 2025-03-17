@@ -1,6 +1,6 @@
 
 import { motion } from 'framer-motion';
-import { Github, Twitter, Linkedin, Mail, ExternalLink, PenTool, Database, BarChart, Flask, Terminal } from 'lucide-react';
+import { Github, Twitter, Linkedin, Mail, ExternalLink, PenTool, Database, BarChart, Terminal } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 import { useTheme } from '@/components/ThemeProvider';

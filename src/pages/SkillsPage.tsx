@@ -1,6 +1,6 @@
 
 import { motion } from 'framer-motion';
-import { Code, Server, Database, Terminal, BarChart, ChartPie, Brain, Flask, FileCode, ChartBar } from 'lucide-react';
+import { Code, Server, Database, Terminal, BarChart, ChartPie, Brain, FileCode, ChartBar } from 'lucide-react';
 import { useTheme } from '@/components/ThemeProvider';
 
 const skillCategories = [
