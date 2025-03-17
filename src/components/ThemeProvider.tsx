@@ -88,9 +88,9 @@ export function ThemeToggle() {
       <Moon className={`absolute h-5 w-5 transition-all duration-300 ${isDark ? 'opacity-100 rotate-0 scale-100' : 'opacity-0 rotate-90 scale-0'}`} />
       <span className="sr-only">Toggle theme</span>
       
-      {/* Background glow effect */}
+      {/* Enhanced glow effect */}
       <motion.div 
-        className={`absolute inset-0 ${isDark ? 'bg-navy-dark/20' : 'bg-cream/20'} rounded-full`}
+        className={`absolute inset-0 ${isDark ? 'bg-primary/10' : 'bg-primary/5'} rounded-full`}
         animate={{ scale: [1, 1.2, 1] }}
         transition={{ duration: 0.3 }}
       />

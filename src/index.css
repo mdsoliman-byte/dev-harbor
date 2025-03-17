@@ -108,6 +108,14 @@
 
   .glass-card {
     @apply bg-background/60 backdrop-blur-md border border-border/50 shadow-lg;
+    box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+  }
+  
+  .glass-card:hover {
+    @apply bg-background/70;
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px -5px rgba(0, 0, 0, 0.15);
   }
 
   .dark .glass-morphism {
@@ -117,6 +125,12 @@
 
   .dark .glass-card {
     @apply bg-background/40 border-white/5;
+    box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.3);
+  }
+  
+  .dark .glass-card:hover {
+    @apply bg-background/50;
+    box-shadow: 0 15px 35px -5px rgba(0, 0, 0, 0.4);
   }
 
   .scrollbar-hidden {
@@ -136,6 +150,18 @@
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+  }
+  
+  /* New glass panel style for sections */
+  .glass-panel {
+    @apply rounded-xl p-6 bg-background/50 backdrop-blur-md border border-border/30;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+  }
+  
+  .dark .glass-panel {
+    @apply bg-background/30 border-white/5;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
   }
 }
 

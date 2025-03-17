@@ -12,7 +12,17 @@ const Layout = ({ children }: PropsWithChildren) => {
   }, [location.pathname]);
 
   return (
-    <div className="min-h-screen flex flex-col md:flex-row">
+    <div className="min-h-screen relative flex flex-col md:flex-row">
+      {/* Background image with overlay */}
+      <div className="fixed inset-0 z-[-1]">
+        <img 
+          src="/lovable-uploads/dbb9c6f1-19d1-4aee-affb-58277850d8f7.png" 
+          alt="Background" 
+          className="w-full h-full object-cover opacity-30 dark:opacity-20"
+        />
+        <div className="absolute inset-0 bg-background/60 dark:bg-background/80 backdrop-blur-sm"></div>
+      </div>
+      
       <Sidebar />
       <main className="flex-1 md:ml-64 min-h-screen">
         <div className="animate-fade-in">
