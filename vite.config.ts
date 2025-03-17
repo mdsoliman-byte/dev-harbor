@@ -11,7 +11,7 @@ export default defineConfig(({ mode }) => ({
     port: 8080,
     fs: {
       // Allow serving files from one level up from the package root
-      allow: ['..']
+      allow: ['..', '/']
     }
   },
   plugins: [
@@ -24,5 +24,8 @@ export default defineConfig(({ mode }) => ({
       "@": path.resolve(__dirname, "./src"),
     },
   },
-  root: process.cwd(), // Ensure the root is set to the current working directory
+  // Ensure we explicitly set the base directory for the application
+  base: "./",
+  // Make sure the root is correct - this should be the directory containing package.json
+  root: process.cwd(),
 }));
