@@ -7,8 +7,10 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Layout from "./components/Layout";
 import HomePage from "./pages/HomePage";
 import ProjectsPage from "./pages/ProjectsPage";
+import ProjectDetailPage from "./pages/ProjectDetailPage";
 import SkillsPage from "./pages/SkillsPage";
 import BlogPage from "./pages/BlogPage";
+import BlogDetailPage from "./pages/BlogDetailPage";
 import AboutPage from "./pages/AboutPage";
 import ContactPage from "./pages/ContactPage";
 import NotFound from "./pages/NotFound";
@@ -28,8 +30,10 @@ const App = () => (
             <Routes>
               <Route path="/" element={<Layout><HomePage /></Layout>} />
               <Route path="/projects" element={<Layout><ProjectsPage /></Layout>} />
+              <Route path="/projects/:id" element={<Layout><ProjectDetailPage /></Layout>} />
               <Route path="/skills" element={<Layout><SkillsPage /></Layout>} />
               <Route path="/blog" element={<Layout><BlogPage /></Layout>} />
+              <Route path="/blog/:id" element={<Layout><BlogDetailPage /></Layout>} />
               <Route path="/about" element={<Layout><AboutPage /></Layout>} />
               <Route path="/contact" element={<Layout><ContactPage /></Layout>} />
               <Route path="*" element={<NotFound />} />
