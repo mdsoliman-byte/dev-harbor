@@ -24,6 +24,17 @@ export default {
 				display: ['SF Pro Display', 'Inter', 'sans-serif'],
 			},
 			colors: {
+				// Custom color palette based on the provided image
+				navy: {
+					DEFAULT: '#4A4AE9', // #4A4AE9
+					dark: '#22223B',    // #22223B
+				},
+				mauve: {
+					DEFAULT: '#9A8C98', // #9A8C98
+					light: '#C9ADA7',   // #C9ADA7
+				},
+				cream: '#F2E9E4',       // #F2E9E4
+				
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',
 				ring: 'hsl(var(--ring))',

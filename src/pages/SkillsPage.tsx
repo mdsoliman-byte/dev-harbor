@@ -60,6 +60,7 @@ const skillCategories = [
 
 const SkillsPage = () => {
   const { theme } = useTheme();
+  const isDark = theme === "dark";
   
   return (
     <div className="min-h-screen py-16 px-4 md:px-8 lg:px-16">
@@ -84,6 +85,7 @@ const SkillsPage = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: categoryIndex * 0.1 }}
+              className={`glass-card p-8 rounded-xl`}
             >
               <div className="flex items-center gap-3 mb-8">
                 <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
@@ -99,7 +101,7 @@ const SkillsPage = () => {
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ duration: 0.3, delay: skillIndex * 0.05 + categoryIndex * 0.1 }}
-                    className="bg-secondary/30 rounded-lg p-5 border border-border"
+                    className="glass-morphism rounded-lg p-5"
                   >
                     <div className="flex justify-between items-center mb-2">
                       <h3 className="font-medium">{skill.name}</h3>
@@ -125,30 +127,30 @@ const SkillsPage = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.5 }}
-          className="mt-20"
+          className="mt-20 glass-card p-8 rounded-xl"
         >
           <h2 className="text-2xl md:text-3xl font-display font-bold mb-8">Certifications & Education</h2>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="bg-secondary/30 rounded-lg p-6 border border-border">
+            <div className="glass-morphism rounded-lg p-6">
               <h3 className="text-xl font-semibold mb-2">Master of Science in Data Science</h3>
               <p className="text-muted-foreground mb-1">University of Data Analytics</p>
               <p className="text-sm text-muted-foreground">2015 - 2017</p>
             </div>
             
-            <div className="bg-secondary/30 rounded-lg p-6 border border-border">
+            <div className="glass-morphism rounded-lg p-6">
               <h3 className="text-xl font-semibold mb-2">Deep Learning Specialization</h3>
               <p className="text-muted-foreground mb-1">Coursera (DeepLearning.AI)</p>
               <p className="text-sm text-muted-foreground">2020</p>
             </div>
             
-            <div className="bg-secondary/30 rounded-lg p-6 border border-border">
+            <div className="glass-morphism rounded-lg p-6">
               <h3 className="text-xl font-semibold mb-2">Professional Certificate in Data Science</h3>
               <p className="text-muted-foreground mb-1">HarvardX</p>
               <p className="text-sm text-muted-foreground">2019</p>
             </div>
             
-            <div className="bg-secondary/30 rounded-lg p-6 border border-border">
+            <div className="glass-morphism rounded-lg p-6">
               <h3 className="text-xl font-semibold mb-2">Machine Learning Engineer Nanodegree</h3>
               <p className="text-muted-foreground mb-1">Udacity</p>
               <p className="text-sm text-muted-foreground">2018</p>
