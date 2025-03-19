@@ -4,8 +4,11 @@ import { Button } from '@/components/ui/button';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { Badge } from '@/components/ui/badge';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 const HeroSection = () => {
+  const isMobile = useIsMobile();
+  
   // Animation variants
   const fadeIn = {
     hidden: { opacity: 0, y: 20 },
@@ -74,14 +77,14 @@ const HeroSection = () => {
               custom={5}
               className="mt-10 flex flex-wrap gap-4"
             >
-              <Button asChild size="lg" className="group">
+              <Button asChild size={isMobile ? "default" : "lg"} className="group">
                 <Link to="/projects">
                   View My Work
                   <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
                 </Link>
               </Button>
               
-              <Button asChild variant="outline" size="lg" className="group">
+              <Button asChild variant="outline" size={isMobile ? "default" : "lg"} className="group">
                 <Link to="/contact">
                   Get in Touch
                   <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
@@ -124,9 +127,13 @@ const HeroSection = () => {
         </div>
       </div>
       
-      <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce">
+      <Link 
+        to="/#latest-blogs" 
+        className="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce cursor-pointer"
+        aria-label="Scroll to latest blogs"
+      >
         <ArrowDown className="h-6 w-6 text-muted-foreground" />
-      </div>
+      </Link>
     </section>
   );
 };

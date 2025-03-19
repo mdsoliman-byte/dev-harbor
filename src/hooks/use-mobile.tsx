@@ -9,18 +9,19 @@ export function useIsMobile() {
 
   React.useEffect(() => {
     setIsClient(true)
+    
     const checkMobile = () => {
       setIsMobile(window.innerWidth < MOBILE_BREAKPOINT)
     }
     
+    // Initial check
     checkMobile()
     
-    const handleResize = () => {
-      checkMobile()
-    }
+    // Set up event listener for window resize
+    window.addEventListener("resize", checkMobile)
     
-    window.addEventListener("resize", handleResize)
-    return () => window.removeEventListener("resize", handleResize)
+    // Clean up event listener
+    return () => window.removeEventListener("resize", checkMobile)
   }, [])
 
   return isClient ? isMobile : false

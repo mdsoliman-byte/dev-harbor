@@ -4,6 +4,7 @@ import HeroSection from '@/components/home/HeroSection';
 import ProfileSection from '@/components/home/ProfileSection';
 import ProjectsSection from '@/components/home/ProjectsSection';
 import SkillsSection from '@/components/home/SkillsSection';
+import LatestBlogsSection from '@/components/home/LatestBlogsSection';
 import CallToActionSection from '@/components/home/CallToActionSection';
 
 const HomePage = () => {
@@ -15,6 +16,7 @@ const HomePage = () => {
       <ProfileSection />
       <ProjectsSection />
       <SkillsSection />
+      <LatestBlogsSection />
       <CallToActionSection />
     </div>
   );
