@@ -11,6 +11,7 @@ import ProjectDetailPage from "./pages/ProjectDetailPage";
 import SkillsPage from "./pages/SkillsPage";
 import BlogPage from "./pages/BlogPage";
 import BlogDetailPage from "./pages/BlogDetailPage";
+import ShopPage from "./pages/ShopPage";
 import AboutPage from "./pages/AboutPage";
 import ContactPage from "./pages/ContactPage";
 import NotFound from "./pages/NotFound";
@@ -34,6 +35,7 @@ const App = () => (
               <Route path="/skills" element={<Layout><SkillsPage /></Layout>} />
               <Route path="/blog" element={<Layout><BlogPage /></Layout>} />
               <Route path="/blog/:id" element={<Layout><BlogDetailPage /></Layout>} />
+              <Route path="/shop" element={<Layout><ShopPage /></Layout>} />
               <Route path="/about" element={<Layout><AboutPage /></Layout>} />
               <Route path="/contact" element={<Layout><ContactPage /></Layout>} />
               <Route path="*" element={<NotFound />} />

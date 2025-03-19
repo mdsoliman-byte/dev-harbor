@@ -2,7 +2,8 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { cn } from '@/lib/utils';
-import { Menu, X, Home, Briefcase, Code, FileText, User, Mail } from 'lucide-react';
+import { Menu, X, Home, Briefcase, Code, FileText, User, Mail, ShoppingBag } from 'lucide-react';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 interface NavItemProps {
   to: string;
@@ -36,6 +37,7 @@ const NavItem = ({ to, icon: Icon, label, isActive, onClick }: NavItemProps) => 
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
+  const isMobile = useIsMobile();
   
   const toggleSidebar = () => setIsOpen(!isOpen);
   
@@ -44,23 +46,12 @@ const Sidebar = () => {
     setIsOpen(false);
   }, [location.pathname]);
   
-  // Close sidebar on mobile when screen resizes above mobile breakpoint
-  useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth > 768) {
-        setIsOpen(false);
-      }
-    };
-    
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-  
   const navItems = [
     { to: '/', icon: Home, label: 'Home' },
     { to: '/projects', icon: Briefcase, label: 'Projects' },
     { to: '/skills', icon: Code, label: 'Skills' },
     { to: '/blog', icon: FileText, label: 'Blog' },
+    { to: '/shop', icon: ShoppingBag, label: 'Shop' },
     { to: '/about', icon: User, label: 'About' },
     { to: '/contact', icon: Mail, label: 'Contact' },
   ];
