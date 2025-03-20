@@ -25,7 +25,7 @@ const Layout = ({ children }: PropsWithChildren) => {
   };
 
   return (
-    <div className="min-h-screen relative flex flex-col md:flex-row">
+    <div className="min-h-screen relative flex flex-col">
       {/* Background image with overlay */}
       <div className="fixed inset-0 z-[-1]">
         <img 
@@ -36,24 +36,28 @@ const Layout = ({ children }: PropsWithChildren) => {
         <div className="absolute inset-0 bg-background/60 dark:bg-background/80 backdrop-blur-sm"></div>
       </div>
       
-      <Sidebar isOpen={sidebarOpen} setIsOpen={setSidebarOpen} />
-      <main className="flex-1 md:ml-64 min-h-screen">
-        <div className="animate-fade-in">
-          {/* Theme toggle and sidebar toggle positioned in the top-right corner */}
-          <div className="fixed top-4 right-4 z-50 flex items-center gap-2">
-            <Button 
-              variant="outline" 
-              size="icon" 
-              onClick={toggleSidebar}
-              className="rounded-full glass-morphism relative overflow-hidden">
-              <Menu className="h-5 w-5" />
-              <span className="sr-only">Toggle sidebar</span>
-            </Button>
-            <ThemeToggle />
+      {/* Main content */}
+      <div className="flex flex-1 min-h-screen">
+        <Sidebar isOpen={sidebarOpen} setIsOpen={setSidebarOpen} />
+        
+        <main className={`flex-1 transition-all duration-300 ease-in-out min-h-screen ${sidebarOpen ? 'md:ml-64' : ''}`}>
+          <div className="animate-fade-in">
+            {/* Theme toggle and sidebar toggle positioned in the top-right corner */}
+            <div className="fixed top-4 right-4 z-50 flex items-center gap-2">
+              <Button 
+                variant="outline" 
+                size="icon" 
+                onClick={toggleSidebar}
+                className="rounded-full glass-morphism relative overflow-hidden">
+                <Menu className="h-5 w-5" />
+                <span className="sr-only">Toggle sidebar</span>
+              </Button>
+              <ThemeToggle />
+            </div>
+            {children}
           </div>
-          {children}
-        </div>
-      </main>
+        </main>
+      </div>
     </div>
   );
 };

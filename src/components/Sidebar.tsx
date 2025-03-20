@@ -1,8 +1,8 @@
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { cn } from '@/lib/utils';
-import { Menu, X, Home, Briefcase, Code, FileText, User, Mail, ShoppingBag } from 'lucide-react';
+import { X, Home, Briefcase, Code, FileText, User, Mail, ShoppingBag } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 
 interface NavItemProps {
@@ -35,18 +35,16 @@ const NavItem = ({ to, icon: Icon, label, isActive, onClick }: NavItemProps) => 
 );
 
 interface SidebarProps {
-  isOpen?: boolean;
-  setIsOpen?: (isOpen: boolean) => void;
+  isOpen: boolean;
+  setIsOpen: (isOpen: boolean) => void;
 }
 
-const Sidebar = ({ isOpen = false, setIsOpen }: SidebarProps) => {
+const Sidebar = ({ isOpen, setIsOpen }: SidebarProps) => {
   const location = useLocation();
   const isMobile = useIsMobile();
   
-  const toggleSidebar = () => {
-    if (setIsOpen) {
-      setIsOpen(!isOpen);
-    }
+  const closeSidebar = () => {
+    setIsOpen(false);
   };
   
   const navItems = [
@@ -61,61 +59,34 @@ const Sidebar = ({ isOpen = false, setIsOpen }: SidebarProps) => {
 
   return (
     <>
-      {/* Mobile hamburger menu - hidden since we now have the toggle in the Layout */}
-      <button 
-        onClick={toggleSidebar}
-        className="fixed top-5 left-5 z-50 p-2 rounded-full bg-background shadow-md border border-border md:hidden flex items-center justify-center hidden"
-        aria-label="Toggle menu"
-      >
-        {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-      </button>
-      
-      {/* Sidebar for desktop */}
-      <div className="hidden md:flex h-screen w-64 fixed left-0 top-0 border-r border-border bg-background">
-        <div className="flex flex-col w-full">
-          <div className="p-6">
-            <h1 className="text-xl font-semibold">John Doe</h1>
-            <p className="text-sm text-muted-foreground mt-1">Frontend Developer</p>
-          </div>
-          
-          <nav className="px-3 flex-1 space-y-1">
-            {navItems.map(item => (
-              <NavItem
-                key={item.to}
-                to={item.to}
-                icon={item.icon}
-                label={item.label}
-                isActive={location.pathname === item.to}
-              />
-            ))}
-          </nav>
-          
-          <div className="p-6 border-t border-border">
-            <p className="text-xs text-muted-foreground">© 2023 John Doe</p>
-          </div>
-        </div>
-      </div>
-      
-      {/* Mobile sidebar overlay */}
+      {/* Sidebar overlay - show on all devices when sidebar is open */}
       {isOpen && (
         <div 
-          className="fixed inset-0 bg-background/80 backdrop-blur-sm z-40 md:hidden"
-          onClick={toggleSidebar}
+          className="fixed inset-0 bg-background/80 backdrop-blur-sm z-40"
+          onClick={closeSidebar}
         />
       )}
       
-      {/* Mobile sidebar */}
-      <div className={cn(
-        "fixed inset-y-0 left-0 w-64 z-50 bg-background border-r border-border transform transition-transform duration-300 ease-in-out md:hidden",
-        isOpen ? "translate-x-0" : "-translate-x-full"
+      {/* Sidebar - same component for all devices */}
+      <aside className={cn(
+        "fixed inset-y-0 left-0 z-50 w-64 bg-background border-r border-border transform transition-transform duration-300 ease-in-out",
+        isOpen ? "translate-x-0" : "-translate-x-full",
       )}>
         <div className="flex flex-col h-full">
+          {/* Close button for mobile - only visible on mobile */}
+          <button 
+            onClick={closeSidebar}
+            className="absolute top-4 right-4 p-2 rounded-full bg-secondary md:hidden"
+          >
+            <X className="h-4 w-4" />
+          </button>
+
           <div className="p-6">
             <h1 className="text-xl font-semibold">John Doe</h1>
             <p className="text-sm text-muted-foreground mt-1">Frontend Developer</p>
           </div>
           
-          <nav className="px-3 flex-1 space-y-1">
+          <nav className="px-3 flex-1 space-y-1 overflow-y-auto">
             {navItems.map(item => (
               <NavItem
                 key={item.to}
@@ -123,7 +94,7 @@ const Sidebar = ({ isOpen = false, setIsOpen }: SidebarProps) => {
                 icon={item.icon}
                 label={item.label}
                 isActive={location.pathname === item.to}
-                onClick={toggleSidebar}
+                onClick={isMobile ? closeSidebar : undefined}
               />
             ))}
           </nav>
@@ -132,7 +103,7 @@ const Sidebar = ({ isOpen = false, setIsOpen }: SidebarProps) => {
             <p className="text-xs text-muted-foreground">© 2023 John Doe</p>
           </div>
         </div>
-      </div>
+      </aside>
     </>
   );
 };
