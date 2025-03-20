@@ -1,16 +1,28 @@
 
-import { PropsWithChildren, useEffect } from 'react';
+import { PropsWithChildren, useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import { ThemeToggle } from './ThemeProvider';
+import { Menu } from 'lucide-react';
+import { Button } from './ui/button';
 
 const Layout = ({ children }: PropsWithChildren) => {
   const location = useLocation();
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   
   // Scroll to top on route change
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [location.pathname]);
+
+  // Close sidebar on mobile when route changes
+  useEffect(() => {
+    setSidebarOpen(false);
+  }, [location.pathname]);
+
+  const toggleSidebar = () => {
+    setSidebarOpen(!sidebarOpen);
+  };
 
   return (
     <div className="min-h-screen relative flex flex-col md:flex-row">
@@ -24,11 +36,19 @@ const Layout = ({ children }: PropsWithChildren) => {
         <div className="absolute inset-0 bg-background/60 dark:bg-background/80 backdrop-blur-sm"></div>
       </div>
       
-      <Sidebar />
+      <Sidebar isOpen={sidebarOpen} setIsOpen={setSidebarOpen} />
       <main className="flex-1 md:ml-64 min-h-screen">
         <div className="animate-fade-in">
-          {/* Theme toggle positioned in the top-right corner */}
-          <div className="fixed top-4 right-4 z-50">
+          {/* Theme toggle and sidebar toggle positioned in the top-right corner */}
+          <div className="fixed top-4 right-4 z-50 flex items-center gap-2">
+            <Button 
+              variant="outline" 
+              size="icon" 
+              onClick={toggleSidebar}
+              className="rounded-full glass-morphism relative overflow-hidden">
+              <Menu className="h-5 w-5" />
+              <span className="sr-only">Toggle sidebar</span>
+            </Button>
             <ThemeToggle />
           </div>
           {children}

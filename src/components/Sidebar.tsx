@@ -34,17 +34,20 @@ const NavItem = ({ to, icon: Icon, label, isActive, onClick }: NavItemProps) => 
   </Link>
 );
 
-const Sidebar = () => {
-  const [isOpen, setIsOpen] = useState(false);
+interface SidebarProps {
+  isOpen?: boolean;
+  setIsOpen?: (isOpen: boolean) => void;
+}
+
+const Sidebar = ({ isOpen = false, setIsOpen }: SidebarProps) => {
   const location = useLocation();
   const isMobile = useIsMobile();
   
-  const toggleSidebar = () => setIsOpen(!isOpen);
-  
-  // Close sidebar on mobile when route changes
-  useEffect(() => {
-    setIsOpen(false);
-  }, [location.pathname]);
+  const toggleSidebar = () => {
+    if (setIsOpen) {
+      setIsOpen(!isOpen);
+    }
+  };
   
   const navItems = [
     { to: '/', icon: Home, label: 'Home' },
@@ -58,10 +61,10 @@ const Sidebar = () => {
 
   return (
     <>
-      {/* Mobile hamburger menu */}
+      {/* Mobile hamburger menu - hidden since we now have the toggle in the Layout */}
       <button 
         onClick={toggleSidebar}
-        className="fixed top-5 right-5 z-50 p-2 rounded-full bg-background shadow-md border border-border md:hidden flex items-center justify-center"
+        className="fixed top-5 left-5 z-50 p-2 rounded-full bg-background shadow-md border border-border md:hidden flex items-center justify-center hidden"
         aria-label="Toggle menu"
       >
         {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
