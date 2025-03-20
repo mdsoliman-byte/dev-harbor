@@ -69,7 +69,7 @@ const Sidebar = ({ isOpen, setIsOpen }: SidebarProps) => {
       
       {/* Sidebar - same component for all devices */}
       <aside className={cn(
-        "fixed inset-y-0 left-0 z-50 w-64 bg-background border-r border-border shadow-lg transform transition-transform duration-500 ease-in-out",
+        "fixed inset-y-0 left-0 z-50 w-64 bg-background/95 backdrop-blur-md border-r border-border shadow-lg transform transition-transform duration-500 ease-in-out",
         isOpen ? "translate-x-0" : "-translate-x-full",
       )}>
         <div className="flex flex-col h-full">

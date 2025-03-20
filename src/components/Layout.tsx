@@ -38,6 +38,7 @@ const Layout = ({ children }: PropsWithChildren) => {
       
       {/* Main content */}
       <div className="flex flex-1 min-h-screen">
+        {/* Sidebar component */}
         <Sidebar isOpen={sidebarOpen} setIsOpen={setSidebarOpen} />
         
         <main className={`flex-1 transition-all duration-500 ease-in-out min-h-screen ${sidebarOpen ? 'md:ml-64' : ''}`}>
@@ -48,7 +49,9 @@ const Layout = ({ children }: PropsWithChildren) => {
                 variant="outline" 
                 size="icon" 
                 onClick={toggleSidebar}
-                className="rounded-full glass-morphism relative overflow-hidden transition-transform hover:scale-105 active:scale-95 hover:shadow-md">
+                className="rounded-full glass-morphism relative overflow-hidden transition-transform hover:scale-105 active:scale-95 hover:shadow-md"
+                aria-label="Toggle sidebar"
+              >
                 <Menu className="h-5 w-5 transition-transform duration-300 ease-in-out" />
                 <span className="sr-only">Toggle sidebar</span>
               </Button>
