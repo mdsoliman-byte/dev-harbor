@@ -1,9 +1,11 @@
 
 import * as React from "react"
 import { createContext, useContext, useEffect, useState } from "react"
-import { Moon, Sun } from 'lucide-react'
+import { Moon, Sun, Monitor } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import { motion } from "framer-motion"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
+import { cn } from "@/lib/utils"
 
 type Theme = "dark" | "light" | "system"
 
@@ -73,27 +75,46 @@ export const useTheme = () => {
   return context
 }
 
-export function ThemeToggle() {
+export function ThemeToggle({ className }: { className?: string }) {
   const { theme, setTheme } = useTheme()
-  const isDark = theme === "dark"
-
+  
   return (
-    <Button
-      variant="outline"
-      size="icon"
-      onClick={() => setTheme(isDark ? "light" : "dark")}
-      className="rounded-full glass-morphism relative overflow-hidden"
-    >
-      <Sun className={`h-5 w-5 transition-all duration-300 ${isDark ? 'opacity-0 rotate-90 scale-0' : 'opacity-100 rotate-0 scale-100'}`} />
-      <Moon className={`absolute h-5 w-5 transition-all duration-300 ${isDark ? 'opacity-100 rotate-0 scale-100' : 'opacity-0 rotate-90 scale-0'}`} />
-      <span className="sr-only">Toggle theme</span>
-      
-      {/* Enhanced glow effect */}
-      <motion.div 
-        className={`absolute inset-0 ${isDark ? 'bg-primary/10' : 'bg-primary/5'} rounded-full`}
-        animate={{ scale: [1, 1.2, 1] }}
-        transition={{ duration: 0.3 }}
-      />
-    </Button>
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button 
+          variant="outline" 
+          size="icon" 
+          className={cn(
+            "rounded-full glass-morphism relative overflow-hidden w-10 h-10",
+            className
+          )}
+        >
+          <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:rotate-90 dark:scale-0" />
+          <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+          <span className="sr-only">Toggle theme</span>
+          
+          {/* Enhanced glow effect */}
+          <motion.div 
+            className={`absolute inset-0 ${theme === "dark" ? 'bg-primary/10' : 'bg-primary/5'} rounded-full`}
+            animate={{ scale: [1, 1.2, 1] }}
+            transition={{ duration: 0.3 }}
+          />
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end">
+        <DropdownMenuItem onClick={() => setTheme("light")} className="cursor-pointer">
+          <Sun className="mr-2 h-4 w-4" />
+          <span>Light</span>
+        </DropdownMenuItem>
+        <DropdownMenuItem onClick={() => setTheme("dark")} className="cursor-pointer">
+          <Moon className="mr-2 h-4 w-4" />
+          <span>Dark</span>
+        </DropdownMenuItem>
+        <DropdownMenuItem onClick={() => setTheme("system")} className="cursor-pointer">
+          <Monitor className="mr-2 h-4 w-4" />
+          <span>System</span>
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
   )
 }

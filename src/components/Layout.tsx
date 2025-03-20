@@ -2,6 +2,7 @@
 import { PropsWithChildren, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import Sidebar from './Sidebar';
+import { ThemeToggle } from './ThemeProvider';
 
 const Layout = ({ children }: PropsWithChildren) => {
   const location = useLocation();
@@ -26,6 +27,10 @@ const Layout = ({ children }: PropsWithChildren) => {
       <Sidebar />
       <main className="flex-1 md:ml-64 min-h-screen">
         <div className="animate-fade-in">
+          {/* Theme toggle positioned in the top-right corner */}
+          <div className="fixed top-4 right-4 z-50">
+            <ThemeToggle />
+          </div>
           {children}
         </div>
       </main>
