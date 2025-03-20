@@ -1,14 +1,12 @@
-
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { 
-  FilePdf, 
+  FileText, 
   BookOpen, 
   ChevronLeft, 
   ChevronRight, 
   Mail, 
   Library,
-  FileText,
   History,
   Sparkles,
   Lightbulb,
@@ -432,7 +430,7 @@ const ShopPage = () => {
                       {pdf.description}
                     </p>
                     <div className="text-xs flex items-center text-muted-foreground">
-                      <FilePdf className="h-3 w-3 mr-1" />
+                      <FileText className="h-3 w-3 mr-1" />
                       {pdf.fileSize} PDF
                     </div>
                   </CardContent>
