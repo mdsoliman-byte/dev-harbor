@@ -111,11 +111,11 @@ const ProfileSection = () => {
           <motion.div variants={fadeIn} className="mt-10 flex flex-wrap justify-center gap-6">
             <div className="flex items-center gap-2">
               <MapPin className="h-5 w-5 text-primary" />
-              <span>San Francisco, CA</span>
+              <span>Khilkhet , Dhaka, Bangladesh</span>
             </div>
             <div className="flex items-center gap-2">
               <Mail className="h-5 w-5 text-primary" />
-              <span>contact@mdsoliman.com</span>
+              <span>contact.mdsoliman@gmail.com</span>
             </div>
             <div className="flex items-center gap-2">
               <Calendar className="h-5 w-5 text-primary" />
