@@ -99,7 +99,7 @@ const HeroSection = () => {
             transition={{ duration: 0.8 }}
             className="order-1 lg:order-2 max-w-md mx-auto"
           >
-            <div className="relative">
+            <div className="relative p-[40px]">
               <div className="absolute inset-0 bg-gradient-to-tr from-primary/30 to-secondary/30 rounded-2xl blur-2xl -z-10 transform rotate-6"></div>
               <img 
                 src="/lovable-uploads/e8092dd1-2449-43ed-9410-0c6588466696.png" 
@@ -128,7 +128,7 @@ const HeroSection = () => {
       </div>
       
       <Link 
-        to="/#latest-blogs" 
+        to="/blog" 
         className="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce cursor-pointer"
         aria-label="Scroll to latest blogs"
       >
