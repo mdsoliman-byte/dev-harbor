@@ -74,16 +74,11 @@ const Sidebar = ({ isOpen, setIsOpen }: SidebarProps) => {
       )}>
         <div className="flex flex-col h-full">
           {/* Close button for mobile - only visible on mobile */}
-          <button 
-            onClick={closeSidebar}
-            className="absolute top-4 right-4 p-2 rounded-full bg-secondary md:hidden"
-          >
-            <X className="h-4 w-4" />
-          </button>
+          
 
           <div className="p-6">
-            <h1 className="text-xl font-semibold">John Doe</h1>
-            <p className="text-sm text-muted-foreground mt-1">Frontend Developer</p>
+            <h1 className="text-xl font-semibold">MD SOLIMAN</h1>
+            <p className="text-sm text-muted-foreground mt-1">Data Scientist</p>
           </div>
           
           <nav className="px-3 flex-1 space-y-1 overflow-y-auto">
@@ -100,7 +95,7 @@ const Sidebar = ({ isOpen, setIsOpen }: SidebarProps) => {
           </nav>
           
           <div className="p-6 border-t border-border">
-            <p className="text-xs text-muted-foreground">© 2023 John Doe</p>
+            <p className="text-xs text-muted-foreground">© 2025 SOLIMAN</p>
           </div>
         </div>
       </aside>
