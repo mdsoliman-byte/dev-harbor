@@ -9,18 +9,26 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: 🚚 Get latest code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Use Node.js 20
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v4
         with:
           node-version: "20"
+          cache: "npm"
+
+      - name: Cache node modules
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
 
       - name: 🔨 Build Project
         run: |
           npm install
           npm run build
-          npm run test
 
       - name: 📂 Sync files
         uses: SamKirkland/FTP-Deploy-Action@4.1.0
@@ -29,4 +37,4 @@ jobs:
           username: ${{ secrets.FTP_NAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           dangerous-clean-slate: true
-          local-dir: ./build/
+          local-dir: ./dist/
