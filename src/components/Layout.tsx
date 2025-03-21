@@ -44,14 +44,7 @@ const Layout = ({ children }: PropsWithChildren) => {
           <div className="animate-fade-in">
             {/* Theme toggle and sidebar toggle positioned in the top-right corner */}
             <div className="fixed top-4 right-4 z-50 flex items-center gap-2">
-              {/* 
-              <button 
-            onClick={closeSidebar}
-            className="absolute top-4 right-4 p-2 rounded-full bg-secondary md:hidden"
-          >
-            <X className="h-4 w-4" />
-          </button>
-              */}
+            <ThemeToggle />
               <Button 
                 variant="outline" 
                 size="icon" 
@@ -64,7 +57,7 @@ const Layout = ({ children }: PropsWithChildren) => {
                 )}
                 <span className="sr-only">Toggle sidebar</span>
               </Button>
-              <ThemeToggle />
+              
             </div>
             {children}
           </div>
