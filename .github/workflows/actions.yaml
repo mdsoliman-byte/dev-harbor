@@ -39,6 +39,7 @@ jobs:
           protocol: ftp 
           dangerous-clean-slate: true
           local-dir: ./dist/
-          server-dir: public_html/
+          server-dir: /domains/mdsoliman.com/public_html/
+
           
 
