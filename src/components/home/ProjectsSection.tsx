@@ -1,10 +1,22 @@
-
 import { ArrowRight, Github, ExternalLink, BarChart, PenTool, Database } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { fetchProjectData } from '@/services/api';
 
 const ProjectsSection = () => {
+  const [projects, setProjects] = useState([]);
+
+  useEffect(() => {
+    const loadProjects = async () => {
+      const data = await fetchProjectData();
+      const shuffled = data.sort(() => 0.5 - Math.random());
+      setProjects(shuffled.slice(0, 6));
+    };
+    loadProjects();
+  }, []);
+
   // Animation variants
   const fadeIn = {
     hidden: { opacity: 0, y: 20 },
@@ -18,7 +30,7 @@ const ProjectsSection = () => {
       },
     }),
   };
-  
+
   const staggerContainer = {
     hidden: { opacity: 0 },
     visible: {
@@ -29,27 +41,6 @@ const ProjectsSection = () => {
     },
   };
 
-  const projects = [
-    {
-      title: "Predictive Analytics Dashboard",
-      description: "A machine learning-powered dashboard for financial forecasting using Python, scikit-learn, and Streamlit.",
-      tags: ["Python", "Machine Learning", "Streamlit"],
-      icon: <BarChart className="h-6 w-6 text-primary" />
-    },
-    {
-      title: "Natural Language Processing Tool",
-      description: "Text analysis tool for sentiment analysis and entity recognition using NLTK, spaCy, and Hugging Face transformers.",
-      tags: ["Python", "NLP", "Deep Learning"],
-      icon: <PenTool className="h-6 w-6 text-primary" />
-    },
-    {
-      title: "Data Pipeline Automation",
-      description: "Automated ETL process for big data processing using Pandas, Airflow, and SQL with cloud integration.",
-      tags: ["Python", "SQL", "Airflow"],
-      icon: <Database className="h-6 w-6 text-primary" />
-    }
-  ];
-
   return (
     <section className="py-24 px-4 md:px-8 lg:px-16 bg-secondary/50">
       <div className="container mx-auto">
@@ -58,7 +49,7 @@ const ProjectsSection = () => {
             <p className="text-sm font-medium text-primary mb-2">SELECTED WORK</p>
             <h2 className="text-3xl md:text-4xl font-display font-bold">Featured Projects</h2>
           </div>
-          
+
           <Button asChild variant="ghost" className="group mt-4 md:mt-0">
             <Link to="/projects">
               View All Projects
@@ -66,8 +57,8 @@ const ProjectsSection = () => {
             </Link>
           </Button>
         </div>
-        
-        <motion.div 
+
+        <motion.div
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
@@ -75,7 +66,7 @@ const ProjectsSection = () => {
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
         >
           {projects.map((project, i) => (
-            <motion.div 
+            <motion.div
               key={i}
               variants={fadeIn}
               custom={i}
@@ -85,32 +76,42 @@ const ProjectsSection = () => {
               <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-secondary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               <div className="aspect-video bg-muted/30 relative">
                 <div className="absolute inset-0 flex items-center justify-center text-muted-foreground">
-                  {project.icon}
+                  <BarChart className="h-6 w-6 text-primary" />
                 </div>
               </div>
-              
+
               <div className="p-6 relative z-10">
                 <div className="flex flex-wrap gap-2 mb-4">
-                  {project.tags.map(tag => (
+                  {project.tags?.map(tag => (
                     <span key={tag} className="px-2 py-1 text-xs font-medium bg-primary/10 text-primary rounded-full">{tag}</span>
                   ))}
                 </div>
-                
+
                 <h3 className="text-xl font-semibold mb-2 group-hover:text-primary transition-colors duration-300">{project.title}</h3>
                 <p className="text-muted-foreground text-sm mb-4">
                   {project.description}
                 </p>
-                
+
                 <div className="flex items-center space-x-4">
-                  <a href="#" className="text-sm font-medium hover-underline inline-flex items-center">
-                    <Github className="mr-1 h-4 w-4" />
-                    GitHub
-                  </a>
-                  <a href="#" className="text-sm font-medium hover-underline inline-flex items-center">
-                    <ExternalLink className="mr-1 h-4 w-4" />
-                    Live Demo
-                  </a>
+                  {project.github_url && (
+                    <a href={project.github_url} className="text-sm font-medium hover-underline inline-flex items-center">
+                      <Github className="mr-1 h-4 w-4" />
+                      GitHub
+                    </a>
+                  )}
+                  {project.live_demo_url && (
+                    <a href={project.live_demo_url} className="text-sm font-medium hover-underline inline-flex items-center">
+                      <ExternalLink className="mr-1 h-4 w-4" />
+                      Live Demo
+                    </a>
+                  )}
+                  <Link to={`/projects/${project.id}`}>
+                    <Button variant="ghost" size="sm">
+                      Details
+                    </Button>
+                  </Link>
                 </div>
+
               </div>
             </motion.div>
           ))}

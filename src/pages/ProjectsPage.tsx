@@ -109,7 +109,8 @@ const ProjectsPage = () => {
                 
                 <h3 className="text-xl font-semibold mb-2">{project.title}</h3>
                 <p className="text-muted-foreground text-sm mb-4">
-                  {project.description}
+                  {/* {project.description} */}
+                  {project.description.length > 200 ? `${project.description.slice(0, 200)}...` : project.description}
                 </p>
                 
                 <div className="flex items-center justify-between mt-4">

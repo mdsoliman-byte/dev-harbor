@@ -91,6 +91,14 @@ const ProjectDetailPage = () => {
                 ))}
               </div>
             </CardContent>
+            <CardContent className="pt-6">
+              <h2 className="text-2xl font-semibold mb-4">Project Description</h2>
+              <div className="prose prose-lg dark:prose-invert">
+                <p className="text-muted-foreground mb-4">
+                  {project.description}
+                </p>
+              </div>
+            </CardContent>
           </Card>
         </motion.div>
       </div>
