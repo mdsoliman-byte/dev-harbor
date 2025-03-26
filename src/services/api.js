@@ -49,4 +49,14 @@ export const fetchProjectData = async () => {
         ];
     }
 };
+export const fetchProjectCategories = async () => {
+    try {
+        const response = await api.get('projects/projectCategories/');
+        console.log('Project categories:', response.data);
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching project categories:', error);
+        return [];
+    }
+};
 export default api;

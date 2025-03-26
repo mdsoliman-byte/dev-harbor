@@ -7,14 +7,14 @@ import { fetchProjectData } from '@/services/api';
 import { Card, CardContent } from '@/components/ui/card';
 
 const ProjectDetailPage = () => {
-  const { id } = useParams<{ id: string }>();
+  const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
   const [project, setProject] = useState(null);
 
   useEffect(() => {
     const loadProject = async () => {
       const data = await fetchProjectData();
-      const selectedProject = data.find(p => p.id === Number(id));
+      const selectedProject = data.find(p => p.slug === slug);
       if (!selectedProject) {
         navigate('/projects', { replace: true });
       } else {
@@ -22,7 +22,7 @@ const ProjectDetailPage = () => {
       }
     };
     loadProject();
-  }, [id, navigate]);
+  }, [slug, navigate]);
 
   if (!project) return null;
 

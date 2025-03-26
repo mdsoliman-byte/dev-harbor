@@ -134,11 +134,11 @@ const ProjectsPage = () => {
                       Live Demo
                     </a>
                   </div>
-                  <Link to={`/projects/${project.id}`}>
+                    <Link to={`/projects/${project.slug}`}>
                     <Button variant="ghost" size="sm">
                       Details
                     </Button>
-                  </Link>
+                    </Link>
                 </div>
               </div>
             </motion.div>
