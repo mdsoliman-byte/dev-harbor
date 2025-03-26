@@ -1,27 +1,34 @@
-
 import { ArrowRight, ArrowDown, Cpu, Code } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { Badge } from '@/components/ui/badge';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { useEffect, useState } from 'react';
+import { fetchHeroData } from '@/services/api';
 
 const HeroSection = () => {
   const isMobile = useIsMobile();
-  
-  // Animation variants
-  const fadeIn = {
-    hidden: { opacity: 0, y: 20 },
-    visible: (i = 0) => ({
-      opacity: 1,
-      y: 0,
-      transition: {
-        delay: i * 0.1,
-        duration: 0.7,
-        ease: [0.6, -0.05, 0.01, 0.99],
-      },
-    }),
-  };
+  const [heroData, setHeroData] = useState(null);
+
+  useEffect(() => {
+    const getHeroData = async () => {
+      try {
+        const data = await fetchHeroData();
+        setHeroData(data);
+      } catch (error) {
+        console.error('Failed to fetch hero data:', error);
+      }
+    };
+
+    getHeroData();
+  }, []);
+
+  if (!heroData) {
+    return <div>Loading...</div>; // Placeholder while data is loading
+  }
+
+  const { heading, title, shortbio, skills, profile_image } = heroData;
 
   return (
     <section className="relative min-h-screen flex items-center px-4 md:px-8 lg:px-16 overflow-hidden">
@@ -32,48 +39,58 @@ const HeroSection = () => {
           <motion.div 
             initial="hidden"
             animate="visible"
-            variants={fadeIn}
+            variants={{
+              hidden: { opacity: 0, y: 20 },
+              visible: (i = 0) => ({
+                opacity: 1,
+                y: 0,
+                transition: {
+                  delay: i * 0.1,
+                  duration: 0.7,
+                  ease: [0.6, -0.05, 0.01, 0.99],
+                },
+              }),
+            }}
             className="max-w-3xl order-2 lg:order-1"
           >
             <motion.div 
-              variants={fadeIn} 
+              variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }} 
               custom={1}
               className="inline-block px-3 py-1 mb-6 border border-border rounded-full bg-background/50 backdrop-blur-sm"
             >
-              <p className="text-sm font-medium text-muted-foreground">Data Scientist & Programmer</p>
+              <p className="text-sm font-medium text-muted-foreground">{heading}</p>
             </motion.div>
             
             <motion.h1 
-              variants={fadeIn} 
+              variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }} 
               custom={2}
               className="text-4xl md:text-6xl font-display font-bold tracking-tight"
             >
-              Transforming data into insights with Python & R expertise
+              {title}
             </motion.h1>
             
             <motion.p 
-              variants={fadeIn} 
+              variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }} 
               custom={3}
               className="mt-6 text-lg text-muted-foreground leading-relaxed"
             >
-              I'm MD SOLIMAN, a data scientist specializing in machine learning, statistical analysis, and data visualization, creating impactful solutions to complex data problems.
+              {shortbio}
             </motion.p>
             
             <motion.div 
-              variants={fadeIn} 
+              variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }} 
               custom={4}
               className="mt-6 flex flex-wrap gap-3"
             >
-              <Badge variant="outline" className="bg-primary/10">Python</Badge>
-              <Badge variant="outline" className="bg-primary/10">R</Badge>
-              <Badge variant="outline" className="bg-primary/10">Machine Learning</Badge>
-              <Badge variant="outline" className="bg-primary/10">Data Analysis</Badge>
-              <Badge variant="outline" className="bg-primary/10">SQL</Badge>
-              <Badge variant="outline" className="bg-primary/10">Visualization</Badge>
+              {skills.map((skill, index) => (
+                <Badge key={index} variant="outline" className="bg-primary/10">
+                  {skill}
+                </Badge>
+              ))}
             </motion.div>
             
             <motion.div 
-              variants={fadeIn} 
+              variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }} 
               custom={5}
               className="mt-10 flex flex-wrap gap-4"
             >
@@ -102,8 +119,8 @@ const HeroSection = () => {
             <div className="relative p-[40px]">
               <div className="absolute inset-0 bg-gradient-to-tr from-primary/30 to-secondary/30 rounded-2xl blur-2xl -z-10 transform rotate-6"></div>
               <img 
-                src="/lovable-uploads/e8092dd1-2449-43ed-9410-0c6588466696.png" 
-                alt="MD Soliman" 
+                src={`http://localhost:8000${heroData.profile_image}`}
+                alt="Profile" 
                 className="rounded-2xl shadow-2xl border-4 border-background/50 object-cover w-full h-auto"
               />
               <motion.div 
