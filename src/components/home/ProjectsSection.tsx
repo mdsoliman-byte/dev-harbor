@@ -76,7 +76,14 @@ const ProjectsSection = () => {
               <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-secondary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               <div className="aspect-video bg-muted/30 relative">
                 <div className="absolute inset-0 flex items-center justify-center text-muted-foreground">
-                  <BarChart className="h-6 w-6 text-primary" />
+                  {/* <BarChart className="h-6 w-6 text-primary" /> */}
+                  <div className="aspect-video bg-muted/30 relative overflow-hidden">
+                    <img
+                      src={project.image}
+                      alt={project.title}
+                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    />
+                  </div>
                 </div>
               </div>
 
@@ -87,10 +94,11 @@ const ProjectsSection = () => {
                   ))}
                 </div>
 
-                <h3 className="text-xl font-semibold mb-2 group-hover:text-primary transition-colors duration-300">{project.title}</h3>
+                <h3 className="text-xl font-semibold mb-2 group-hover:text-primary transition-colors duration-300"> {project.title.length > 60 ? `${project.title.slice(0, 60)}...` : project.title}</h3>
                 <p className="text-muted-foreground text-sm mb-4">
-                  {project.description}
+                  {project.description.length > 200 ? `${project.description.slice(0, 200)}...` : project.description}
                 </p>
+
 
                 <div className="flex items-center space-x-4">
                   {project.github_url && (
@@ -105,7 +113,7 @@ const ProjectsSection = () => {
                       Live Demo
                     </a>
                   )}
-                  <Link to={`/projects/${project.id}`}>
+                  <Link to={`/projects/${project.slug}`}>
                     <Button variant="ghost" size="sm">
                       Details
                     </Button>
