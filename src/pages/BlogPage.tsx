@@ -337,6 +337,7 @@ const BlogPage = () => {
 
   return (
     <div className="min-h-screen py-16 px-4 md:px-8 lg:px-16">
+      {/* min-h-screen py-16 px-4 md:px-8 lg:px-16 */}
       <div className="container mx-auto">
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
@@ -377,7 +378,7 @@ const BlogPage = () => {
         <section className="mb-16">
           <h2 className="text-2xl md:text-3xl font-display font-bold mb-6">Recommended For You</h2>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {blogPosts.slice(0, 6).map((post, index) => (
               <motion.article 
                 key={post.id}
@@ -399,7 +400,7 @@ const BlogPage = () => {
                   </div>
                 </div>
                 
-                <div className="p-6">
+                <div className="p-4 sm:p-6">
                   <div className="flex items-center text-muted-foreground text-sm space-x-4 mb-4">
                     <div className="flex items-center">
                       <CalendarDays className="h-4 w-4 mr-1" />
@@ -412,11 +413,11 @@ const BlogPage = () => {
                     </div>
                   </div>
                   
-                  <h3 className="text-xl font-semibold mb-3 group-hover:text-primary transition-colors">
+                  <h3 className="text-lg sm:text-xl font-semibold mb-3 group-hover:text-primary transition-colors">
                     {post.title}
                   </h3>
                   
-                  <p className="text-muted-foreground text-sm mb-4">
+                  <p className="text-sm sm:text-base text-muted-foreground mb-4">
                     {post.excerpt}
                   </p>
                   

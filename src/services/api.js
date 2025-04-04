@@ -59,4 +59,15 @@ export const fetchProjectCategories = async () => {
         return [];
     }
 };
+
+export const fetchLoginStatus = async () => {
+    try {
+        const response = await api.get("auth/login/");
+        return response.data;
+    } catch (error) {
+        console.error("Error checking login status:", error);
+        throw error;
+    }
+};
+
 export default api;
