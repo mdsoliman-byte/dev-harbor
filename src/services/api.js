@@ -27,6 +27,7 @@ export const fetchHeroData = async () => {
         };
     }
 };
+
 export const fetchProjectData = async () => {
     try {
         const response = await api.get('projects/project/');
@@ -49,6 +50,7 @@ export const fetchProjectData = async () => {
         ];
     }
 };
+
 export const fetchProjectCategories = async () => {
     try {
         const response = await api.get('projects/projectCategories/');
@@ -68,6 +70,34 @@ export const fetchLoginStatus = async () => {
         console.error("Error checking login status:", error);
         throw error;
     }
+};
+
+// Admin authentication functions
+export const adminLogin = async (credentials) => {
+    try {
+        const response = await api.post('auth/admin/login/', credentials);
+        if (response.data.token) {
+            localStorage.setItem('adminToken', response.data.token);
+            localStorage.setItem('adminUser', JSON.stringify(response.data.user));
+        }
+        return response.data;
+    } catch (error) {
+        console.error('Admin login failed:', error);
+        throw error;
+    }
+};
+
+export const adminLogout = () => {
+    localStorage.removeItem('adminToken');
+    localStorage.removeItem('adminUser');
+};
+
+export const isAdminAuthenticated = () => {
+    return localStorage.getItem('adminToken') !== null;
+};
+
+export const getAdminToken = () => {
+    return localStorage.getItem('adminToken');
 };
 
 export default api;

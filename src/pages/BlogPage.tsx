@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
@@ -336,17 +337,16 @@ const BlogPage = () => {
   };
 
   return (
-    <div className="min-h-screen py-16 px-4 md:px-8 lg:px-16">
-      {/* min-h-screen py-16 px-4 md:px-8 lg:px-16 */}
-      <div className="container mx-auto">
+    <div className="min-h-screen py-8 sm:py-12 md:py-16 px-4 sm:px-6 md:px-8 lg:px-16">
+      <div className="container mx-auto max-w-[1400px]">
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="max-w-3xl mb-12"
+          className="max-w-3xl mb-8 sm:mb-12"
         >
-          <h1 className="text-4xl md:text-5xl font-display font-bold mb-6">Blog</h1>
-          <p className="text-lg text-muted-foreground">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold mb-4 sm:mb-6">Blog</h1>
+          <p className="text-base sm:text-lg text-muted-foreground">
             Insights, tutorials, and the latest trends in farming, agriculture, and sustainable practices.
             Learn from experts and discover innovative approaches to modern farming.
           </p>
@@ -375,10 +375,10 @@ const BlogPage = () => {
         <LatestArticlesSection />
         
         {/* Original Blog Posts Grid */}
-        <section className="mb-16">
-          <h2 className="text-2xl md:text-3xl font-display font-bold mb-6">Recommended For You</h2>
+        <section className="mb-8 sm:mb-12 md:mb-16">
+          <h2 className="text-xl sm:text-2xl md:text-3xl font-display font-bold mb-4 sm:mb-6">Recommended For You</h2>
           
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
             {blogPosts.slice(0, 6).map((post, index) => (
               <motion.article 
                 key={post.id}
@@ -393,37 +393,37 @@ const BlogPage = () => {
                     alt={post.title}
                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                   />
-                  <div className="absolute top-4 left-4">
-                    <span className="px-3 py-1 bg-primary/80 text-primary-foreground text-xs font-medium rounded-full backdrop-blur-sm">
+                  <div className="absolute top-3 left-3 sm:top-4 sm:left-4">
+                    <span className="px-2 py-1 sm:px-3 sm:py-1 bg-primary/80 text-primary-foreground text-xs font-medium rounded-full backdrop-blur-sm">
                       {post.category}
                     </span>
                   </div>
                 </div>
                 
-                <div className="p-4 sm:p-6">
-                  <div className="flex items-center text-muted-foreground text-sm space-x-4 mb-4">
+                <div className="p-3 sm:p-4 md:p-6">
+                  <div className="flex flex-wrap items-center text-muted-foreground text-xs sm:text-sm space-x-2 sm:space-x-4 mb-2 sm:mb-4">
                     <div className="flex items-center">
-                      <CalendarDays className="h-4 w-4 mr-1" />
+                      <CalendarDays className="h-3 w-3 sm:h-4 sm:w-4 mr-1" />
                       <span>{post.date}</span>
                     </div>
                     
                     <div className="flex items-center">
-                      <Clock className="h-4 w-4 mr-1" />
+                      <Clock className="h-3 w-3 sm:h-4 sm:w-4 mr-1" />
                       <span>{post.readTime}</span>
                     </div>
                   </div>
                   
-                  <h3 className="text-lg sm:text-xl font-semibold mb-3 group-hover:text-primary transition-colors">
+                  <h3 className="text-base sm:text-lg md:text-xl font-semibold mb-2 sm:mb-3 line-clamp-2 group-hover:text-primary transition-colors">
                     {post.title}
                   </h3>
                   
-                  <p className="text-sm sm:text-base text-muted-foreground mb-4">
+                  <p className="text-xs sm:text-sm md:text-base text-muted-foreground mb-3 sm:mb-4 line-clamp-2">
                     {post.excerpt}
                   </p>
                   
-                  <Link to={`/blog/${post.id}`} className="inline-flex items-center text-sm font-medium hover-underline">
+                  <Link to={`/blog/${post.id}`} className="inline-flex items-center text-xs sm:text-sm font-medium hover-underline">
                     Read More
-                    <ChevronRight className="ml-1 h-4 w-4" />
+                    <ChevronRight className="ml-1 h-3 w-3 sm:h-4 sm:w-4" />
                   </Link>
                 </div>
               </motion.article>
