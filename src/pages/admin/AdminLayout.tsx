@@ -2,7 +2,7 @@
 import { PropsWithChildren, useEffect, useState } from 'react';
 import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { LayoutDashboard, FileText, User, Settings, ShoppingBag, LogOut, Menu, X } from 'lucide-react';
-import { adminLogout, isAdminAuthenticated } from '@/services/api';
+import { logout, isAdminAuthenticated } from '@/services/api';
 import { Button } from '@/components/ui/button';
 import { ThemeToggle } from '@/components/ThemeProvider';
 import { motion } from 'framer-motion';
@@ -47,12 +47,12 @@ const AdminLayout = ({ children }: PropsWithChildren) => {
   ];
 
   const handleLogout = () => {
-    adminLogout();
+    logout();
     navigate('/admin/login');
   };
 
   return (
-    <div className="min-h-screen flex flex-col md:flex-row">
+    <div className="min-h-screen flex  md:flex-row ">
       {/* Admin Sidebar */}
       <aside 
         className={`fixed inset-y-0 left-0 z-50 w-64 bg-background/90 backdrop-blur-md border-r border-border transform transition-transform duration-300 ease-in-out md:relative ${

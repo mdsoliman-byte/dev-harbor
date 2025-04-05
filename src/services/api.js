@@ -85,7 +85,28 @@ export const fetchLoginStatus = async () => {
 };
 
 // Admin authentication functions
-export const adminLogin = async (credentials) => {
+// export const adminLogin = async (credentials) => {
+//     try {
+//         const response = await api.post('auth/login/', credentials);
+//         console.log('Login response:', response.data);
+
+//         const { access_token, refresh_token, user } = response.data;
+
+//         if (access_token) {
+//             localStorage.setItem('adminToken', access_token);
+//             localStorage.setItem('refreshToken', refresh_token);
+//             localStorage.setItem('adminUser', JSON.stringify(user || { email: credentials.email }));
+//             return response.data;
+//         } else {
+//             console.error('Access token missing in login response:', response.data);
+//             throw new Error('Authentication failed: Access token missing');
+//         }
+//     } catch (error) {
+//         console.error('Admin login failed:', error.response?.data || error.message);
+//         throw error;
+//     }
+// };
+export const login = async (credentials) => {
     try {
         const response = await api.post('auth/login/', credentials);
         console.log('Login response:', response.data);
@@ -93,26 +114,33 @@ export const adminLogin = async (credentials) => {
         const { access_token, refresh_token, user } = response.data;
 
         if (access_token) {
-            localStorage.setItem('adminToken', access_token);
             localStorage.setItem('refreshToken', refresh_token);
-            localStorage.setItem('adminUser', JSON.stringify(user || { email: credentials.email }));
+
+            if (user && user.user_type === 'admin') {
+                localStorage.setItem('adminToken', access_token);
+                localStorage.setItem('adminUser', JSON.stringify(user || { email: credentials.email }));
+            } else {
+                localStorage.setItem('userToken', access_token);
+                localStorage.setItem('userInfo', JSON.stringify(user || { email: credentials.email }));
+            }
             return response.data;
         } else {
             console.error('Access token missing in login response:', response.data);
             throw new Error('Authentication failed: Access token missing');
         }
     } catch (error) {
-        console.error('Admin login failed:', error.response?.data || error.message);
+        console.error('Login failed:', error.response?.data || error.message);
         throw error;
     }
 };
-
-export const adminLogout = () => {
+export const logout = () => {
+    const isAdmin = !!localStorage.getItem('adminToken');
     localStorage.removeItem('adminToken');
+    localStorage.removeItem('userToken');
     localStorage.removeItem('refreshToken');
     localStorage.removeItem('adminUser');
-    // Force redirect to login page
-    window.location.href = '/admin/login';
+    localStorage.removeItem('userInfo');
+    window.location.href = isAdmin ? '/admin/login' : '/login';
 };
 
 export const isAdminAuthenticated = () => {

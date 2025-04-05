@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Lock, User } from 'lucide-react';
-import { adminLogin, isAdminAuthenticated } from '@/services/api';
+import { login, isAdminAuthenticated } from '@/services/api';
 import { useToast } from '@/hooks/use-toast';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -24,18 +24,56 @@ const AdminLoginPage = () => {
     }
   }, [navigate]);
 
+  // const handleSubmit = async (e: React.FormEvent) => {
+  //   e.preventDefault();
+  //   setIsLoading(true);
+
+  //   try {
+  //     await login({ email, password });
+  //     toast({
+  //       title: 'Login successful',
+  //       description: 'Welcome to the admin dashboard',
+  //     });
+  //     // Force navigation to dashboard after successful login
+  //     navigate('/admin/dashboard', { replace: true });
+  //   } catch (error) {
+  //     toast({
+  //       title: 'Login failed',
+  //       description: 'Invalid email or password',
+  //       variant: 'destructive',
+  //     });
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
 
     try {
-      await adminLogin({ email, password });
-      toast({
-        title: 'Login successful',
-        description: 'Welcome to the admin dashboard',
-      });
-      // Force navigation to dashboard after successful login
-      navigate('/admin/dashboard', { replace: true });
+      const result = await login({ email, password });
+      // Ensure we have a user object before checking role
+      if (result.user) {
+        if (result.user.user_type === 'admin') {
+          toast({
+            title: 'Login successful',
+            description: 'Welcome to the admin dashboard',
+          });
+          navigate('/admin/dashboard', { replace: true });
+        } else {
+          toast({
+            title: 'Login successful',
+            description: 'Welcome',
+          });
+          navigate('/', { replace: true });
+        }
+      } else {
+        toast({
+          title: 'Login failed',
+          description: 'User information missing in response',
+          variant: 'destructive',
+        });
+      }
     } catch (error) {
       toast({
         title: 'Login failed',
@@ -46,7 +84,6 @@ const AdminLoginPage = () => {
       setIsLoading(false);
     }
   };
-
   return (
     <div className="min-h-screen flex items-center justify-center px-4 py-12 bg-background relative">
       {/* Background image with overlay */}
