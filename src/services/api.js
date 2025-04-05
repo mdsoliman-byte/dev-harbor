@@ -75,7 +75,7 @@ export const fetchLoginStatus = async () => {
 // Admin authentication functions
 export const adminLogin = async (credentials) => {
     try {
-        const response = await api.post('auth/admin/login/', credentials);
+        const response = await api.post('auth/login/', credentials);
         if (response.data.token) {
             localStorage.setItem('adminToken', response.data.token);
             localStorage.setItem('adminUser', JSON.stringify(response.data.user));
