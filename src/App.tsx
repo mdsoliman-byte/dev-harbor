@@ -18,6 +18,12 @@ import NotFound from "./pages/NotFound";
 import { AnimatePresence } from "framer-motion";
 import { ThemeProvider } from "./components/ThemeProvider";
 
+// Admin imports
+import PrivateRoute from "./utils/PrivateRoute";
+import AdminLoginPage from "./pages/admin/AdminLoginPage";
+import AdminLayout from "./pages/admin/AdminLayout";
+import AdminDashboardPage from "./pages/admin/AdminDashboardPage";
+
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -29,6 +35,7 @@ const App = () => (
         <BrowserRouter>
           <AnimatePresence mode="wait">
             <Routes>
+              {/* Public Routes */}
               <Route path="/" element={<Layout><HomePage /></Layout>} />
               <Route path="/projects" element={<Layout><ProjectsPage /></Layout>} />
               <Route path="/projects/:slug" element={<Layout><ProjectDetailPage /></Layout>} />
@@ -38,6 +45,14 @@ const App = () => (
               <Route path="/shop" element={<Layout><ShopPage /></Layout>} />
               <Route path="/about" element={<Layout><AboutPage /></Layout>} />
               <Route path="/contact" element={<Layout><ContactPage /></Layout>} />
+              
+              {/* Admin Routes */}
+              <Route path="/admin/login" element={<AdminLoginPage />} />
+              <Route element={<PrivateRoute />}>
+                <Route path="/admin/dashboard" element={<AdminLayout><AdminDashboardPage /></AdminLayout>} />
+                {/* Add more admin routes here */}
+              </Route>
+              
               <Route path="*" element={<NotFound />} />
             </Routes>
           </AnimatePresence>
