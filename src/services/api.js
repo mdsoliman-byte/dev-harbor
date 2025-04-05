@@ -9,6 +9,18 @@ const api = axios.create({
     },
 });
 
+// Add request interceptor to include auth token in requests
+api.interceptors.request.use(
+    (config) => {
+        const token = localStorage.getItem('adminToken');
+        if (token) {
+            config.headers.Authorization = `Bearer ${token}`;
+        }
+        return config;
+    },
+    (error) => Promise.reject(error)
+);
+
 export const fetchHeroData = async () => {
     try {
         const response = await api.get('home/data/');
@@ -76,11 +88,13 @@ export const fetchLoginStatus = async () => {
 export const adminLogin = async (credentials) => {
     try {
         const response = await api.post('auth/login/', credentials);
+        console.log('Login response:', response.data);
         if (response.data.token) {
             localStorage.setItem('adminToken', response.data.token);
-            localStorage.setItem('adminUser', JSON.stringify(response.data.user));
+            localStorage.setItem('adminUser', JSON.stringify(response.data.user || { email: credentials.email }));
+            return response.data;
         }
-        return response.data;
+        throw new Error('Authentication failed');
     } catch (error) {
         console.error('Admin login failed:', error);
         throw error;
@@ -90,14 +104,29 @@ export const adminLogin = async (credentials) => {
 export const adminLogout = () => {
     localStorage.removeItem('adminToken');
     localStorage.removeItem('adminUser');
+    // Force redirect to login page
+    window.location.href = '/admin/login';
 };
 
 export const isAdminAuthenticated = () => {
-    return localStorage.getItem('adminToken') !== null;
+    const token = localStorage.getItem('adminToken');
+    console.log('Admin token found:', !!token);
+    return !!token;
 };
 
 export const getAdminToken = () => {
     return localStorage.getItem('adminToken');
+};
+
+export const getAdminUser = () => {
+    const userJson = localStorage.getItem('adminUser');
+    if (!userJson) return null;
+    try {
+        return JSON.parse(userJson);
+    } catch (e) {
+        console.error('Error parsing admin user:', e);
+        return null;
+    }
 };
 
 export default api;

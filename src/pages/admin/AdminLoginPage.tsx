@@ -3,11 +3,12 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Lock, User } from 'lucide-react';
-import { adminLogin } from '@/services/api';
+import { adminLogin, isAdminAuthenticated } from '@/services/api';
 import { useToast } from '@/hooks/use-toast';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { useEffect } from 'react';
 
 const AdminLoginPage = () => {
   const [email, setEmail] = useState('');
@@ -15,6 +16,13 @@ const AdminLoginPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
+
+  // Check if already logged in
+  useEffect(() => {
+    if (isAdminAuthenticated()) {
+      navigate('/admin/dashboard');
+    }
+  }, [navigate]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -26,7 +34,8 @@ const AdminLoginPage = () => {
         title: 'Login successful',
         description: 'Welcome to the admin dashboard',
       });
-      navigate('/admin/dashboard');
+      // Force navigation to dashboard after successful login
+      navigate('/admin/dashboard', { replace: true });
     } catch (error) {
       toast({
         title: 'Login failed',
