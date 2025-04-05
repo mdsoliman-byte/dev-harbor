@@ -47,7 +47,7 @@ const App = () => (
               <Route path="/contact" element={<Layout><ContactPage /></Layout>} />
               
               {/* Admin Routes */}
-              <Route path="/admin/login" element={<AdminLoginPage />} />
+              <Route path="/auth/login" element={<AdminLoginPage />} />
               <Route element={<PrivateRoute />}>
                 <Route path="/admin/dashboard" element={<AdminLayout><AdminDashboardPage /></AdminLayout>} />
                 {/* Add more admin routes here */}

@@ -15,7 +15,7 @@ const AdminLayout = ({ children }: PropsWithChildren) => {
 
   // Redirect if not authenticated
   if (!isAdminAuthenticated()) {
-    return <Navigate to="/admin/login" replace />;
+    return <Navigate to="/auth/login" replace />;
   }
 
   const navItems = [
@@ -48,7 +48,7 @@ const AdminLayout = ({ children }: PropsWithChildren) => {
 
   const handleLogout = () => {
     logout();
-    navigate('/admin/login');
+    navigate('/login');
   };
 
   return (

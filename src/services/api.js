@@ -140,7 +140,7 @@ export const logout = () => {
     localStorage.removeItem('refreshToken');
     localStorage.removeItem('adminUser');
     localStorage.removeItem('userInfo');
-    window.location.href = isAdmin ? '/admin/login' : '/login';
+    window.location.href = isAdmin ? '/auth/login' : '/login';
 };
 
 export const isAdminAuthenticated = () => {
