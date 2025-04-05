@@ -20,6 +20,7 @@ const ProjectsPage = () => {
   const [isLoading, setIsLoading] = useState(true); // Add loading state
   const [error, setError] = useState(null); // Add error state
   const projectsPerPage = 6;
+  const [selectedCategory, setSelectedCategory] = useState("All");
 
   useEffect(() => {
     const loadProjects = async () => {
@@ -53,12 +54,18 @@ const ProjectsPage = () => {
   const indexOfFirstProject = indexOfLastProject - projectsPerPage;
   const currentProjects = projects.slice(indexOfFirstProject, indexOfLastProject);
   const totalPages = Math.ceil(projects.length / projectsPerPage);
-  
+    // Filter Project by category
+  const filteredproject = selectedCategory === "All"
+  ? currentProjects
+  : currentProjects.filter(project => project.category === selectedCategory);
+
   // Generate page numbers for pagination
   const pageNumbers = [];
   for (let i = 1; i <= totalPages; i++) {
     pageNumbers.push(i);
   }
+// Extract unique categories for filtering
+const categories = ["All", ...Array.from(new Set(currentProjects.map(project => project.category)))];
 
   return (
     <div className="min-h-screen py-16 px-4 md:px-8 lg:px-16">
@@ -70,6 +77,21 @@ const ProjectsPage = () => {
           className="max-w-3xl mb-16"
         >
           <h1 className="text-4xl md:text-5xl font-display font-bold mb-6">Projects</h1>
+           <div className="flex flex-wrap gap-2 mt-4 sm:mt-0">
+                        {["All", "Programming", "Design", "Data Science"].map(cat => (
+                          <Button
+                            key={cat}
+                            variant={selectedCategory === cat ? "default" : "outline"}
+                            size="sm"
+                            onClick={() => {
+                              setSelectedCategory(cat);
+                              setCurrentPage(1);
+                            }}
+                          >
+                            {cat}
+                          </Button>
+                        ))}
+                      </div>
           <p className="text-lg text-muted-foreground">
             A collection of my recent projects spanning web development, mobile applications, and UI/UX design. 
             Each project represents a unique challenge and solution.
