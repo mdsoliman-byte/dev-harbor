@@ -4,6 +4,10 @@ import { AreaChart, LineChart, BarChart, Bar, Area, Line, XAxis, YAxis, Cartesia
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ArrowUp, ArrowDown, LayoutDashboard, FileText, User, ShoppingBag } from 'lucide-react';
+import { useState } from 'react';
+import { useEffect } from 'react';
+import { fetchProjectData } from '@/services/api';
+
 
 // Sample data for charts
 const visitorData = [
@@ -35,6 +39,22 @@ const blogData = [
 ];
 
 const AdminDashboardPage = () => {
+
+  const [projects, setProjects] = useState([]);
+
+  useEffect(() => {
+    const fetchProjects = async () => {
+      try {
+        const data = await fetchProjectData();
+        setProjects(data);
+      } catch (error) {
+        console.error('Error fetching projects:', error);
+      }
+    };
+
+    fetchProjects();
+  }, []);
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -43,7 +63,7 @@ const AdminDashboardPage = () => {
       className="space-y-6"
     >
       <div className="mb-6">
-        <motion.h1 
+        <motion.h1
           initial={{ y: -20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.5, delay: 0.1 }}
@@ -51,16 +71,17 @@ const AdminDashboardPage = () => {
         >
           Dashboard
         </motion.h1>
-        <motion.p 
+        <motion.p
           initial={{ y: -20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.5, delay: 0.2 }}
           className="text-muted-foreground"
         >
+          
           Welcome to your admin dashboard
         </motion.p>
       </div>
-      
+
       {/* Overview Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <motion.div
@@ -74,7 +95,7 @@ const AdminDashboardPage = () => {
               <ShoppingBag className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">12</div>
+              <div className="text-2xl font-bold">{projects.length}</div>
               <div className="text-xs text-muted-foreground flex items-center mt-1">
                 <ArrowUp className="h-3 w-3 text-green-500 mr-1" />
                 <span className="text-green-500">20%</span>
@@ -83,7 +104,7 @@ const AdminDashboardPage = () => {
             </CardContent>
           </Card>
         </motion.div>
-        
+
         <motion.div
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
@@ -104,7 +125,7 @@ const AdminDashboardPage = () => {
             </CardContent>
           </Card>
         </motion.div>
-        
+
         <motion.div
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
@@ -125,7 +146,7 @@ const AdminDashboardPage = () => {
             </CardContent>
           </Card>
         </motion.div>
-        
+
         <motion.div
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
@@ -147,7 +168,7 @@ const AdminDashboardPage = () => {
           </Card>
         </motion.div>
       </div>
-      
+
       {/* Charts Section */}
       <motion.div
         initial={{ y: 20, opacity: 0 }}
@@ -160,7 +181,7 @@ const AdminDashboardPage = () => {
             <TabsTrigger value="projects">Projects</TabsTrigger>
             <TabsTrigger value="blog">Blog Posts</TabsTrigger>
           </TabsList>
-          
+
           <TabsContent value="visitors" className="mt-0">
             <Card>
               <CardHeader>
@@ -176,8 +197,8 @@ const AdminDashboardPage = () => {
                     >
                       <defs>
                         <linearGradient id="colorVisitors" x1="0" y1="0" x2="0" y2="1">
-                          <stop offset="5%" stopColor="#8884d8" stopOpacity={0.8}/>
-                          <stop offset="95%" stopColor="#8884d8" stopOpacity={0}/>
+                          <stop offset="5%" stopColor="#8884d8" stopOpacity={0.8} />
+                          <stop offset="95%" stopColor="#8884d8" stopOpacity={0} />
                         </linearGradient>
                       </defs>
                       <CartesianGrid strokeDasharray="3 3" />
@@ -191,7 +212,7 @@ const AdminDashboardPage = () => {
               </CardContent>
             </Card>
           </TabsContent>
-          
+
           <TabsContent value="projects" className="mt-0">
             <Card>
               <CardHeader>
@@ -218,7 +239,7 @@ const AdminDashboardPage = () => {
               </CardContent>
             </Card>
           </TabsContent>
-          
+
           <TabsContent value="blog" className="mt-0">
             <Card>
               <CardHeader>
@@ -245,7 +266,7 @@ const AdminDashboardPage = () => {
           </TabsContent>
         </Tabs>
       </motion.div>
-      
+
       {/* Recent Activity Section */}
       <motion.div
         initial={{ y: 20, opacity: 0 }}

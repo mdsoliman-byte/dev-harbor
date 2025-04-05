@@ -35,9 +35,10 @@ const AdminLayout = ({ children }: PropsWithChildren) => {
       icon: ShoppingBag 
     },
     { 
-      path: '/admin/profile', 
-      label: 'Profile', 
-      icon: User 
+      path: '/admin/Home', 
+      label: 'Home',
+      icon: FileText 
+      
     },
     { 
       path: '/admin/settings', 

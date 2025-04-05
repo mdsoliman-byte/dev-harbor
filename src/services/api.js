@@ -12,14 +12,58 @@ const api = axios.create({
 // Add request interceptor to include auth token in requests
 api.interceptors.request.use(
     (config) => {
-        const token = localStorage.getItem('adminToken');
-        if (token) {
-            config.headers.Authorization = `Bearer ${token}`;
+        const publicEndpoints = ['home/data/', 'projects/project/', 'projects/projectCategories/'];
+
+        const isPublic = publicEndpoints.some(endpoint => config.url.includes(endpoint));
+
+        if (!isPublic) {
+            const adminToken = localStorage.getItem('adminToken');
+            const userToken = localStorage.getItem('userToken');
+            const token = adminToken || userToken;
+
+            if (token) {
+                config.headers.Authorization = `Bearer ${token}`;
+            }
         }
+
         return config;
     },
     (error) => Promise.reject(error)
 );
+
+// api.interceptors.request.use(
+//     (config) => {
+//         const publicEndpoints = ['home/data/', 'projects/project/', 'projects/projectCategories/'];
+
+//         const isPublic = publicEndpoints.some(endpoint => config.url.includes(endpoint));
+//         const token = localStorage.getItem('adminToken');
+//         if (token) {
+//             config.headers.Authorization = `Bearer ${token}`;
+//         }
+//         return config;
+//     },
+//     (error) => Promise.reject(error)
+// );
+// api.interceptors.request.use(
+//     (config) => {
+//         const publicEndpoints = ['home/data/', 'projects/projectCategories/'];
+
+//         const isPublic = publicEndpoints.some(endpoint => config.url.includes(endpoint));
+
+//         if (!isPublic) {
+//             const adminToken = localStorage.getItem('adminToken');
+//             const userToken = localStorage.getItem('userToken');
+//             const token = adminToken || userToken;
+
+//             if (token) {
+//                 config.headers.Authorization = `Bearer ${token}`;
+//             }
+//         }
+
+//         return config;
+//     },
+//     (error) => Promise.reject(error)
+// );
 
 export const fetchHeroData = async () => {
     try {
@@ -37,6 +81,20 @@ export const fetchHeroData = async () => {
             available_for_freelance: false,
             profile_image: "/default-profile.png",
         };
+    }
+};
+export const updateHeroData = async (data) => {
+    try {
+        const response = await api.put('home/update/', data, {
+            headers: data instanceof FormData
+                ? { 'Content-Type': 'multipart/form-data' }
+                : undefined,
+        });
+        console.log('Hero data updated:', response.data);
+        return response.data;
+    } catch (error) {
+        console.error('Error updating hero data:', error);
+        throw error;
     }
 };
 
@@ -84,28 +142,6 @@ export const fetchLoginStatus = async () => {
     }
 };
 
-// Admin authentication functions
-// export const adminLogin = async (credentials) => {
-//     try {
-//         const response = await api.post('auth/login/', credentials);
-//         console.log('Login response:', response.data);
-
-//         const { access_token, refresh_token, user } = response.data;
-
-//         if (access_token) {
-//             localStorage.setItem('adminToken', access_token);
-//             localStorage.setItem('refreshToken', refresh_token);
-//             localStorage.setItem('adminUser', JSON.stringify(user || { email: credentials.email }));
-//             return response.data;
-//         } else {
-//             console.error('Access token missing in login response:', response.data);
-//             throw new Error('Authentication failed: Access token missing');
-//         }
-//     } catch (error) {
-//         console.error('Admin login failed:', error.response?.data || error.message);
-//         throw error;
-//     }
-// };
 export const login = async (credentials) => {
     try {
         const response = await api.post('auth/login/', credentials);

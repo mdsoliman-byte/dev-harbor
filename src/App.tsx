@@ -23,6 +23,8 @@ import PrivateRoute from "./utils/PrivateRoute";
 import AdminLoginPage from "./pages/admin/AdminLoginPage";
 import AdminLayout from "./pages/admin/AdminLayout";
 import AdminDashboardPage from "./pages/admin/AdminDashboardPage";
+import AdminBlogPage from "./pages/admin/AdminBlogPage.tsx";
+import AdminHomePage from "./pages/admin/AdminHomePage.tsx"; // Verify the file exists or adjust the path
 
 const queryClient = new QueryClient();
 
@@ -50,6 +52,8 @@ const App = () => (
               <Route path="/auth/login" element={<AdminLoginPage />} />
               <Route element={<PrivateRoute />}>
                 <Route path="/admin/dashboard" element={<AdminLayout><AdminDashboardPage /></AdminLayout>} />
+                <Route path="/admin/blog" element={<AdminLayout><AdminBlogPage /></AdminLayout>} />
+                <Route path="/admin/home" element={<AdminLayout><AdminHomePage /></AdminLayout>} />
                 {/* Add more admin routes here */}
               </Route>
               
