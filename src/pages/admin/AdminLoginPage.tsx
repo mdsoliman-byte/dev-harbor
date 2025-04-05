@@ -58,14 +58,37 @@ const AdminLoginPage = () => {
       >
         <div className="glass-panel p-8 sm:p-10">
           <div className="text-center mb-8">
-            <h1 className="text-2xl sm:text-3xl font-bold mb-2">Admin Login</h1>
-            <p className="text-sm sm:text-base text-muted-foreground">
+            <motion.h1 
+              className="text-2xl sm:text-3xl font-bold mb-2"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.2, duration: 0.5 }}
+            >
+              Admin Login
+            </motion.h1>
+            <motion.p 
+              className="text-sm sm:text-base text-muted-foreground"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.3, duration: 0.5 }}
+            >
               Sign in to access the admin dashboard
-            </p>
+            </motion.p>
           </div>
           
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <div className="space-y-2">
+          <motion.form 
+            onSubmit={handleSubmit} 
+            className="space-y-6"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.4, duration: 0.5 }}
+          >
+            <motion.div 
+              className="space-y-2"
+              initial={{ x: -20, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              transition={{ delay: 0.5, duration: 0.4 }}
+            >
               <Label htmlFor="email">Email</Label>
               <div className="relative">
                 <div className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">
@@ -81,9 +104,14 @@ const AdminLoginPage = () => {
                   required
                 />
               </div>
-            </div>
+            </motion.div>
             
-            <div className="space-y-2">
+            <motion.div 
+              className="space-y-2"
+              initial={{ x: -20, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              transition={{ delay: 0.6, duration: 0.4 }}
+            >
               <Label htmlFor="password">Password</Label>
               <div className="relative">
                 <div className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">
@@ -99,22 +127,36 @@ const AdminLoginPage = () => {
                   required
                 />
               </div>
-            </div>
+            </motion.div>
             
-            <Button 
-              type="submit" 
-              className="w-full" 
-              disabled={isLoading}
+            <motion.div
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: 0.7, duration: 0.4 }}
             >
-              {isLoading ? 'Signing in...' : 'Sign in'}
-            </Button>
-          </form>
+              <Button 
+                type="submit" 
+                className="w-full relative overflow-hidden group"
+                disabled={isLoading}
+              >
+                <span className="relative z-10">
+                  {isLoading ? 'Signing in...' : 'Sign in'}
+                </span>
+                <span className="absolute inset-0 bg-primary-foreground/10 rounded-md translate-y-full group-hover:translate-y-0 transition-transform duration-300"></span>
+              </Button>
+            </motion.div>
+          </motion.form>
           
-          <div className="mt-6 text-center">
+          <motion.div 
+            className="mt-6 text-center"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.8, duration: 0.5 }}
+          >
             <p className="text-sm text-muted-foreground">
               Return to <a href="/" className="text-primary hover:underline">website</a>
             </p>
-          </div>
+          </motion.div>
         </div>
       </motion.div>
     </div>
