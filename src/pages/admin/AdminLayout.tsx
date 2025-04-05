@@ -56,7 +56,7 @@ const AdminLayout = ({ children }: PropsWithChildren) => {
       {/* Admin Sidebar */}
       <aside 
         className={`fixed inset-y-0 left-0 z-50 w-64 bg-background/90 backdrop-blur-md border-r border-border transform transition-transform duration-300 ease-in-out md:relative ${
-          sidebarOpen ? 'translate-x-0' : '-translate-x-full md:w-20'
+          sidebarOpen ? 'translate-x-0' : '-translate-x-full md:w-10'
         }`}
       >
         {/* Sidebar Header */}
@@ -105,40 +105,7 @@ const AdminLayout = ({ children }: PropsWithChildren) => {
           </nav>
         </div>
         
-        {/* Portfolio Navigation */}
-        <div className="p-4 border-t border-border">
-          <div className={`text-sm font-medium mb-2 text-muted-foreground ${!sidebarOpen ? 'text-center' : ''}`}>
-            {sidebarOpen ? 'Portfolio Navigation' : 'Nav'}
-          </div>
-          <NavigationMenu className={`max-w-full ${!sidebarOpen ? 'justify-center' : ''}`}>
-            <NavigationMenuList className="flex flex-col space-y-1 space-x-0 w-full">
-              <NavigationMenuItem>
-                <NavigationMenuLink 
-                  className={navigationMenuTriggerStyle() + " w-full flex justify-start text-sm"} 
-                  href="/"
-                >
-                  {sidebarOpen ? 'Home' : 'H'}
-                </NavigationMenuLink>
-              </NavigationMenuItem>
-              <NavigationMenuItem>
-                <NavigationMenuLink 
-                  className={navigationMenuTriggerStyle() + " w-full flex justify-start text-sm"} 
-                  href="/blog"
-                >
-                  {sidebarOpen ? 'Blog' : 'B'}
-                </NavigationMenuLink>
-              </NavigationMenuItem>
-              <NavigationMenuItem>
-                <NavigationMenuLink 
-                  className={navigationMenuTriggerStyle() + " w-full flex justify-start text-sm"} 
-                  href="/projects"
-                >
-                  {sidebarOpen ? 'Projects' : 'P'}
-                </NavigationMenuLink>
-              </NavigationMenuItem>
-            </NavigationMenuList>
-          </NavigationMenu>
-        </div>
+        
         
         {/* Sidebar Footer */}
         <div className="absolute bottom-0 w-full p-4 border-t border-border">
@@ -154,7 +121,7 @@ const AdminLayout = ({ children }: PropsWithChildren) => {
       </aside>
       
       {/* Main Content */}
-      <div className={`flex-1 transition-all duration-300 ${sidebarOpen ? 'md:ml-64' : 'md:ml-20'}`}>
+      <div className={`flex-1 transition-all duration-300 ${sidebarOpen ? 'md:ml-2' : 'md:ml-0'}`}>
         {/* Header */}
         <header className="h-16 bg-background/80 backdrop-blur-md border-b border-border flex items-center justify-between px-4">
           <Button
