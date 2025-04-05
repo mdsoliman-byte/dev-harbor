@@ -89,20 +89,27 @@ export const adminLogin = async (credentials) => {
     try {
         const response = await api.post('auth/login/', credentials);
         console.log('Login response:', response.data);
-        if (response.data.token) {
-            localStorage.setItem('adminToken', response.data.token);
-            localStorage.setItem('adminUser', JSON.stringify(response.data.user || { email: credentials.email }));
+
+        const { access_token, refresh_token, user } = response.data;
+
+        if (access_token) {
+            localStorage.setItem('adminToken', access_token);
+            localStorage.setItem('refreshToken', refresh_token);
+            localStorage.setItem('adminUser', JSON.stringify(user || { email: credentials.email }));
             return response.data;
+        } else {
+            console.error('Access token missing in login response:', response.data);
+            throw new Error('Authentication failed: Access token missing');
         }
-        throw new Error('Authentication failed');
     } catch (error) {
-        console.error('Admin login failed:', error);
+        console.error('Admin login failed:', error.response?.data || error.message);
         throw error;
     }
 };
 
 export const adminLogout = () => {
     localStorage.removeItem('adminToken');
+    localStorage.removeItem('refreshToken');
     localStorage.removeItem('adminUser');
     // Force redirect to login page
     window.location.href = '/admin/login';
