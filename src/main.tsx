@@ -1,4 +1,5 @@
 
+import React from 'react'; // Add explicit React import
 import { createRoot } from 'react-dom/client'
 import App from './App.tsx'
 import './index.css'
@@ -12,7 +13,11 @@ if (!rootElement) {
 }
 
 try {
-  createRoot(document.getElementById("root")!).render(<App />);
+  createRoot(document.getElementById("root")!).render(
+    <React.StrictMode>
+      <App />
+    </React.StrictMode>
+  );
   console.log("App mounted successfully");
 } catch (error) {
   console.error("Failed to mount app:", error);

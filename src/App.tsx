@@ -1,4 +1,5 @@
 
+import React from "react"; // Add explicit React import
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -27,45 +28,48 @@ import AdminBlogPage from "./pages/admin/AdminBlogPage.tsx";
 import AdminHomePage from "./pages/admin/AdminHomePage.tsx";
 import AdminAboutPage from "./pages/admin/AdminAboutPage.tsx";
 
+// Create a new QueryClient instance
 const queryClient = new QueryClient();
 
 const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <ThemeProvider defaultTheme="system">
-      <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <AnimatePresence mode="wait">
-            <Routes>
-              {/* Public Routes */}
-              <Route path="/" element={<Layout><HomePage /></Layout>} />
-              <Route path="/projects" element={<Layout><ProjectsPage /></Layout>} />
-              <Route path="/projects/:slug" element={<Layout><ProjectDetailPage /></Layout>} />
-              <Route path="/skills" element={<Layout><SkillsPage /></Layout>} />
-              <Route path="/blog" element={<Layout><BlogPage /></Layout>} />
-              <Route path="/blog/:id" element={<Layout><BlogDetailPage /></Layout>} />
-              <Route path="/shop" element={<Layout><ShopPage /></Layout>} />
-              <Route path="/about" element={<Layout><AboutPage /></Layout>} />
-              <Route path="/contact" element={<Layout><ContactPage /></Layout>} />
-              
-              {/* Admin Routes */}
-              <Route path="/auth/login" element={<AdminLoginPage />} />
-              <Route element={<PrivateRoute />}>
-                <Route path="/admin/dashboard" element={<AdminLayout><AdminDashboardPage /></AdminLayout>} />
-                <Route path="/admin/blog" element={<AdminLayout><AdminBlogPage /></AdminLayout>} />
-                <Route path="/admin/home" element={<AdminLayout><AdminHomePage /></AdminLayout>} />
-                <Route path="/admin/about" element={<AdminLayout><AdminAboutPage /></AdminLayout>} />
-                {/* Add more admin routes here */}
-              </Route>
-              
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </AnimatePresence>
-        </BrowserRouter>
-      </TooltipProvider>
-    </ThemeProvider>
-  </QueryClientProvider>
+  <React.StrictMode>
+    <QueryClientProvider client={queryClient}>
+      <ThemeProvider defaultTheme="system">
+        <TooltipProvider>
+          <Toaster />
+          <Sonner />
+          <BrowserRouter>
+            <AnimatePresence mode="wait">
+              <Routes>
+                {/* Public Routes */}
+                <Route path="/" element={<Layout><HomePage /></Layout>} />
+                <Route path="/projects" element={<Layout><ProjectsPage /></Layout>} />
+                <Route path="/projects/:slug" element={<Layout><ProjectDetailPage /></Layout>} />
+                <Route path="/skills" element={<Layout><SkillsPage /></Layout>} />
+                <Route path="/blog" element={<Layout><BlogPage /></Layout>} />
+                <Route path="/blog/:id" element={<Layout><BlogDetailPage /></Layout>} />
+                <Route path="/shop" element={<Layout><ShopPage /></Layout>} />
+                <Route path="/about" element={<Layout><AboutPage /></Layout>} />
+                <Route path="/contact" element={<Layout><ContactPage /></Layout>} />
+                
+                {/* Admin Routes */}
+                <Route path="/auth/login" element={<AdminLoginPage />} />
+                <Route element={<PrivateRoute />}>
+                  <Route path="/admin/dashboard" element={<AdminLayout><AdminDashboardPage /></AdminLayout>} />
+                  <Route path="/admin/blog" element={<AdminLayout><AdminBlogPage /></AdminLayout>} />
+                  <Route path="/admin/home" element={<AdminLayout><AdminHomePage /></AdminLayout>} />
+                  <Route path="/admin/about" element={<AdminLayout><AdminAboutPage /></AdminLayout>} />
+                  {/* Add more admin routes here */}
+                </Route>
+                
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </AnimatePresence>
+          </BrowserRouter>
+        </TooltipProvider>
+      </ThemeProvider>
+    </QueryClientProvider>
+  </React.StrictMode>
 );
 
 export default App;
