@@ -13,7 +13,7 @@ const api = axios.create({
 // Add request interceptor to include auth token in requests
 api.interceptors.request.use(
     (config) => {
-        const publicEndpoints = ['home/data/', 'projects/project/', 'projects/projectCategories/'];
+        const publicEndpoints = ['home/data/', 'projects/project/', 'projects/projectCategories/', 'about/data/'];
 
         const isPublic = publicEndpoints.some(endpoint => config.url?.includes(endpoint));
 

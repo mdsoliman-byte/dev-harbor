@@ -5,7 +5,7 @@ import { AboutData } from '@/types/about';
 // Default about data
 const defaultAboutData: AboutData = {
   id: 0,
-  fullName: "John Doe",
+  full_name: "John Doe",
   title: "Full Stack Developer",
   bio: ["I am a passionate full stack developer with experience in building web applications using modern technologies."],
   experience: [

@@ -1,7 +1,7 @@
 
 export interface AboutData {
   id: number;
-  fullName: string;
+  full_name: string;
   title: string;
   bio: string[];
   experience: Array<{

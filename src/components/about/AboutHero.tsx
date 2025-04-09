@@ -21,12 +21,12 @@ const AboutHero = ({ aboutData }: AboutHeroProps) => {
         <div className="aspect-square bg-muted rounded-2xl overflow-hidden mb-6">
           <img 
             src={aboutData?.profileImage || "/placeholder.svg"} 
-            alt={aboutData?.fullName || "Profile"}
+            alt={aboutData?.full_name || "Profile"}
             className="w-full h-full object-cover"
           />
         </div>
         
-        <h1 className="text-3xl font-display font-bold mb-2">{aboutData?.fullName}</h1>
+        <h1 className="text-3xl font-display font-bold mb-2">{aboutData?.full_name}</h1>
         <p className="text-lg text-muted-foreground mb-6">{aboutData?.title}</p>
         
         <div className="flex space-x-4 mb-8">
