@@ -1,49 +1,12 @@
-
 import { motion } from 'framer-motion';
 import { Github, Twitter, Linkedin, Mail, ExternalLink } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 import { useTheme } from '@/components/ThemeProvider';
 import { useEffect, useState } from 'react';
-import { fetchAboutData, AboutData } from '@/services/api/about';
+import { fetchAboutData } from '@/services/api/about';
 import { useQuery } from '@tanstack/react-query';
-
-type AboutData = {
-  id: number;
-  fullName: string;
-  title: string;
-  bio: string[];
-  experience: Array<{
-    id: number;
-    position: string;
-    company: string;
-    period: string;
-    description: string[];
-  }>;
-  education: Array<{
-    id: number;
-    degree: string;
-    institution: string;
-    period: string;
-    description: string;
-  }>;
-  skills: Array<{
-    id: number;
-    title: string;
-    description: string;
-  }>;
-  contact: {
-    location: string;
-    email: string;
-    availableForFreelance: boolean;
-  };
-  socialLinks: {
-    github: string;
-    twitter: string;
-    linkedin: string;
-  };
-  profileImage: string;
-};
+import { AboutData } from '@/types/about';
 
 const AboutPage = () => {
   const { theme } = useTheme();
@@ -67,7 +30,6 @@ const AboutPage = () => {
     <div className="min-h-screen py-16 px-4 md:px-8 lg:px-16">
       <div className="container mx-auto">
         <div className="flex flex-col lg:flex-row gap-12 lg:gap-20">
-          {/* Left Column */}
           <motion.div 
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
@@ -137,7 +99,6 @@ const AboutPage = () => {
             </div>
           </motion.div>
           
-          {/* Right Column */}
           <motion.div 
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}

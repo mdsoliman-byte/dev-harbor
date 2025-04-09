@@ -1,109 +1,102 @@
-import { useEffect, useState } from 'react';
-import { useParams, Link, useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import { ChevronLeft, Github, ExternalLink } from 'lucide-react';
+import React, { useEffect } from 'react';
+import { useParams, Link } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
+import { fetchProjectById, Project } from '@/services/api/projects';
 import { Button } from '@/components/ui/button';
-import { fetchProjectData } from '@/services/api';
-import { Card, CardContent } from '@/components/ui/card';
+import { Skeleton } from '@/components/ui/skeleton';
+import { ExternalLink, Calendar, Tag, ArrowLeft } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 const ProjectDetailPage = () => {
-  const { slug } = useParams<{ slug: string }>();
-  const navigate = useNavigate();
-  const [project, setProject] = useState(null);
+    const { id } = useParams<{ id: string }>();
 
-  useEffect(() => {
-    const loadProject = async () => {
-      const data = await fetchProjectData();
-      const selectedProject = data.find(p => p.slug === slug);
-      if (!selectedProject) {
-        navigate('/projects', { replace: true });
-      } else {
-        setProject(selectedProject);
-      }
-    };
-    loadProject();
-  }, [slug, navigate]);
+    const { data: project, isLoading, error } = useQuery<Project>(
+        ['project', id],
+        () => fetchProjectById(Number(id)),
+        {
+            enabled: !!id,
+        }
+    );
 
-  if (!project) return null;
+    useEffect(() => {
+        if (error) {
+            console.error('Error fetching project:', error);
+        }
+    }, [error]);
 
-  return (
-    <div className="min-h-screen py-16 px-4 md:px-8 lg:px-16">
-      <div className="container mx-auto max-w-5xl">
-        <Link to="/projects" className="inline-flex items-center text-muted-foreground hover:text-foreground mb-8">
-          <ChevronLeft className="h-4 w-4 mr-2" />
-          Back to Projects
-        </Link>
-        
+    if (isLoading) {
+        return (
+            <div className="container mx-auto p-4">
+                <div className="space-y-4">
+                    <Skeleton className="h-10 w-3/4" />
+                    <Skeleton className="h-4 w-1/2" />
+                    <Skeleton className="h-64 w-full" />
+                    <div className="flex gap-4">
+                        <Skeleton className="h-8 w-20" />
+                        <Skeleton className="h-8 w-20" />
+                    </div>
+                    <Skeleton className="h-4 w-full" />
+                    <Skeleton className="h-4 w-full" />
+                    <Skeleton className="h-4 w-full" />
+                </div>
+            </div>
+        );
+    }
+
+    if (error || !project) {
+        return (
+            <div className="container mx-auto p-4">
+                <div className="text-red-500">Failed to load project details. Please check the ID or try again later.</div>
+            </div>
+        );
+    }
+
+    return (
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
+            className="container mx-auto p-4"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
         >
-          <div className="aspect-video rounded-xl overflow-hidden mb-8">
-            <img 
-              src={project.image} 
-              alt={project.title}
-              className="w-full h-full object-cover"
-            />
-          </div>
-          
-          <h1 className="text-3xl md:text-4xl lg:text-5xl font-display font-bold mb-6">
-            {project.title}
-          </h1>
-          
-          <div className="flex flex-wrap gap-4 mb-12">
-            {project.github_url && (
-              <a 
-                href={project.github_url} 
-                className="inline-flex items-center gap-2"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <Button variant="outline">
-                  <Github className="h-4 w-4 mr-2" />
-                  View on GitHub
-                </Button>
-              </a>
-            )}
-            {project.live_demo_url && (
-              <a 
-                href={project.live_demo_url} 
-                className="inline-flex items-center gap-2"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <Button>
-                  <ExternalLink className="h-4 w-4 mr-2" />
-                  Live Demo
-                </Button>
-              </a>
-            )}
-          </div>
-          
-          <Card className="glass-panel">
-            <CardContent className="pt-6">
-              <h2 className="text-2xl font-semibold mb-4">About the Project</h2>
-              <div className="prose prose-lg dark:prose-invert">
-                {project.key_features.split('\n').map((feature, idx) => (
-                  <p key={idx} className="text-muted-foreground mb-4">
-                    {feature}
-                  </p>
+            <Button asChild variant="ghost" className="mb-4">
+                <Link to="/projects" className="flex items-center">
+                    <ArrowLeft className="mr-2 h-4 w-4" />
+                    Back to Projects
+                </Link>
+            </Button>
+            <h1 className="text-3xl font-bold mb-2">{project.title}</h1>
+            <p className="text-muted-foreground mb-4">{project.short_description}</p>
+
+            <img src={project.image} alt={project.title} className="w-full rounded-md mb-4" />
+
+            <div className="flex flex-wrap gap-2 mb-4">
+                {project.project_categories.map((category) => (
+                    <div key={category.id} className="inline-flex items-center rounded-full border px-3 py-0.5 text-sm font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none border-border bg-secondary text-secondary-foreground">
+                        <Tag className="mr-1 h-3 w-3" />
+                        {category.name}
+                    </div>
                 ))}
-              </div>
-            </CardContent>
-            <CardContent className="pt-6">
-              <h2 className="text-2xl font-semibold mb-4">Project Description</h2>
-              <div className="prose prose-lg dark:prose-invert">
-                <p className="text-muted-foreground mb-4">
-                  {project.description}
-                </p>
-              </div>
-            </CardContent>
-          </Card>
+            </div>
+
+            <div className="flex items-center space-x-2 text-muted-foreground mb-4">
+                <Calendar className="h-4 w-4" />
+                <span>{new Date(project.start_date).toLocaleDateString()} - {project.end_date ? new Date(project.end_date).toLocaleDateString() : 'Present'}</span>
+            </div>
+
+            <div className="space-y-4">
+                <div dangerouslySetInnerHTML={{ __html: project.long_description }} />
+            </div>
+
+            {project.url && (
+                <Button asChild variant="outline" className="mt-6">
+                    <a href={project.url} target="_blank" rel="noopener noreferrer" className="flex items-center">
+                        View Project
+                        <ExternalLink className="ml-2 h-4 w-4" />
+                    </a>
+                </Button>
+            )}
         </motion.div>
-      </div>
-    </div>
-  );
+    );
 };
 
 export default ProjectDetailPage;
