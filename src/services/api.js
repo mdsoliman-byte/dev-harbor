@@ -31,40 +31,6 @@ api.interceptors.request.use(
     (error) => Promise.reject(error)
 );
 
-// api.interceptors.request.use(
-//     (config) => {
-//         const publicEndpoints = ['home/data/', 'projects/project/', 'projects/projectCategories/'];
-
-//         const isPublic = publicEndpoints.some(endpoint => config.url.includes(endpoint));
-//         const token = localStorage.getItem('adminToken');
-//         if (token) {
-//             config.headers.Authorization = `Bearer ${token}`;
-//         }
-//         return config;
-//     },
-//     (error) => Promise.reject(error)
-// );
-// api.interceptors.request.use(
-//     (config) => {
-//         const publicEndpoints = ['home/data/', 'projects/projectCategories/'];
-
-//         const isPublic = publicEndpoints.some(endpoint => config.url.includes(endpoint));
-
-//         if (!isPublic) {
-//             const adminToken = localStorage.getItem('adminToken');
-//             const userToken = localStorage.getItem('userToken');
-//             const token = adminToken || userToken;
-
-//             if (token) {
-//                 config.headers.Authorization = `Bearer ${token}`;
-//             }
-//         }
-
-//         return config;
-//     },
-//     (error) => Promise.reject(error)
-// );
-
 export const fetchHeroData = async () => {
     try {
         const response = await api.get('home/data/');
@@ -83,6 +49,7 @@ export const fetchHeroData = async () => {
         };
     }
 };
+
 export const updateHeroData = async (data) => {
     try {
         const response = await api.put('home/update/', data, {
@@ -169,6 +136,7 @@ export const login = async (credentials) => {
         throw error;
     }
 };
+
 export const logout = () => {
     const isAdmin = !!localStorage.getItem('adminToken');
     localStorage.removeItem('adminToken');
@@ -199,9 +167,5 @@ export const getAdminUser = () => {
         return null;
     }
 };
-
-export const getAboutData = ()=>{
-    // write aip 
-}
 
 export default api;
