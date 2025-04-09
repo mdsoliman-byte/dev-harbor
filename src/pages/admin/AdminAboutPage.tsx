@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { fetchAboutData, updateAboutData } from '@/services/api/about';
@@ -74,13 +73,24 @@ const AdminAboutPage = () => {
   const updateNestedField = (parent: string, field: string, value: any) => {
     setFormData((prev) => {
       if (!prev) return prev;
-      return {
-        ...prev,
-        [parent]: {
-          ...prev[parent as keyof AboutData],
-          [field]: value
-        }
-      };
+      
+      // The fix is here - we need to safely handle the parent key
+      // First, get the parent object
+      const parentObj = prev[parent as keyof AboutData];
+      
+      // Check if parentObj exists and is an object before spreading
+      if (parentObj && typeof parentObj === 'object') {
+        return {
+          ...prev,
+          [parent]: {
+            ...parentObj,
+            [field]: value
+          }
+        };
+      }
+      
+      // If parent doesn't exist or isn't an object, return prev unchanged
+      return prev;
     });
   };
   
