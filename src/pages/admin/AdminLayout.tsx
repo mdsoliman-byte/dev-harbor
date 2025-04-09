@@ -1,6 +1,7 @@
+
 import { PropsWithChildren, useEffect, useState } from 'react';
 import { Navigate, useLocation, useNavigate } from 'react-router-dom';
-import { LayoutDashboard, FileText, User, Settings, ShoppingBag, LogOut, Menu, X, Info } from 'lucide-react';
+import { LayoutDashboard, FileText, User, Settings, ShoppingBag, LogOut, Menu, X } from 'lucide-react';
 import { logout, isAdminAuthenticated } from '@/services/api';
 import { Button } from '@/components/ui/button';
 import { ThemeToggle } from '@/components/ThemeProvider';
@@ -34,14 +35,10 @@ const AdminLayout = ({ children }: PropsWithChildren) => {
       icon: ShoppingBag 
     },
     { 
-      path: '/admin/home', 
+      path: '/admin/Home', 
       label: 'Home',
-      icon: User 
-    },
-    {
-      path: '/admin/about',
-      label: 'About',
-      icon: Info
+      icon: FileText 
+      
     },
     { 
       path: '/admin/settings', 
@@ -108,6 +105,8 @@ const AdminLayout = ({ children }: PropsWithChildren) => {
             ))}
           </nav>
         </div>
+        
+        
         
         {/* Sidebar Footer */}
         <div className="absolute bottom-0 w-full p-4 border-t border-border">
