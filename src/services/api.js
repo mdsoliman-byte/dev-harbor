@@ -200,4 +200,8 @@ export const getAdminUser = () => {
     }
 };
 
+export const getAboutData = ()=>{
+    // write aip 
+}
+
 export default api;
