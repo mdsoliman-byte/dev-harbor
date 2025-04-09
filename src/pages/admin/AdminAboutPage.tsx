@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { fetchAboutData, updateAboutData } from '@/services/api';
@@ -11,16 +10,53 @@ import { toast } from '@/components/ui/use-toast';
 import { motion } from 'framer-motion';
 import { Pencil, Save, Plus, Trash, Check } from 'lucide-react';
 
+type AboutData = {
+  id: number;
+  fullName: string;
+  title: string;
+  bio: string[];
+  experience: Array<{
+    id: number;
+    position: string;
+    company: string;
+    period: string;
+    description: string[];
+  }>;
+  education: Array<{
+    id: number;
+    degree: string;
+    institution: string;
+    period: string;
+    description: string;
+  }>;
+  skills: Array<{
+    id: number;
+    title: string;
+    description: string;
+  }>;
+  contact: {
+    location: string;
+    email: string;
+    availableForFreelance: boolean;
+  };
+  socialLinks: {
+    github: string;
+    twitter: string;
+    linkedin: string;
+  };
+  profileImage: string;
+};
+
 const AdminAboutPage = () => {
   const queryClient = useQueryClient();
   const [isEditing, setIsEditing] = useState(false);
   
-  const { data: aboutData, isLoading, error } = useQuery({
+  const { data: aboutData, isLoading, error } = useQuery<AboutData>({
     queryKey: ['aboutData'],
     queryFn: fetchAboutData
   });
   
-  const [formData, setFormData] = useState(aboutData);
+  const [formData, setFormData] = useState<AboutData | null>(null);
   
   // Update form data when aboutData is loaded
   React.useEffect(() => {
@@ -52,118 +88,153 @@ const AdminAboutPage = () => {
   
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    updateMutation.mutate(formData);
+    if (formData) {
+      updateMutation.mutate(formData);
+    }
   };
   
   const updateField = (field: string, value: any) => {
-    setFormData((prev: any) => ({
-      ...prev,
-      [field]: value
-    }));
+    setFormData((prev) => {
+      if (!prev) return prev;
+      return {
+        ...prev,
+        [field]: value
+      };
+    });
   };
   
   const updateNestedField = (parent: string, field: string, value: any) => {
-    setFormData((prev: any) => ({
-      ...prev,
-      [parent]: {
-        ...prev[parent],
-        [field]: value
-      }
-    }));
+    setFormData((prev) => {
+      if (!prev) return prev;
+      return {
+        ...prev,
+        [parent]: {
+          ...prev[parent as keyof AboutData],
+          [field]: value
+        }
+      };
+    });
   };
   
   const addExperience = () => {
-    setFormData((prev: any) => ({
-      ...prev,
-      experience: [
-        ...prev.experience,
-        {
-          id: prev.experience.length + 1,
-          position: "",
-          company: "",
-          period: "",
-          description: [""]
-        }
-      ]
-    }));
+    setFormData((prev) => {
+      if (!prev) return prev;
+      return {
+        ...prev,
+        experience: [
+          ...prev.experience,
+          {
+            id: prev.experience.length + 1,
+            position: "",
+            company: "",
+            period: "",
+            description: [""]
+          }
+        ]
+      };
+    });
   };
   
   const updateExperience = (index: number, field: string, value: any) => {
-    setFormData((prev: any) => ({
-      ...prev,
-      experience: prev.experience.map((exp: any, i: number) => 
-        i === index ? { ...exp, [field]: value } : exp
-      )
-    }));
+    setFormData((prev) => {
+      if (!prev) return prev;
+      return {
+        ...prev,
+        experience: prev.experience.map((exp, i) => 
+          i === index ? { ...exp, [field]: value } : exp
+        )
+      };
+    });
   };
   
   const removeExperience = (index: number) => {
-    setFormData((prev: any) => ({
-      ...prev,
-      experience: prev.experience.filter((_: any, i: number) => i !== index)
-    }));
+    setFormData((prev) => {
+      if (!prev) return prev;
+      return {
+        ...prev,
+        experience: prev.experience.filter((_, i) => i !== index)
+      };
+    });
   };
   
   const addEducation = () => {
-    setFormData((prev: any) => ({
-      ...prev,
-      education: [
-        ...prev.education,
-        {
-          id: prev.education.length + 1,
-          degree: "",
-          institution: "",
-          period: "",
-          description: ""
-        }
-      ]
-    }));
+    setFormData((prev) => {
+      if (!prev) return prev;
+      return {
+        ...prev,
+        education: [
+          ...prev.education,
+          {
+            id: prev.education.length + 1,
+            degree: "",
+            institution: "",
+            period: "",
+            description: ""
+          }
+        ]
+      };
+    });
   };
   
   const updateEducation = (index: number, field: string, value: any) => {
-    setFormData((prev: any) => ({
-      ...prev,
-      education: prev.education.map((edu: any, i: number) => 
-        i === index ? { ...edu, [field]: value } : edu
-      )
-    }));
+    setFormData((prev) => {
+      if (!prev) return prev;
+      return {
+        ...prev,
+        education: prev.education.map((edu, i) => 
+          i === index ? { ...edu, [field]: value } : edu
+        )
+      };
+    });
   };
   
   const removeEducation = (index: number) => {
-    setFormData((prev: any) => ({
-      ...prev,
-      education: prev.education.filter((_: any, i: number) => i !== index)
-    }));
+    setFormData((prev) => {
+      if (!prev) return prev;
+      return {
+        ...prev,
+        education: prev.education.filter((_, i) => i !== index)
+      };
+    });
   };
   
   const addSkill = () => {
-    setFormData((prev: any) => ({
-      ...prev,
-      skills: [
-        ...prev.skills,
-        {
-          id: prev.skills.length + 1,
-          title: "",
-          description: ""
-        }
-      ]
-    }));
+    setFormData((prev) => {
+      if (!prev) return prev;
+      return {
+        ...prev,
+        skills: [
+          ...prev.skills,
+          {
+            id: prev.skills.length + 1,
+            title: "",
+            description: ""
+          }
+        ]
+      };
+    });
   };
   
   const updateSkill = (index: number, field: string, value: any) => {
-    setFormData((prev: any) => ({
-      ...prev,
-      skills: prev.skills.map((skill: any, i: number) => 
-        i === index ? { ...skill, [field]: value } : skill
-      )
-    }));
+    setFormData((prev) => {
+      if (!prev) return prev;
+      return {
+        ...prev,
+        skills: prev.skills.map((skill, i) => 
+          i === index ? { ...skill, [field]: value } : skill
+        )
+      };
+    });
   };
   
   const removeSkill = (index: number) => {
-    setFormData((prev: any) => ({
-      ...prev,
-      skills: prev.skills.filter((_: any, i: number) => i !== index)
-    }));
+    setFormData((prev) => {
+      if (!prev) return prev;
+      return {
+        ...prev,
+        skills: prev.skills.filter((_, i) => i !== index)
+      };
+    });
   };
   
   if (isLoading) {
@@ -174,6 +245,10 @@ const AdminAboutPage = () => {
   
   if (error) {
     return <div className="p-4 text-red-500">Error loading about data. Please try again.</div>;
+  }
+
+  if (!formData) {
+    return <div className="p-4 text-red-500">No data available.</div>;
   }
   
   return (
@@ -187,7 +262,7 @@ const AdminAboutPage = () => {
         ) : (
           <div className="flex space-x-2">
             <Button variant="outline" onClick={() => {
-              setFormData(aboutData);
+              setFormData(aboutData || null);
               setIsEditing(false);
             }}>
               Cancel
@@ -225,7 +300,7 @@ const AdminAboutPage = () => {
                   <div className="space-y-2">
                     <label className="text-sm font-medium">Full Name</label>
                     <Input 
-                      value={formData?.fullName || ''} 
+                      value={formData.fullName || ''} 
                       onChange={(e) => updateField('fullName', e.target.value)}
                       disabled={!isEditing}
                     />
@@ -234,7 +309,7 @@ const AdminAboutPage = () => {
                   <div className="space-y-2">
                     <label className="text-sm font-medium">Title / Position</label>
                     <Input 
-                      value={formData?.title || ''} a
+                      value={formData.title || ''} 
                       onChange={(e) => updateField('title', e.target.value)}
                       disabled={!isEditing}
                     />
@@ -242,7 +317,7 @@ const AdminAboutPage = () => {
                   
                   <div className="space-y-2">
                     <label className="text-sm font-medium">Bio</label>
-                    {formData?.bio.map((paragraph, index) => (
+                    {formData.bio.map((paragraph, index) => (
                       <div key={index} className="flex gap-2">
                         <Textarea 
                           value={paragraph} 
@@ -285,11 +360,11 @@ const AdminAboutPage = () => {
                   <div className="space-y-2">
                     <label className="text-sm font-medium">Profile Image URL</label>
                     <Input 
-                      value={formData?.profileImage || ''} 
+                      value={formData.profileImage || ''} 
                       onChange={(e) => updateField('profileImage', e.target.value)}
                       disabled={!isEditing}
                     />
-                    {formData?.profileImage && (
+                    {formData.profileImage && (
                       <div className="mt-2">
                         <img 
                           src={formData.profileImage} 
@@ -312,7 +387,7 @@ const AdminAboutPage = () => {
               </CardHeader>
               <CardContent>
                 <div className="space-y-6">
-                  {formData?.experience.map((exp, index) => (
+                  {formData.experience.map((exp, index) => (
                     <motion.div 
                       key={exp.id} 
                       className="p-4 border rounded-lg relative"
@@ -429,7 +504,7 @@ const AdminAboutPage = () => {
               </CardHeader>
               <CardContent>
                 <div className="space-y-6">
-                  {formData?.education.map((edu, index) => (
+                  {formData.education.map((edu, index) => (
                     <motion.div 
                       key={edu.id} 
                       className="p-4 border rounded-lg relative"
@@ -513,7 +588,7 @@ const AdminAboutPage = () => {
               </CardHeader>
               <CardContent>
                 <div className="space-y-6">
-                  {formData?.skills.map((skill, index) => (
+                  {formData.skills.map((skill, index) => (
                     <motion.div 
                       key={skill.id} 
                       className="p-4 border rounded-lg relative"
@@ -584,7 +659,7 @@ const AdminAboutPage = () => {
                     <div className="space-y-2">
                       <label className="text-sm font-medium">Location</label>
                       <Input 
-                        value={formData?.contact?.location || ''} 
+                        value={formData.contact?.location || ''} 
                         onChange={(e) => updateNestedField('contact', 'location', e.target.value)}
                         disabled={!isEditing}
                       />
@@ -593,7 +668,7 @@ const AdminAboutPage = () => {
                     <div className="space-y-2">
                       <label className="text-sm font-medium">Email</label>
                       <Input 
-                        value={formData?.contact?.email || ''} 
+                        value={formData.contact?.email || ''} 
                         onChange={(e) => updateNestedField('contact', 'email', e.target.value)}
                         disabled={!isEditing}
                       />
@@ -603,7 +678,7 @@ const AdminAboutPage = () => {
                       <input
                         type="checkbox"
                         id="availableForFreelance"
-                        checked={formData?.contact?.availableForFreelance || false}
+                        checked={formData.contact?.availableForFreelance || false}
                         onChange={(e) => updateNestedField('contact', 'availableForFreelance', e.target.checked)}
                         disabled={!isEditing}
                         className="rounded border-gray-300 text-primary focus:ring-primary"
@@ -620,7 +695,7 @@ const AdminAboutPage = () => {
                     <div className="space-y-2">
                       <label className="text-sm font-medium">GitHub</label>
                       <Input 
-                        value={formData?.socialLinks?.github || ''} 
+                        value={formData.socialLinks?.github || ''} 
                         onChange={(e) => updateNestedField('socialLinks', 'github', e.target.value)}
                         disabled={!isEditing}
                       />
@@ -629,7 +704,7 @@ const AdminAboutPage = () => {
                     <div className="space-y-2">
                       <label className="text-sm font-medium">Twitter</label>
                       <Input 
-                        value={formData?.socialLinks?.twitter || ''} 
+                        value={formData.socialLinks?.twitter || ''} 
                         onChange={(e) => updateNestedField('socialLinks', 'twitter', e.target.value)}
                         disabled={!isEditing}
                       />
@@ -638,7 +713,7 @@ const AdminAboutPage = () => {
                     <div className="space-y-2">
                       <label className="text-sm font-medium">LinkedIn</label>
                       <Input 
-                        value={formData?.socialLinks?.linkedin || ''} 
+                        value={formData.socialLinks?.linkedin || ''} 
                         onChange={(e) => updateNestedField('socialLinks', 'linkedin', e.target.value)}
                         disabled={!isEditing}
                       />

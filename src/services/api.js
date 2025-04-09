@@ -49,6 +49,7 @@ export const fetchHeroData = async () => {
         };
     }
 };
+
 export const updateHeroData = async (data) => {
     try {
         const response = await api.put('home/update/', data, {
@@ -135,6 +136,7 @@ export const login = async (credentials) => {
         throw error;
     }
 };
+
 export const logout = () => {
     const isAdmin = !!localStorage.getItem('adminToken');
     localStorage.removeItem('adminToken');

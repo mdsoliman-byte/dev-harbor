@@ -48,7 +48,7 @@ type AboutData = {
 const AboutPage = () => {
   const { theme } = useTheme();
   
-  const { data: aboutData, isLoading, error } = useQuery({
+  const { data: aboutData, isLoading, error } = useQuery<AboutData>({
     queryKey: ['aboutData'],
     queryFn: fetchAboutData
   });
@@ -147,7 +147,7 @@ const AboutPage = () => {
             <section className="mb-12">
               <h2 className="text-2xl font-display font-bold mb-6">About Me</h2>
               <div className="space-y-4 text-muted-foreground">
-                {aboutData?.bio.map((paragraph, index) => (
+                {aboutData?.bio?.map((paragraph, index) => (
                   <p key={index}>{paragraph}</p>
                 ))}
               </div>
@@ -156,7 +156,7 @@ const AboutPage = () => {
             <section className="mb-12">
               <h2 className="text-2xl font-display font-bold mb-6">Experience</h2>
               <div className="space-y-8">
-                {aboutData?.experience.map((exp) => (
+                {aboutData?.experience?.map((exp) => (
                   <div key={exp.id} className="border-l-2 border-border pl-5 relative">
                     <div className="absolute w-3 h-3 bg-primary rounded-full -left-[7px] top-1" />
                     <h3 className="text-xl font-semibold">{exp.position}</h3>
@@ -175,7 +175,7 @@ const AboutPage = () => {
             <section className="mb-12">
               <h2 className="text-2xl font-display font-bold mb-6">Education</h2>
               <div className="space-y-8">
-                {aboutData?.education.map((edu) => (
+                {aboutData?.education?.map((edu) => (
                   <div key={edu.id} className="border-l-2 border-border pl-5 relative">
                     <div className="absolute w-3 h-3 bg-primary rounded-full -left-[7px] top-1" />
                     <h3 className="text-xl font-semibold">{edu.degree}</h3>
@@ -192,7 +192,7 @@ const AboutPage = () => {
             <section>
               <h2 className="text-2xl font-display font-bold mb-6">Interests & Specializations</h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {aboutData?.skills.map((skill) => (
+                {aboutData?.skills?.map((skill) => (
                   <div key={skill.id} className="bg-secondary/30 rounded-lg p-5 border border-border">
                     <h3 className="font-semibold mb-2">{skill.title}</h3>
                     <p className="text-sm text-muted-foreground">
