@@ -1,48 +1,39 @@
 
 import api from './config';
 
+// Replace this with your actual project type
 export interface Project {
+  id: number;
+  slug: string;
+  title: string;
+  short_description: string;
+  long_description: string;
+  image: string;
+  project_categories: Array<{
     id: number;
-    title: string;
-    description: string;
-    technologies: string[];
-    github_url: string | null;
-    live_demo_url: string | null;
-    key_features: string;
-    image: string;
-    created_at: string;
+    name: string;
+  }>;
+  start_date: string;
+  end_date: string | null;
+  url: string | null;
 }
 
 export const fetchProjectData = async (): Promise<Project[]> => {
-    try {
-        const response = await api.get('projects/project/');
-        console.log('Project data:', response.data);
-        return response.data;
-    } catch (error) {
-        console.error('Error fetching project data:', error);
-        return [
-            {
-                id: 0,
-                title: "Default Project",
-                description: "This is a default project description.",
-                technologies: ["Default Tech 1", "Default Tech 2"],
-                github_url: null,
-                live_demo_url: null,
-                key_features: "Default key features.",
-                image: "/default-project-image.png",
-                created_at: new Date().toISOString(),
-            },
-        ];
-    }
+  try {
+    const response = await api.get('projects');
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching projects:', error);
+    return [];
+  }
 };
 
-export const fetchProjectCategories = async () => {
-    try {
-        const response = await api.get('projects/projectCategories/');
-        console.log('Project categories:', response.data);
-        return response.data;
-    } catch (error) {
-        console.error('Error fetching project categories:', error);
-        return [];
-    }
+export const fetchProjectBySlug = async (slug: string): Promise<Project> => {
+  try {
+    const response = await api.get(`projects/${slug}`);
+    return response.data;
+  } catch (error) {
+    console.error(`Error fetching project with slug ${slug}:`, error);
+    throw error;
+  }
 };
