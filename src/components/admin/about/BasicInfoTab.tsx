@@ -25,8 +25,8 @@ const BasicInfoTab: React.FC<BasicInfoTabProps> = ({ formData, isEditing, update
           <div className="space-y-2">
             <label className="text-sm font-medium">Full Name</label>
             <Input 
-              value={formData.fullName || ''} 
-              onChange={(e) => updateField('fullName', e.target.value)}
+              value={formData.full_name || ''} 
+              onChange={(e) => updateField('full_name', e.target.value)}
               disabled={!isEditing}
             />
           </div>
