@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Plus, Trash } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 interface SkillsTabProps {
   formData: AboutData;
@@ -23,6 +24,27 @@ const SkillsTab: React.FC<SkillsTabProps> = ({
   removeSkill, 
   addSkill 
 }) => {
+  // Available icon options
+  const iconOptions = [
+    { value: 'Terminal', label: 'Terminal' },
+    { value: 'Code', label: 'Code' },
+    { value: 'BarChart', label: 'Bar Chart' },
+    { value: 'Database', label: 'Database' },
+    { value: 'PenTool', label: 'Pen Tool' },
+    { value: 'Smartphone', label: 'Smartphone' },
+    { value: 'Award', label: 'Award' }
+  ];
+
+  // Available category options
+  const categoryOptions = [
+    { value: 'Development', label: 'Development' },
+    { value: 'Data', label: 'Data' },
+    { value: 'Design', label: 'Design' },
+    { value: 'Infrastructure', label: 'Infrastructure' },
+    { value: 'Business', label: 'Business' },
+    { value: 'Other', label: 'Other' }
+  ];
+
   return (
     <Card>
       <CardHeader>
@@ -68,6 +90,54 @@ const SkillsTab: React.FC<SkillsTabProps> = ({
                     onChange={(e) => updateSkill(index, 'description', e.target.value)}
                     disabled={!isEditing}
                   />
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium">Icon</label>
+                    <Select
+                      disabled={!isEditing}
+                      value={skill.icon || ''}
+                      onValueChange={(value) => updateSkill(index, 'icon', value)}
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select an icon" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectGroup>
+                          <SelectLabel>Icons</SelectLabel>
+                          {iconOptions.map(option => (
+                            <SelectItem key={option.value} value={option.value}>
+                              {option.label}
+                            </SelectItem>
+                          ))}
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium">Category</label>
+                    <Select
+                      disabled={!isEditing}
+                      value={skill.category || ''}
+                      onValueChange={(value) => updateSkill(index, 'category', value)}
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select a category" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectGroup>
+                          <SelectLabel>Categories</SelectLabel>
+                          {categoryOptions.map(option => (
+                            <SelectItem key={option.value} value={option.value}>
+                              {option.label}
+                            </SelectItem>
+                          ))}
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
+                  </div>
                 </div>
               </div>
             </motion.div>
