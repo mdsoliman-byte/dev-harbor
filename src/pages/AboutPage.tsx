@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 import { useTheme } from '@/components/ThemeProvider';
 import { useEffect, useState } from 'react';
-import { fetchAboutData } from '@/services/api';
+import { fetchAboutData, AboutData } from '@/services/api/about';
 import { useQuery } from '@tanstack/react-query';
 
 type AboutData = {
