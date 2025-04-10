@@ -24,12 +24,21 @@ import PrivateRoute from "./utils/PrivateRoute";
 import AdminLoginPage from "./pages/admin/AdminLoginPage";
 import AdminLayout from "./pages/admin/AdminLayout";
 import AdminDashboardPage from "./pages/admin/AdminDashboardPage";
-import AdminBlogPage from "./pages/admin/AdminBlogPage.tsx";
-import AdminHomePage from "./pages/admin/AdminHomePage.tsx";
-import AdminAboutPage from "./pages/admin/AdminAboutPage.tsx";
+import AdminBlogPage from "./pages/admin/AdminBlogPage";
+import AdminHomePage from "./pages/admin/AdminHomePage";
+import AdminAboutPage from "./pages/admin/AdminAboutPage";
+import AdminSkillsPage from "./pages/admin/AdminSkillsPage";
+import AdminContactPage from "./pages/admin/AdminContactPage";
 
 // Create a new QueryClient instance
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: 1,
+      refetchOnWindowFocus: false,
+    },
+  },
+});
 
 const App = () => (
   <React.StrictMode>
@@ -59,7 +68,9 @@ const App = () => (
                   <Route path="/admin/blog" element={<AdminLayout><AdminBlogPage /></AdminLayout>} />
                   <Route path="/admin/home" element={<AdminLayout><AdminHomePage /></AdminLayout>} />
                   <Route path="/admin/about" element={<AdminLayout><AdminAboutPage /></AdminLayout>} />
-                  {/* Add more admin routes here */}
+                  <Route path="/admin/skills" element={<AdminLayout><AdminSkillsPage /></AdminLayout>} />
+                  <Route path="/admin/contact" element={<AdminLayout><AdminContactPage /></AdminLayout>} />
+                  {/* Add more admin routes as needed */}
                 </Route>
                 
                 <Route path="*" element={<NotFound />} />

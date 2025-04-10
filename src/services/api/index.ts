@@ -7,5 +7,9 @@ export * from './auth';
 export * from './home';
 export * from './projects';
 export * from './about';
+export * from './skills';
+export * from './blog';
+export * from './shop';
+export * from './contact';
 
 export default api;
