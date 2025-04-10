@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -77,7 +76,6 @@ const ProjectForm = ({ open, onClose, project }: ProjectFormProps) => {
     },
   });
 
-  // Load categories when component mounts
   useEffect(() => {
     const loadCategories = async () => {
       try {
@@ -93,11 +91,9 @@ const ProjectForm = ({ open, onClose, project }: ProjectFormProps) => {
     }
   }, [open]);
 
-  // Reset form when component opens or project changes
   useEffect(() => {
     if (open) {
       if (project) {
-        // Format dates for input fields
         const startDate = project.start_date 
           ? format(new Date(project.start_date), 'yyyy-MM-dd')
           : '';
@@ -140,24 +136,27 @@ const ProjectForm = ({ open, onClose, project }: ProjectFormProps) => {
     setIsLoading(true);
     
     try {
-      // Prepare form data
       const formData: ProjectFormData = {
-        ...data,
-        // Convert empty strings to null
+        title: data.title,
+        slug: data.slug,
+        short_description: data.short_description,
+        long_description: data.long_description,
+        image: data.image,
+        project_categories: data.project_categories,
+        start_date: data.start_date,
         end_date: data.end_date === '' ? null : data.end_date,
         url: data.url === '' ? null : data.url,
         github_url: data.github_url === '' ? null : data.github_url,
+        tags: data.tags
       };
       
       if (project) {
-        // Update existing project
         await updateProject(project.id, formData);
         toast({
           title: 'Success',
           description: 'Project updated successfully',
         });
       } else {
-        // Create new project
         await createProject(formData);
         toast({
           title: 'Success',
@@ -178,7 +177,6 @@ const ProjectForm = ({ open, onClose, project }: ProjectFormProps) => {
     }
   };
 
-  // Generate slug from title
   const generateSlug = () => {
     const title = form.getValues('title');
     if (title) {
