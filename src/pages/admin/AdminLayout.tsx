@@ -1,7 +1,6 @@
-
 import { PropsWithChildren, useEffect, useState } from 'react';
 import { Navigate, useLocation, useNavigate } from 'react-router-dom';
-import { LayoutDashboard, FileText, User, Settings, ShoppingBag, LogOut, Menu, X, Info } from 'lucide-react';
+import { LayoutDashboard, FileText, User, Settings, ShoppingBag, LogOut, Menu, X, Info, FolderKanban } from 'lucide-react';
 import { logout, isAdminAuthenticated } from '@/services/api';
 import { Button } from '@/components/ui/button';
 import { ThemeToggle } from '@/components/ThemeProvider';
@@ -34,7 +33,7 @@ const AdminLayout = ({ children }: PropsWithChildren) => {
     { 
       path: '/admin/projects', 
       label: 'Projects', 
-      icon: ShoppingBag 
+      icon: FolderKanban 
     },
     { 
       path: '/admin/home', 
@@ -60,13 +59,11 @@ const AdminLayout = ({ children }: PropsWithChildren) => {
 
   return (
     <div className="min-h-screen flex  md:flex-row ">
-      {/* Admin Sidebar */}
       <aside 
         className={`fixed inset-y-0 left-0 z-50 w-64 bg-background/90 backdrop-blur-md border-r border-border transform transition-transform duration-300 ease-in-out md:relative ${
           sidebarOpen ? 'translate-x-0' : '-translate-x-full md:w-10'
         }`}
       >
-        {/* Sidebar Header */}
         <div className="flex items-center justify-between h-16 px-4 border-b border-border">
           <motion.h1 
             className={`font-bold ${sidebarOpen ? 'text-lg' : 'hidden md:block text-center w-full'}`}
@@ -86,7 +83,6 @@ const AdminLayout = ({ children }: PropsWithChildren) => {
           </Button>
         </div>
         
-        {/* Sidebar Content */}
         <div className="p-4 overflow-y-auto h-[calc(100vh-8rem)]">
           <nav className="space-y-2">
             {navItems.map((item) => (
@@ -112,7 +108,6 @@ const AdminLayout = ({ children }: PropsWithChildren) => {
           </nav>
         </div>
         
-        {/* Sidebar Footer */}
         <div className="absolute bottom-0 w-full p-4 border-t border-border">
           <Button 
             variant="outline" 
@@ -125,9 +120,7 @@ const AdminLayout = ({ children }: PropsWithChildren) => {
         </div>
       </aside>
       
-      {/* Main Content */}
       <div className={`flex-1 transition-all duration-300 ${sidebarOpen ? 'md:ml-2' : 'md:ml-0'}`}>
-        {/* Header */}
         <header className="h-16 bg-background/80 backdrop-blur-md border-b border-border flex items-center justify-between px-4">
           <Button
             variant="ghost"
@@ -154,7 +147,6 @@ const AdminLayout = ({ children }: PropsWithChildren) => {
           </div>
         </header>
         
-        {/* Content */}
         <main className="p-4 md:p-6 overflow-auto max-h-[calc(100vh-4rem)]">
           {children}
         </main>

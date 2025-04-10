@@ -25,10 +25,12 @@ import AdminLoginPage from "./pages/admin/AdminLoginPage";
 import AdminLayout from "./pages/admin/AdminLayout";
 import AdminDashboardPage from "./pages/admin/AdminDashboardPage";
 import AdminBlogPage from "./pages/admin/AdminBlogPage";
+import AdminProjectsPage from "./pages/admin/AdminProjectsPage";
 import AdminHomePage from "./pages/admin/AdminHomePage";
 import AdminAboutPage from "./pages/admin/AdminAboutPage";
 import AdminSkillsPage from "./pages/admin/AdminSkillsPage";
 import AdminContactPage from "./pages/admin/AdminContactPage";
+import AdminShopPage from "./pages/admin/AdminShopPage";
 
 // Create a new QueryClient instance
 const queryClient = new QueryClient({
@@ -66,11 +68,12 @@ const App = () => (
                 <Route element={<PrivateRoute />}>
                   <Route path="/admin/dashboard" element={<AdminLayout><AdminDashboardPage /></AdminLayout>} />
                   <Route path="/admin/blog" element={<AdminLayout><AdminBlogPage /></AdminLayout>} />
+                  <Route path="/admin/projects" element={<AdminLayout><AdminProjectsPage /></AdminLayout>} />
                   <Route path="/admin/home" element={<AdminLayout><AdminHomePage /></AdminLayout>} />
                   <Route path="/admin/about" element={<AdminLayout><AdminAboutPage /></AdminLayout>} />
                   <Route path="/admin/skills" element={<AdminLayout><AdminSkillsPage /></AdminLayout>} />
                   <Route path="/admin/contact" element={<AdminLayout><AdminContactPage /></AdminLayout>} />
-                  {/* Add more admin routes as needed */}
+                  <Route path="/admin/shop" element={<AdminLayout><AdminShopPage /></AdminLayout>} />
                 </Route>
                 
                 <Route path="*" element={<NotFound />} />
