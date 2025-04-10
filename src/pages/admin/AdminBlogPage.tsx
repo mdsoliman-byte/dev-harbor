@@ -296,7 +296,7 @@ const AdminBlogPage: React.FC = () => {
       </Card>
 
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-        <DialogContent className="max-w-2xl">
+        <DialogContent className="w-full max-w-2xl h-full overflow-y-auto p-6 ">
           <DialogHeader>
             <DialogTitle>{editingPost ? 'Edit Blog Post' : 'Create Blog Post'}</DialogTitle>
           </DialogHeader>

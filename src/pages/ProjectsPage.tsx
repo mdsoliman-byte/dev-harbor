@@ -133,7 +133,7 @@ const categories = ["All", ...Array.from(new Set(currentProjects.map(project => 
                 <h3 className="text-xl font-semibold mb-2">{project.title.length > 60 ? `${project.title.slice(0, 60)}...` : project.title}</h3>
                 <p className="text-muted-foreground text-sm mb-4">
                   {/* {project.description} */}
-                  {project.description.length > 200 ? `${project.description.slice(0, 200)}...` : project.description}
+                  {project.long_description.length > 200 ? `${project.long_description.slice(0, 200)}...` : project.description}
                 </p>
                 
                 <div className="flex items-center justify-between mt-4">
