@@ -3,8 +3,10 @@ import { PropsWithChildren, useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import { ThemeToggle } from './ThemeProvider';
-import { Menu , X} from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 import { Button } from './ui/button';
+import WeatherWidget from './header/WeatherWidget';
+import LanguageTranslator from './header/LanguageTranslator';
 
 const Layout = ({ children }: PropsWithChildren) => {
   const location = useLocation();
@@ -42,9 +44,11 @@ const Layout = ({ children }: PropsWithChildren) => {
         
         <main className={`flex-1 transition-all duration-300 ease-in-out min-h-screen ${sidebarOpen ? 'md:ml-64' : ''}`}>
           <div className="animate-fade-in">
-            {/* Theme toggle and sidebar toggle positioned in the top-right corner */}
+            {/* Header with language translator, weather widget, theme toggle and sidebar toggle */}
             <div className="fixed top-4 right-4 z-50 flex items-center gap-2">
-            <ThemeToggle />
+              <LanguageTranslator />
+              <WeatherWidget />
+              <ThemeToggle />
               <Button 
                 variant="outline" 
                 size="icon" 
@@ -57,7 +61,6 @@ const Layout = ({ children }: PropsWithChildren) => {
                 )}
                 <span className="sr-only">Toggle sidebar</span>
               </Button>
-              
             </div>
             {children}
           </div>

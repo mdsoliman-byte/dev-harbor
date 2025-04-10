@@ -1,3 +1,4 @@
+
 import { PropsWithChildren, useEffect, useState } from 'react';
 import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { LayoutDashboard, FileText, User, Settings, ShoppingBag, LogOut, Menu, X, Info } from 'lucide-react';
@@ -6,6 +7,8 @@ import { Button } from '@/components/ui/button';
 import { ThemeToggle } from '@/components/ThemeProvider';
 import { motion } from 'framer-motion';
 import { NavigationMenu, NavigationMenuList, NavigationMenuItem, NavigationMenuLink, navigationMenuTriggerStyle } from '@/components/ui/navigation-menu';
+import WeatherWidget from '@/components/header/WeatherWidget';
+import LanguageTranslator from '@/components/header/LanguageTranslator';
 
 const AdminLayout = ({ children }: PropsWithChildren) => {
   const [sidebarOpen, setSidebarOpen] = useState(true);
@@ -145,6 +148,8 @@ const AdminLayout = ({ children }: PropsWithChildren) => {
           </Button>
           
           <div className="flex items-center gap-2">
+            <LanguageTranslator />
+            <WeatherWidget />
             <ThemeToggle />
           </div>
         </header>
