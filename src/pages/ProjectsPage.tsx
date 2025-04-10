@@ -27,6 +27,7 @@ const ProjectsPage = () => {
       try {
         setIsLoading(true);
         const data = await fetchProjectData();
+        console.log('Fetched projects:', data); // Log the fetched data
         setProjects(data || []); // Ensure projects is always an array
       } catch (err) {
         setError('Failed to load projects. Please try again later.');

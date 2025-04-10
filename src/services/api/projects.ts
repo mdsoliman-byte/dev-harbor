@@ -20,7 +20,7 @@ export interface Project {
 
 export const fetchProjectData = async (): Promise<Project[]> => {
   try {
-    const response = await api.get('projects');
+    const response = await api.get('projects/project/');
     return response.data;
   } catch (error) {
     console.error('Error fetching projects:', error);
@@ -30,7 +30,8 @@ export const fetchProjectData = async (): Promise<Project[]> => {
 
 export const fetchProjectBySlug = async (slug: string): Promise<Project> => {
   try {
-    const response = await api.get(`projects/${slug}`);
+    const response = await api.get(`projects/project/${slug}`);
+    console.log('Project data:', response.data); // Log the project data
     return response.data;
   } catch (error) {
     console.error(`Error fetching project with slug ${slug}:`, error);
