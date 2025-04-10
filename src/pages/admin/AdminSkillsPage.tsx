@@ -1,14 +1,11 @@
 
 import React from 'react';
 import { useState, useEffect } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Pencil, Save, Plus, Trash } from 'lucide-react';
-import { Skill, fetchSkillsData, updateSkillsData } from '@/services/api';
+import { Pencil, Save } from 'lucide-react';
+import { Skill, fetchSkillsData, updateSkillsData } from '@/services/api/skills';
 import { useToast } from '@/components/ui/use-toast';
+import SkillList from '@/components/admin/skills/SkillList';
 
 const AdminSkillsPage = () => {
   const [skills, setSkills] = useState<Skill[]>([]);
@@ -16,27 +13,6 @@ const AdminSkillsPage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const { toast } = useToast();
-
-  // Available icon options
-  const iconOptions = [
-    { value: 'Terminal', label: 'Terminal' },
-    { value: 'Code', label: 'Code' },
-    { value: 'BarChart', label: 'Bar Chart' },
-    { value: 'Database', label: 'Database' },
-    { value: 'PenTool', label: 'Pen Tool' },
-    { value: 'Smartphone', label: 'Smartphone' },
-    { value: 'Award', label: 'Award' }
-  ];
-
-  // Available category options
-  const categoryOptions = [
-    { value: 'Development', label: 'Development' },
-    { value: 'Data', label: 'Data' },
-    { value: 'Design', label: 'Design' },
-    { value: 'Infrastructure', label: 'Infrastructure' },
-    { value: 'Business', label: 'Business' },
-    { value: 'Other', label: 'Other' }
-  ];
 
   useEffect(() => {
     const loadSkills = async () => {
@@ -133,107 +109,13 @@ const AdminSkillsPage = () => {
         )}
       </div>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Skills & Specializations</CardTitle>
-          <CardDescription>Manage the skills displayed on your website.</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-6">
-            {skills.map((skill, index) => (
-              <div 
-                key={skill.id} 
-                className="p-4 border rounded-lg relative"
-              >
-                {isEditing && (
-                  <Button
-                    type="button"
-                    variant="outline"
-                    size="icon"
-                    className="absolute top-2 right-2"
-                    onClick={() => handleRemoveSkill(index)}
-                  >
-                    <Trash className="h-4 w-4" />
-                  </Button>
-                )}
-                
-                <div className="grid gap-4">
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium">Title</label>
-                    <Input 
-                      value={skill.title} 
-                      onChange={(e) => handleUpdateSkill(index, 'title', e.target.value)}
-                      disabled={!isEditing}
-                    />
-                  </div>
-                  
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium">Description</label>
-                    <Textarea 
-                      value={skill.description} 
-                      onChange={(e) => handleUpdateSkill(index, 'description', e.target.value)}
-                      disabled={!isEditing}
-                    />
-                  </div>
-
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <label className="text-sm font-medium">Icon</label>
-                      <Select
-                        disabled={!isEditing}
-                        value={skill.icon}
-                        onValueChange={(value) => handleUpdateSkill(index, 'icon', value)}
-                      >
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select an icon" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {iconOptions.map(option => (
-                            <SelectItem key={option.value} value={option.value}>
-                              {option.label}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    </div>
-                    
-                    <div className="space-y-2">
-                      <label className="text-sm font-medium">Category</label>
-                      <Select
-                        disabled={!isEditing}
-                        value={skill.category}
-                        onValueChange={(value) => handleUpdateSkill(index, 'category', value)}
-                      >
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select a category" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {categoryOptions.map(option => (
-                            <SelectItem key={option.value} value={option.value}>
-                              {option.label}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            ))}
-            
-            {isEditing && (
-              <Button 
-                type="button" 
-                variant="outline" 
-                onClick={handleAddSkill}
-                className="w-full"
-              >
-                <Plus className="h-4 w-4 mr-2" /> Add Skill
-              </Button>
-            )}
-          </div>
-        </CardContent>
-      </Card>
+      <SkillList
+        skills={skills}
+        isEditing={isEditing}
+        onUpdateSkill={handleUpdateSkill}
+        onRemoveSkill={handleRemoveSkill}
+        onAddSkill={handleAddSkill}
+      />
     </div>
   );
 };
