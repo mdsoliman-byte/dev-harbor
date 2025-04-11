@@ -18,6 +18,7 @@ import ContactPage from "./pages/ContactPage";
 import NotFound from "./pages/NotFound";
 import { AnimatePresence } from "framer-motion";
 import { ThemeProvider } from "./components/ThemeProvider";
+import { ShopProvider } from "./contexts/ShopContext";
 
 // Admin imports
 import PrivateRoute from "./utils/PrivateRoute";
@@ -51,33 +52,35 @@ const App = () => (
           <Sonner />
           <BrowserRouter>
             <AnimatePresence mode="wait">
-              <Routes>
-                {/* Public Routes */}
-                <Route path="/" element={<Layout><HomePage /></Layout>} />
-                <Route path="/projects" element={<Layout><ProjectsPage /></Layout>} />
-                <Route path="/projects/:slug" element={<Layout><ProjectDetailPage /></Layout>} />
-                <Route path="/skills" element={<Layout><SkillsPage /></Layout>} />
-                <Route path="/blog" element={<Layout><BlogPage /></Layout>} />
-                <Route path="/blog/:id" element={<Layout><BlogDetailPage /></Layout>} />
-                <Route path="/shop" element={<Layout><ShopPage /></Layout>} />
-                <Route path="/about" element={<Layout><AboutPage /></Layout>} />
-                <Route path="/contact" element={<Layout><ContactPage /></Layout>} />
-                
-                {/* Admin Routes */}
-                <Route path="/auth/login" element={<AdminLoginPage />} />
-                <Route element={<PrivateRoute />}>
-                  <Route path="/admin/dashboard" element={<AdminLayout><AdminDashboardPage /></AdminLayout>} />
-                  <Route path="/admin/blog" element={<AdminLayout><AdminBlogPage /></AdminLayout>} />
-                  <Route path="/admin/projects" element={<AdminLayout><AdminProjectsPage /></AdminLayout>} />
-                  <Route path="/admin/home" element={<AdminLayout><AdminHomePage /></AdminLayout>} />
-                  <Route path="/admin/about" element={<AdminLayout><AdminAboutPage /></AdminLayout>} />
-                  <Route path="/admin/skills" element={<AdminLayout><AdminSkillsPage /></AdminLayout>} />
-                  <Route path="/admin/contact" element={<AdminLayout><AdminContactPage /></AdminLayout>} />
-                  <Route path="/admin/shop" element={<AdminLayout><AdminShopPage /></AdminLayout>} />
-                </Route>
-                
-                <Route path="*" element={<NotFound />} />
-              </Routes>
+              <ShopProvider>
+                <Routes>
+                  {/* Public Routes */}
+                  <Route path="/" element={<Layout><HomePage /></Layout>} />
+                  <Route path="/projects" element={<Layout><ProjectsPage /></Layout>} />
+                  <Route path="/projects/:slug" element={<Layout><ProjectDetailPage /></Layout>} />
+                  <Route path="/skills" element={<Layout><SkillsPage /></Layout>} />
+                  <Route path="/blog" element={<Layout><BlogPage /></Layout>} />
+                  <Route path="/blog/:id" element={<Layout><BlogDetailPage /></Layout>} />
+                  <Route path="/shop" element={<Layout><ShopPage /></Layout>} />
+                  <Route path="/about" element={<Layout><AboutPage /></Layout>} />
+                  <Route path="/contact" element={<Layout><ContactPage /></Layout>} />
+                  
+                  {/* Admin Routes */}
+                  <Route path="/auth/login" element={<AdminLoginPage />} />
+                  <Route element={<PrivateRoute />}>
+                    <Route path="/admin/dashboard" element={<AdminLayout><AdminDashboardPage /></AdminLayout>} />
+                    <Route path="/admin/blog" element={<AdminLayout><AdminBlogPage /></AdminLayout>} />
+                    <Route path="/admin/projects" element={<AdminLayout><AdminProjectsPage /></AdminLayout>} />
+                    <Route path="/admin/home" element={<AdminLayout><AdminHomePage /></AdminLayout>} />
+                    <Route path="/admin/about" element={<AdminLayout><AdminAboutPage /></AdminLayout>} />
+                    <Route path="/admin/skills" element={<AdminLayout><AdminSkillsPage /></AdminLayout>} />
+                    <Route path="/admin/contact" element={<AdminLayout><AdminContactPage /></AdminLayout>} />
+                    <Route path="/admin/shop" element={<AdminLayout><AdminShopPage /></AdminLayout>} />
+                  </Route>
+                  
+                  <Route path="*" element={<NotFound />} />
+                </Routes>
+              </ShopProvider>
             </AnimatePresence>
           </BrowserRouter>
         </TooltipProvider>

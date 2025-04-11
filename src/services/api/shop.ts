@@ -20,6 +20,17 @@ export interface ProductCategory {
   slug: string;
 }
 
+export interface ProductRequest {
+  id?: number;
+  productId: number;
+  name: string;
+  email: string;
+  phone?: string;
+  message: string;
+  status?: 'pending' | 'approved' | 'rejected';
+  createdAt?: string;
+}
+
 export const fetchProducts = async (): Promise<Product[]> => {
   try {
     const response = await api.get('shop/data/');
@@ -78,6 +89,40 @@ export const deleteProduct = async (slug: string): Promise<void> => {
     await api.delete(`shop/${slug}/delete/`);
   } catch (error) {
     console.error(`Error deleting product with slug ${slug}:`, error);
+    throw error;
+  }
+};
+
+// Product request functions
+export const submitProductRequest = async (request: ProductRequest): Promise<ProductRequest> => {
+  try {
+    const response = await api.post('shop/request/', request);
+    return response.data;
+  } catch (error) {
+    console.error('Error submitting product request:', error);
+    throw error;
+  }
+};
+
+export const fetchProductRequests = async (): Promise<ProductRequest[]> => {
+  try {
+    const response = await api.get('shop/requests/');
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching product requests:', error);
+    return [];
+  }
+};
+
+export const updateProductRequestStatus = async (
+  id: number, 
+  status: 'pending' | 'approved' | 'rejected'
+): Promise<ProductRequest> => {
+  try {
+    const response = await api.put(`shop/requests/${id}/status/`, { status });
+    return response.data;
+  } catch (error) {
+    console.error(`Error updating request status for ID ${id}:`, error);
     throw error;
   }
 };

@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { 
@@ -11,7 +12,9 @@ import {
   Sparkles,
   Lightbulb,
   Atom,
-  BookCopy
+  BookCopy,
+  ShoppingCart,
+  Search
 } from 'lucide-react';
 import {
   Pagination,
@@ -23,127 +26,18 @@ import {
 } from "@/components/ui/pagination";
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
-import { Textarea } from "@/components/ui/textarea";
-import { useToast } from "@/hooks/use-toast";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from "@/components/ui/dialog";
 import { useIsMobile } from '@/hooks/use-mobile';
-
-// Sample PDF data
-const pdfLibrary = [
-  {
-    id: 1,
-    title: "Modern Web Development Techniques",
-    category: "Programming",
-    description: "A comprehensive guide to the latest web development practices and technologies",
-    pages: 176,
-    rating: 4.6,
-    image: "https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
-    fileSize: "12.4 MB",
-    releaseDate: "2023"
-  },
-  {
-    id: 2,
-    title: "The Psychology of User Experience",
-    category: "Design",
-    description: "How psychological principles can be applied to create better user experiences",
-    pages: 204,
-    rating: 4.8,
-    image: "https://images.unsplash.com/photo-1507842217343-583bb7270b66?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
-    fileSize: "9.7 MB",
-    releaseDate: "2023"
-  },
-  {
-    id: 3,
-    title: "Data Analysis for Business Decisions",
-    category: "Data Science",
-    description: "Learn how to leverage data to drive strategic business decisions",
-    pages: 253,
-    rating: 4.5,
-    image: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
-    fileSize: "14.2 MB",
-    releaseDate: "2022"
-  },
-  {
-    id: 4,
-    title: "Artificial Intelligence: A Practical Guide",
-    category: "Technology",
-    description: "A beginner-friendly introduction to AI concepts and applications",
-    pages: 198,
-    rating: 4.7,
-    image: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
-    fileSize: "10.8 MB",
-    releaseDate: "2023"
-  },
-  {
-    id: 5,
-    title: "Responsive Design Patterns",
-    category: "Design",
-    description: "Best practices for creating websites that work on any device",
-    pages: 165,
-    rating: 4.4,
-    image: "https://images.unsplash.com/photo-1586776802377-a600652634dd?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
-    fileSize: "8.5 MB",
-    releaseDate: "2022"
-  },
-  {
-    id: 6,
-    title: "Cloud Computing Fundamentals",
-    category: "Technology",
-    description: "An overview of cloud technologies and their business applications",
-    pages: 232,
-    rating: 4.3,
-    image: "https://images.unsplash.com/photo-1484417894907-623942c8ee29?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
-    fileSize: "13.1 MB",
-    releaseDate: "2022"
-  },
-  {
-    id: 7,
-    title: "Marketing in the Digital Age",
-    category: "Marketing",
-    description: "Strategies for effective digital marketing campaigns",
-    pages: 218,
-    rating: 4.6,
-    image: "https://images.unsplash.com/photo-1563986768494-4dee2763ff3f?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
-    fileSize: "11.3 MB",
-    releaseDate: "2023"
-  },
-  {
-    id: 8,
-    title: "Software Engineering Best Practices",
-    category: "Programming",
-    description: "A guide to writing clean, maintainable, and efficient code",
-    pages: 246,
-    rating: 4.9,
-    image: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
-    fileSize: "15.7 MB",
-    releaseDate: "2022"
-  },
-  {
-    id: 9,
-    title: "Project Management for Tech Teams",
-    category: "Management",
-    description: "How to effectively manage software development projects",
-    pages: 187,
-    rating: 4.5,
-    image: "https://images.unsplash.com/photo-1552664730-d307ca884978?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
-    fileSize: "9.3 MB",
-    releaseDate: "2023"
-  },
-  {
-    id: 10,
-    title: "Machine Learning Algorithms Explained",
-    category: "Data Science",
-    description: "A deep dive into popular machine learning techniques",
-    pages: 274,
-    rating: 4.7,
-    image: "https://images.unsplash.com/photo-1515879128891-407a325eb6a0?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
-    fileSize: "16.2 MB",
-    releaseDate: "2022"
-  }
-];
-
-// Extract unique categories for filtering
-const categories = ["All", ...Array.from(new Set(pdfLibrary.map(pdf => pdf.category)))];
+import { useShop } from '@/contexts/ShopContext';
+import { Product } from '@/services/api/shop';
+import ProductRequestForm from '@/components/shop/ProductRequestForm';
 
 // Get icon based on category
 const getCategoryIcon = (category: string) => {
@@ -160,6 +54,14 @@ const getCategoryIcon = (category: string) => {
       return <BookOpen className="h-5 w-5" />;
     case "Management":
       return <History className="h-5 w-5" />;
+    case "eBooks":
+      return <BookCopy className="h-5 w-5" />;
+    case "Themes":
+      return <FileText className="h-5 w-5" />;
+    case "Courses":
+      return <BookOpen className="h-5 w-5" />;
+    case "Templates":
+      return <Sparkles className="h-5 w-5" />;
     default:
       return <BookCopy className="h-5 w-5" />;
   }
@@ -189,52 +91,66 @@ const StarRating = ({ rating }: { rating: number }) => {
 };
 
 const ShopPage = () => {
+  const { products, categories, loading } = useShop();
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedCategory, setSelectedCategory] = useState("All");
+  const [searchQuery, setSearchQuery] = useState("");
   const [isRequestModalOpen, setIsRequestModalOpen] = useState(false);
-  const [selectedPdf, setSelectedPdf] = useState<typeof pdfLibrary[0] | null>(null);
-  const [emailMessage, setEmailMessage] = useState("");
-  const { toast } = useToast();
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const isMobile = useIsMobile();
   const itemsPerPage = 6;
 
-  // Filter PDFs by category
-  const filteredPdfs = selectedCategory === "All"
-    ? pdfLibrary
-    : pdfLibrary.filter(pdf => pdf.category === selectedCategory);
+  // Generate category options from categories
+  const categoryOptions = [
+    "All", 
+    ...Array.from(new Set(categories.map(cat => cat.name)))
+  ];
+
+  // Filter products by category and search query
+  const filteredProducts = products
+    .filter(product => 
+      selectedCategory === "All" || product.category === selectedCategory
+    )
+    .filter(product => 
+      searchQuery === "" || 
+      product.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      product.description.toLowerCase().includes(searchQuery.toLowerCase())
+    );
 
   // Calculate pagination
-  const totalPages = Math.ceil(filteredPdfs.length / itemsPerPage);
+  const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = filteredPdfs.slice(indexOfFirstItem, indexOfLastItem);
+  const currentItems = filteredProducts.slice(indexOfFirstItem, indexOfLastItem);
 
   // Open request modal
-  const openRequestModal = (pdf: typeof pdfLibrary[0]) => {
-    setSelectedPdf(pdf);
+  const openRequestModal = (product: Product) => {
+    setSelectedProduct(product);
     setIsRequestModalOpen(true);
   };
 
-  // Handle request submission
-  const handleSubmitRequest = () => {
-    if (!emailMessage.trim()) {
-      toast({
-        variant: "destructive",
-        title: "Message required",
-        description: "Please provide a message with your request."
-      });
-      return;
-    }
-
-    // In a real app, this would send the request to a server
-    toast({
-      title: "Request Sent Successfully!",
-      description: "We'll get back to you soon with access to the PDF."
-    });
-    
-    setEmailMessage("");
+  // Close request modal
+  const closeRequestModal = () => {
     setIsRequestModalOpen(false);
+    setSelectedProduct(null);
   };
+
+  // Handle successful submission
+  const handleRequestSuccess = () => {
+    setIsRequestModalOpen(false);
+    setSelectedProduct(null);
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="flex flex-col items-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+          <p className="mt-4 text-muted-foreground">Loading shop data...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen py-12 px-4 md:px-8 lg:px-16">
@@ -252,8 +168,8 @@ const ShopPage = () => {
                 Unleash Your Creativity <span className="text-primary">With Digital Resources</span>
               </h1>
               <p className="text-muted-foreground mb-8 max-w-md">
-                Browse our collection of high-quality PDF resources designed to enhance your knowledge and skills.
-                Request access to any document that interests you.
+                Browse our collection of high-quality digital resources designed to enhance your knowledge and skills.
+                Request access to any product that interests you.
               </p>
               <div className="flex flex-wrap gap-4">
                 <Button size="lg" className="font-medium">
@@ -278,6 +194,49 @@ const ShopPage = () => {
           </div>
         </motion.div>
 
+        {/* Search & Filter Bar */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.1 }}
+          className="mb-8"
+        >
+          <div className="flex flex-col md:flex-row gap-4 items-stretch md:items-center">
+            <div className="relative flex-1">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Input
+                placeholder="Search products..."
+                className="pl-10"
+                value={searchQuery}
+                onChange={(e) => {
+                  setSearchQuery(e.target.value);
+                  setCurrentPage(1);
+                }}
+              />
+            </div>
+            <div className="flex flex-row gap-2 overflow-x-auto pb-2 md:pb-0">
+              {categoryOptions.slice(0, isMobile ? 3 : categoryOptions.length).map((category) => (
+                <Button
+                  key={category}
+                  variant={selectedCategory === category ? "default" : "outline"}
+                  size="sm"
+                  onClick={() => {
+                    setSelectedCategory(category);
+                    setCurrentPage(1);
+                  }}
+                >
+                  {category}
+                </Button>
+              ))}
+              {isMobile && categoryOptions.length > 3 && (
+                <Button variant="outline" size="sm">
+                  More
+                </Button>
+              )}
+            </div>
+          </div>
+        </motion.div>
+
         {/* Categories Section */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -298,7 +257,7 @@ const ShopPage = () => {
           </div>
           
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
-            {categories.map((category, index) => (
+            {categoryOptions.map((category, index) => (
               <motion.div
                 key={category}
                 initial={{ opacity: 0, y: 20 }}
@@ -317,11 +276,13 @@ const ShopPage = () => {
                     {category === "All" ? <Library className="h-5 w-5" /> : getCategoryIcon(category)}
                   </div>
                   <span className="text-sm font-medium">{category}</span>
-                  <span className="text-xs text-muted-foreground">
-                    {category === "All" 
-                      ? `${pdfLibrary.length} PDFs` 
-                      : `${pdfLibrary.filter(pdf => pdf.category === category).length} PDFs`}
-                  </span>
+                  {category === "All" ? (
+                    <span className="text-xs text-muted-foreground">{products.length} Products</span>
+                  ) : (
+                    <span className="text-xs text-muted-foreground">
+                      {products.filter(product => product.category === category).length} Products
+                    </span>
+                  )}
                 </Button>
               </motion.div>
             ))}
@@ -338,17 +299,18 @@ const ShopPage = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
             <div className="md:col-span-2">
               <h2 className="text-2xl md:text-3xl font-bold mb-2">
-                Premium PDFs <span className="text-amber-500">50% off</span> now!
+                Premium Resources <span className="text-amber-500">50% off</span> now!
               </h2>
               <p className="text-muted-foreground mb-4 md:mb-6">
-                Limited time offer on our most popular technical resources. Don't miss this opportunity!
+                Limited time offer on our most popular resources. Don't miss this opportunity!
               </p>
               <div className="flex flex-wrap gap-3">
                 <Button className="bg-amber-500 hover:bg-amber-600">
-                  Request Now
+                  <ShoppingCart className="mr-2 h-4 w-4" />
+                  Get Discount
                 </Button>
                 <Button variant="outline">
-                  Get Coupon
+                  View Offers
                 </Button>
               </div>
             </div>
@@ -362,7 +324,7 @@ const ShopPage = () => {
           </div>
         </motion.div>
 
-        {/* PDF Grid Section */}
+        {/* Product Grid Section */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -371,83 +333,104 @@ const ShopPage = () => {
         >
           <div className="flex flex-wrap items-center justify-between mb-8">
             <h2 className="text-2xl md:text-3xl font-bold">Popular Resources</h2>
-            <div className="flex flex-wrap gap-2 mt-4 sm:mt-0">
-              {["All", "Programming", "Design", "Data Science"].map(cat => (
-                <Button
-                  key={cat}
-                  variant={selectedCategory === cat ? "default" : "outline"}
-                  size="sm"
-                  onClick={() => {
-                    setSelectedCategory(cat);
-                    setCurrentPage(1);
-                  }}
-                >
-                  {cat}
-                </Button>
-              ))}
+            <div className="flex items-center mt-4 sm:mt-0">
+              <span className="text-sm text-muted-foreground mr-2">
+                {filteredProducts.length} products found
+              </span>
             </div>
           </div>
           
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-            {currentItems.map((pdf, index) => (
-              <motion.div
-                key={pdf.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-              >
-                <Card className="group overflow-hidden hover-lift h-full flex flex-col">
-                  <div className="aspect-[3/4] relative overflow-hidden bg-muted">
-                    <img 
-                      src={pdf.image} 
-                      alt={pdf.title}
-                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                    />
-                    <div className="absolute top-4 right-4">
-                      <span className="px-3 py-1 bg-primary/80 text-primary-foreground text-xs font-medium rounded-full backdrop-blur-sm">
-                        {pdf.pages} pages
-                      </span>
+          {filteredProducts.length === 0 ? (
+            <div className="text-center py-16 bg-muted/30 rounded-lg">
+              <BookOpen className="mx-auto h-16 w-16 text-muted-foreground mb-4" />
+              <h3 className="text-2xl font-medium mb-2">No products found</h3>
+              <p className="text-muted-foreground max-w-md mx-auto">
+                We couldn't find any products matching your search or filter criteria.
+                Try adjusting your search or browse a different category.
+              </p>
+              <Button onClick={() => {
+                setSelectedCategory("All");
+                setSearchQuery("");
+              }} className="mt-6">
+                View All Products
+              </Button>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+              {currentItems.map((product, index) => (
+                <motion.div
+                  key={product.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                >
+                  <Card className="group overflow-hidden hover-lift h-full flex flex-col">
+                    <div className="aspect-[3/4] relative overflow-hidden bg-muted">
+                      <img 
+                        src={product.image || "https://images.unsplash.com/photo-1532012197267-da84d127e765?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3"} 
+                        alt={product.title}
+                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                      />
+                      <div className="absolute top-4 right-4">
+                        <span className="px-3 py-1 bg-primary/80 text-primary-foreground text-xs font-medium rounded-full backdrop-blur-sm">
+                          {product.category}
+                        </span>
+                      </div>
                     </div>
-                  </div>
-                  
-                  <CardHeader className="p-4 pb-0">
-                    <div className="flex justify-between items-center mb-2">
-                      <span className="text-xs text-muted-foreground">
-                        {pdf.releaseDate}
-                      </span>
-                      <span className="text-xs font-medium px-2 py-1 bg-primary/10 text-primary rounded-full">
-                        {pdf.category}
-                      </span>
-                    </div>
-                    <StarRating rating={pdf.rating} />
-                    <h3 className="font-semibold text-lg mt-2 line-clamp-1 group-hover:text-primary transition-colors">
-                      {pdf.title}
-                    </h3>
-                  </CardHeader>
-                  
-                  <CardContent className="p-4 pt-2 flex-grow">
-                    <p className="text-sm text-muted-foreground line-clamp-2 mb-2">
-                      {pdf.description}
-                    </p>
-                    <div className="text-xs flex items-center text-muted-foreground">
-                      <FileText className="h-3 w-3 mr-1" />
-                      {pdf.fileSize} PDF
-                    </div>
-                  </CardContent>
-                  
-                  <CardFooter className="p-4 pt-0">
-                    <Button 
-                      className="w-full"
-                      onClick={() => openRequestModal(pdf)}
-                    >
-                      <Mail className="mr-2 h-4 w-4" />
-                      Request Access
-                    </Button>
-                  </CardFooter>
-                </Card>
-              </motion.div>
-            ))}
-          </div>
+                    
+                    <CardHeader className="p-4 pb-0">
+                      <div className="flex justify-between items-center mb-2">
+                        <span className="text-xs text-muted-foreground">
+                          ID: {product.id}
+                        </span>
+                        {product.featured && (
+                          <span className="text-xs font-medium px-2 py-1 bg-amber-500/10 text-amber-600 dark:text-amber-400 rounded-full">
+                            Featured
+                          </span>
+                        )}
+                      </div>
+                      <StarRating rating={4.5} />
+                      <h3 className="font-semibold text-lg mt-2 line-clamp-1 group-hover:text-primary transition-colors">
+                        {product.title}
+                      </h3>
+                    </CardHeader>
+                    
+                    <CardContent className="p-4 pt-2 flex-grow">
+                      <p className="text-sm text-muted-foreground line-clamp-2 mb-2">
+                        {product.description}
+                      </p>
+                      <div className="flex justify-between items-center mt-3">
+                        <div className="text-xs flex items-center text-muted-foreground">
+                          {getCategoryIcon(product.category)}
+                          <span className="ml-1">{product.category}</span>
+                        </div>
+                        <div className="font-semibold">
+                          {product.sale_price !== null ? (
+                            <div className="flex flex-col items-end">
+                              <span className="line-through text-xs text-muted-foreground">${product.price}</span>
+                              <span className="text-green-500">${product.sale_price}</span>
+                            </div>
+                          ) : (
+                            <span>${product.price}</span>
+                          )}
+                        </div>
+                      </div>
+                    </CardContent>
+                    
+                    <CardFooter className="p-4 pt-0">
+                      <Button 
+                        className="w-full"
+                        onClick={() => openRequestModal(product)}
+                      >
+                        <Mail className="mr-2 h-4 w-4" />
+                        Request Access
+                      </Button>
+                    </CardFooter>
+                  </Card>
+                </motion.div>
+              ))}
+            </div>
+          )}
 
           {/* Pagination */}
           {totalPages > 1 && (
@@ -508,45 +491,26 @@ const ShopPage = () => {
       <Dialog open={isRequestModalOpen} onOpenChange={setIsRequestModalOpen}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
-            <DialogTitle>Request PDF Access</DialogTitle>
+            <DialogTitle>Request Product Access</DialogTitle>
             <DialogDescription>
-              {selectedPdf && (
+              {selectedProduct && (
                 <div className="mt-2">
-                  <span className="font-medium">{selectedPdf.title}</span>
+                  <span className="font-medium">{selectedProduct.title}</span>
                   <p className="text-sm text-muted-foreground mt-1">
-                    {selectedPdf.description}
+                    {selectedProduct.description}
                   </p>
                 </div>
               )}
             </DialogDescription>
           </DialogHeader>
-          <div className="grid gap-4 py-4">
-            <div className="grid gap-2">
-              <label htmlFor="message" className="text-sm font-medium">
-                Your Message
-              </label>
-              <Textarea
-                id="message"
-                placeholder="Please briefly explain why you're interested in accessing this PDF..."
-                rows={5}
-                value={emailMessage}
-                onChange={(e) => setEmailMessage(e.target.value)}
-              />
-            </div>
-          </div>
-          <DialogFooter>
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() => setIsRequestModalOpen(false)}
-            >
-              Cancel
-            </Button>
-            <Button type="button" onClick={handleSubmitRequest}>
-              <Mail className="mr-2 h-4 w-4" />
-              Send Request
-            </Button>
-          </DialogFooter>
+          
+          {selectedProduct && (
+            <ProductRequestForm 
+              product={selectedProduct} 
+              onSuccess={handleRequestSuccess} 
+              onCancel={closeRequestModal}
+            />
+          )}
         </DialogContent>
       </Dialog>
     </div>

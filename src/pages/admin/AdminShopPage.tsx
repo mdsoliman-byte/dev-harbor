@@ -36,8 +36,14 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "@/components/ui/tabs";
 import { Checkbox } from '@/components/ui/checkbox';
-import { Plus, Pencil, Trash } from 'lucide-react';
+import { Plus, Pencil, Trash, ShoppingBag, FileText } from 'lucide-react';
 import { 
   Product, 
   fetchProducts, 
@@ -47,6 +53,7 @@ import {
   deleteProduct
 } from '@/services/api/shop';
 import { useToast } from '@/components/ui/use-toast';
+import ProductRequestManagement from '@/components/admin/shop/ProductRequestManagement';
 
 const formSchema = z.object({
   title: z.string().min(1, 'Title is required'),
@@ -68,6 +75,7 @@ const AdminShopPage = () => {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState(false);
+  const [activeTab, setActiveTab] = useState("products");
   const { toast } = useToast();
   
   const form = useForm<FormValues>({
@@ -238,72 +246,93 @@ const AdminShopPage = () => {
   return (
     <div className="p-4">
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold">Manage Shop Products</h1>
+        <h1 className="text-2xl font-bold">Shop Management</h1>
         <Button onClick={() => handleOpenDialog()}>
           <Plus className="mr-2 h-4 w-4" /> Add New Product
         </Button>
       </div>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Products</CardTitle>
-          <CardDescription>Manage your shop products</CardDescription>
-        </CardHeader>
-        <CardContent>
-          {loading && products.length === 0 ? (
-            <div className="flex justify-center p-4">
-              <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
-            </div>
-          ) : (
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Title</TableHead>
-                  <TableHead>Price</TableHead>
-                  <TableHead>Category</TableHead>
-                  <TableHead>In Stock</TableHead>
-                  <TableHead>Featured</TableHead>
-                  <TableHead className="text-right">Actions</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {products.length > 0 ? (
-                  products.map((product) => (
-                    <TableRow key={product.id}>
-                      <TableCell>{product.title}</TableCell>
-                      <TableCell>
-                        {product.sale_price !== null ? (
-                          <div>
-                            <span className="line-through text-muted-foreground">${product.price}</span>
-                            <span className="ml-2 text-green-500">${product.sale_price}</span>
-                          </div>
-                        ) : (
-                          <span>${product.price}</span>
-                        )}
-                      </TableCell>
-                      <TableCell>{product.category}</TableCell>
-                      <TableCell>{product.in_stock ? 'Yes' : 'No'}</TableCell>
-                      <TableCell>{product.featured ? 'Yes' : 'No'}</TableCell>
-                      <TableCell className="text-right">
-                        <Button variant="ghost" size="icon" onClick={() => handleOpenDialog(product)}>
-                          <Pencil className="h-4 w-4" />
-                        </Button>
-                        <Button variant="ghost" size="icon" onClick={() => handleDelete(product)}>
-                          <Trash className="h-4 w-4" />
-                        </Button>
-                      </TableCell>
-                    </TableRow>
-                  ))
-                ) : (
-                  <TableRow>
-                    <TableCell colSpan={6} className="text-center">No products found</TableCell>
-                  </TableRow>
-                )}
-              </TableBody>
-            </Table>
-          )}
-        </CardContent>
-      </Card>
+      <Tabs defaultValue="products" value={activeTab} onValueChange={setActiveTab} className="w-full mb-6">
+        <TabsList className="grid w-full md:w-auto grid-cols-2 md:flex">
+          <TabsTrigger value="products" className="flex items-center">
+            <ShoppingBag className="mr-2 h-4 w-4" />
+            Products
+          </TabsTrigger>
+          <TabsTrigger value="requests" className="flex items-center">
+            <FileText className="mr-2 h-4 w-4" />
+            Access Requests
+          </TabsTrigger>
+        </TabsList>
+        
+        <TabsContent value="products">
+          <Card>
+            <CardHeader>
+              <CardTitle>Products</CardTitle>
+              <CardDescription>Manage your shop products</CardDescription>
+            </CardHeader>
+            <CardContent>
+              {loading && products.length === 0 ? (
+                <div className="flex justify-center p-4">
+                  <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+                </div>
+              ) : (
+                <div className="overflow-x-auto">
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>Title</TableHead>
+                        <TableHead>Price</TableHead>
+                        <TableHead>Category</TableHead>
+                        <TableHead>In Stock</TableHead>
+                        <TableHead>Featured</TableHead>
+                        <TableHead className="text-right">Actions</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {products.length > 0 ? (
+                        products.map((product) => (
+                          <TableRow key={product.id}>
+                            <TableCell>{product.title}</TableCell>
+                            <TableCell>
+                              {product.sale_price !== null ? (
+                                <div>
+                                  <span className="line-through text-muted-foreground">${product.price}</span>
+                                  <span className="ml-2 text-green-500">${product.sale_price}</span>
+                                </div>
+                              ) : (
+                                <span>${product.price}</span>
+                              )}
+                            </TableCell>
+                            <TableCell>{product.category}</TableCell>
+                            <TableCell>{product.in_stock ? 'Yes' : 'No'}</TableCell>
+                            <TableCell>{product.featured ? 'Yes' : 'No'}</TableCell>
+                            <TableCell className="text-right">
+                              <Button variant="ghost" size="icon" onClick={() => handleOpenDialog(product)}>
+                                <Pencil className="h-4 w-4" />
+                              </Button>
+                              <Button variant="ghost" size="icon" onClick={() => handleDelete(product)}>
+                                <Trash className="h-4 w-4" />
+                              </Button>
+                            </TableCell>
+                          </TableRow>
+                        ))
+                      ) : (
+                        <TableRow>
+                          <TableCell colSpan={6} className="text-center">No products found</TableCell>
+                        </TableRow>
+                      )}
+                    </TableBody>
+                  </Table>
+                </div>
+              )}
+            </CardContent>
+          </Card>
+        </TabsContent>
+        
+        <TabsContent value="requests">
+          <ProductRequestManagement />
+        </TabsContent>
+      </Tabs>
 
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
         <DialogContent className="max-w-2xl">
