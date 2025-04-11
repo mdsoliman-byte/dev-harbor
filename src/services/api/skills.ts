@@ -9,14 +9,66 @@ export interface Skill {
   description: string;
   icon: string;
   category: string;
+  isEditing?: boolean; // UI state field for admin dashboard
 }
 
-// Fetch skills data
-export const fetchSkillsData = async (): Promise<Skill[]> => {
+// Parameters for filtering skills
+export interface SkillParams {
+  category?: string;
+  search?: string;
+  sortBy?: 'title' | 'category' | 'id';
+  sortOrder?: 'asc' | 'desc';
+}
+
+// Fetch skills data with optional filters
+export const fetchSkillsData = async (params?: SkillParams): Promise<Skill[]> => {
   try {
+    // In a real API, these would be query params
+    // For this mock API, we'll filter on the client side
     const response = await api.get('skills/data/');
     console.log('Skills data:', response.data);
-    return response.data;
+    
+    let skills = response.data;
+    
+    // Apply filters if needed
+    if (params) {
+      // Filter by category
+      if (params.category) {
+        skills = skills.filter((skill: Skill) => 
+          skill.category === params.category
+        );
+      }
+      
+      // Search by title or description
+      if (params.search) {
+        const searchTerm = params.search.toLowerCase();
+        skills = skills.filter((skill: Skill) => 
+          skill.title.toLowerCase().includes(searchTerm) || 
+          skill.description.toLowerCase().includes(searchTerm)
+        );
+      }
+      
+      // Sort results
+      if (params.sortBy) {
+        skills.sort((a: Skill, b: Skill) => {
+          const aValue = a[params.sortBy as keyof Skill];
+          const bValue = b[params.sortBy as keyof Skill];
+          
+          if (typeof aValue === 'string' && typeof bValue === 'string') {
+            return params.sortOrder === 'desc' 
+              ? bValue.localeCompare(aValue) 
+              : aValue.localeCompare(bValue);
+          }
+          
+          // Default for non-string values
+          return params.sortOrder === 'desc' 
+            ? Number(bValue) - Number(aValue) 
+            : Number(aValue) - Number(bValue);
+        });
+      }
+    }
+    
+    return skills;
   } catch (error) {
     console.error('Error fetching skills data:', error);
     return defaultSkillsData;
@@ -50,7 +102,10 @@ export const createSkill = async (data: Omit<Skill, 'id'>): Promise<Skill> => {
 // Update single skill
 export const updateSkill = async (id: number, data: Partial<Skill>): Promise<Skill> => {
   try {
-    const response = await api.put(`skills/${id}/update/`, data);
+    // Remove isEditing from data before sending to API
+    const { isEditing, ...apiData } = data;
+    
+    const response = await api.put(`skills/${id}/update/`, apiData);
     console.log('Skill updated:', response.data);
     return response.data;
   } catch (error) {
@@ -79,6 +134,21 @@ export const fetchSkillCategories = async (): Promise<string[]> => {
   } catch (error) {
     console.error('Error fetching skill categories:', error);
     return defaultSkillCategories;
+  }
+};
+
+// Fetch skill by ID
+export const fetchSkillById = async (id: number): Promise<Skill> => {
+  try {
+    const response = await api.get(`skills/${id}/`);
+    console.log('Skill details:', response.data);
+    return response.data;
+  } catch (error) {
+    console.error(`Error fetching skill with id ${id}:`, error);
+    // Return a placeholder skill for error case
+    const placeholder = defaultSkillsData.find(skill => skill.id === id);
+    if (placeholder) return placeholder;
+    throw error;
   }
 };
 

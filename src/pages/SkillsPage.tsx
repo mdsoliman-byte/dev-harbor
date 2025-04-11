@@ -2,65 +2,72 @@
 import { motion } from 'framer-motion';
 import { Code, Server, Database, Terminal, BarChart, ChartPie, Brain, FileCode, ChartBar } from 'lucide-react';
 import { useTheme } from '@/components/ThemeProvider';
-
-const skillCategories = [
-  {
-    id: 'programming',
-    title: 'Programming Languages',
-    icon: Terminal,
-    skills: [
-      { name: 'Python', level: 95 },
-      { name: 'R', level: 90 },
-      { name: 'SQL', level: 85 },
-      { name: 'Shell Scripting', level: 80 },
-      { name: 'JavaScript', level: 75 },
-      { name: 'Julia', level: 65 },
-    ]
-  },
-  {
-    id: 'ml',
-    title: 'Machine Learning & AI',
-    icon: Brain,
-    skills: [
-      { name: 'scikit-learn', level: 90 },
-      { name: 'TensorFlow/Keras', level: 85 },
-      { name: 'PyTorch', level: 80 },
-      { name: 'Natural Language Processing', level: 85 },
-      { name: 'Computer Vision', level: 75 },
-      { name: 'Time Series Analysis', level: 90 },
-    ]
-  },
-  {
-    id: 'dataanalysis',
-    title: 'Data Analysis & Visualization',
-    icon: ChartPie,
-    skills: [
-      { name: 'Pandas', level: 95 },
-      { name: 'NumPy', level: 90 },
-      { name: 'Matplotlib/Seaborn', level: 90 },
-      { name: 'ggplot2', level: 85 },
-      { name: 'Tableau', level: 80 },
-      { name: 'D3.js', level: 70 },
-    ]
-  },
-  {
-    id: 'dataengineering',
-    title: 'Data Engineering',
-    icon: Database,
-    skills: [
-      { name: 'PostgreSQL/MySQL', level: 85 },
-      { name: 'MongoDB', level: 80 },
-      { name: 'Apache Spark', level: 75 },
-      { name: 'Airflow', level: 70 },
-      { name: 'ETL Pipeline Design', level: 85 },
-      { name: 'Data Warehousing', level: 80 },
-    ]
-  }
-];
+import { useState, useEffect } from 'react';
+import { Skill, fetchSkillsData } from '@/services/api/skills';
 
 const SkillsPage = () => {
   const { theme } = useTheme();
   const isDark = theme === "dark";
+  const [skills, setSkills] = useState<Skill[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  
+  // Group skills by category for display
+  const groupedSkills = skills.reduce((acc, skill) => {
+    const category = skill.category;
+    if (!acc[category]) {
+      acc[category] = [];
+    }
+    acc[category].push(skill);
+    return acc;
+  }, {} as Record<string, Skill[]>);
+  
+  useEffect(() => {
+    const loadSkills = async () => {
+      try {
+        setLoading(true);
+        const data = await fetchSkillsData();
+        setSkills(data);
+        setError(null);
+      } catch (err) {
+        setError('Failed to load skills data');
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    
+    loadSkills();
+  }, []);
+  
+  // Map category names to icon components
+  const categoryIcons: Record<string, any> = {
+    'Development': Code,
+    'Data': Database,
+    'Design': ChartPie,
+    'Infrastructure': Terminal,
+    'Business': ChartBar,
+    'Other': FileCode
+  };
+  
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+      </div>
+    );
+  }
+  
+  if (error) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-red-500 text-center">
+          <p className="text-2xl font-bold mb-2">Error</p>
+          <p>{error}</p>
+        </div>
+      </div>
+    );
+  }
   
   return (
     <div className="min-h-screen py-16 px-4 md:px-8 lg:px-16">
@@ -79,9 +86,9 @@ const SkillsPage = () => {
         </motion.div>
         
         <div className="space-y-20">
-          {skillCategories.map((category, categoryIndex) => (
+          {Object.entries(groupedSkills).map(([category, categorySkills], categoryIndex) => (
             <motion.div 
-              key={category.id}
+              key={category}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: categoryIndex * 0.1 }}
@@ -89,29 +96,33 @@ const SkillsPage = () => {
             >
               <div className="flex items-center gap-3 mb-8">
                 <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
-                  <category.icon className="h-6 w-6 text-primary" />
+                  {categoryIcons[category] ? 
+                    React.createElement(categoryIcons[category], { className: "h-6 w-6 text-primary" }) : 
+                    <Code className="h-6 w-6 text-primary" />
+                  }
                 </div>
-                <h2 className="text-2xl md:text-3xl font-display font-bold">{category.title}</h2>
+                <h2 className="text-2xl md:text-3xl font-display font-bold">{category}</h2>
               </div>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {category.skills.map((skill, skillIndex) => (
+                {categorySkills.map((skill, skillIndex) => (
                   <motion.div 
-                    key={skill.name}
+                    key={skill.id}
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ duration: 0.3, delay: skillIndex * 0.05 + categoryIndex * 0.1 }}
                     className="glass-morphism rounded-lg p-5"
                   >
                     <div className="flex justify-between items-center mb-2">
-                      <h3 className="font-medium">{skill.name}</h3>
-                      <span className="text-sm text-muted-foreground">{skill.level}%</span>
+                      <h3 className="font-medium">{skill.title}</h3>
+                      <span className="text-sm text-muted-foreground">Expert</span>
                     </div>
+                    <p className="text-sm text-muted-foreground mb-4">{skill.description}</p>
                     <div className="w-full bg-muted rounded-full h-2">
                       <motion.div 
                         className="bg-primary h-2 rounded-full"
                         initial={{ width: 0 }}
-                        animate={{ width: `${skill.level}%` }}
+                        animate={{ width: "85%" }}
                         transition={{ duration: 1, delay: skillIndex * 0.05 + categoryIndex * 0.1 }}
                       />
                     </div>
