@@ -4,6 +4,7 @@ import { Code, Server, Database, Terminal, BarChart, ChartPie, Brain, FileCode, 
 import { useTheme } from '@/components/ThemeProvider';
 import { useState, useEffect } from 'react';
 import { Skill, fetchSkillsData } from '@/services/api/skills';
+import * as React from 'react';
 
 const SkillsPage = () => {
   const { theme } = useTheme();
