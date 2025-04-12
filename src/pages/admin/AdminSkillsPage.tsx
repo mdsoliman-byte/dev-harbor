@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Plus, Loader2 } from 'lucide-react';
@@ -21,7 +20,7 @@ const AdminSkillsPage: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>('');
   const [isCreating, setIsCreating] = useState(false);
   const [newSkill, setNewSkill] = useState<Omit<Skill, 'id'>>({
-    title: '',
+    name: '',
     description: '',
     icon: 'Code',
     category: 'Development'
@@ -56,6 +55,9 @@ const AdminSkillsPage: React.FC = () => {
     loadData();
   }, [toast]);
 
+  // Filter out invalid categories before passing to SkillFilters
+  const validCategories = categories.filter(category => category.trim() !== '');
+
   // Toggle editing state for a skill
   const handleToggleEdit = (index: number) => {
     const updatedSkills = [...skills];
@@ -81,7 +83,7 @@ const AdminSkillsPage: React.FC = () => {
   // Add skill
   const handleAddSkill = async () => {
     try {
-      if (!newSkill.title.trim()) {
+      if (!newSkill.name.trim()) {
         toast({
           title: "Validation Error",
           description: "Skill title is required",
@@ -95,7 +97,7 @@ const AdminSkillsPage: React.FC = () => {
       setSkills([...skills, createdSkill]);
       setIsCreating(false);
       setNewSkill({
-        title: '',
+        name: '',
         description: '',
         icon: 'Code',
         category: 'Development'
@@ -173,7 +175,7 @@ const AdminSkillsPage: React.FC = () => {
   const handleCancelCreate = () => {
     setIsCreating(false);
     setNewSkill({
-      title: '',
+      name: '',
       description: '',
       icon: 'Code',
       category: 'Development'
@@ -183,7 +185,7 @@ const AdminSkillsPage: React.FC = () => {
   // Filter skills based on search term and category
   const filteredSkills = skills.filter(skill => {
     const matchesSearch = searchTerm === '' || 
-      skill.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      skill.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       skill.description.toLowerCase().includes(searchTerm.toLowerCase());
     
     const matchesCategory = selectedCategory === '' || skill.category === selectedCategory;
@@ -222,7 +224,7 @@ const AdminSkillsPage: React.FC = () => {
         setSearchTerm={setSearchTerm}
         selectedCategory={selectedCategory}
         setSelectedCategory={setSelectedCategory}
-        categories={categories}
+        categories={validCategories} // Use filtered categories
       />
 
       {/* Create New Skill Form */}

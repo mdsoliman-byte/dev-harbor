@@ -41,7 +41,7 @@ const SkillsListView: React.FC<SkillsListViewProps> = ({
               <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
                 <span className="text-xs font-medium text-primary">{skill.id}</span>
               </div>
-              <h3 className="font-medium text-lg">{skill.title}</h3>
+              <h3 className="font-medium text-lg">{skill.name}</h3>
             </div>
             <div className="flex gap-2">
               <Button 

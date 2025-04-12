@@ -57,7 +57,7 @@ const SkillForm: React.FC<SkillFormProps> = ({
         <div className="space-y-2">
           <label className="text-sm font-medium">Title</label>
           <Input 
-            value={skill.title} 
+            value={skill.name} 
             onChange={(e) => onUpdate(index, 'title', e.target.value)}
             disabled={!isEditing}
           />

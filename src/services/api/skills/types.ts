@@ -14,6 +14,6 @@ export interface Skill {
 export interface SkillParams {
   category?: string;
   search?: string;
-  sortBy?: 'title' | 'category' | 'id';
+  sortBy?: 'name' | 'category' | 'id';
   sortOrder?: 'asc' | 'desc';
 }

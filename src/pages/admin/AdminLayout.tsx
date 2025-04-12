@@ -1,6 +1,6 @@
 import { PropsWithChildren, useEffect, useState } from 'react';
 import { Navigate, useLocation, useNavigate } from 'react-router-dom';
-import { LayoutDashboard, FileText, User, Settings, ShoppingBag, LogOut, Menu, X, Info, FolderKanban } from 'lucide-react';
+import { LayoutDashboard, FileText, User, Settings,ContactRound , Store , LogOut, Menu, X, Info, FolderKanban,BicepsFlexed  } from 'lucide-react';
 import { logout, isAdminAuthenticated } from '@/services/api';
 import { Button } from '@/components/ui/button';
 import { ThemeToggle } from '@/components/ThemeProvider';
@@ -49,6 +49,21 @@ const AdminLayout = ({ children }: PropsWithChildren) => {
       path: '/admin/settings', 
       label: 'Settings', 
       icon: Settings 
+    },
+    { 
+      path: '/admin/Contact', 
+      label: 'Contact', 
+      icon: ContactRound  
+    },
+    { 
+      path: '/admin/Shop', 
+      label: 'Shop', 
+      icon: Store   
+    },
+    { 
+      path: '/admin/skills', 
+      label: 'skills', 
+      icon: BicepsFlexed   
     },
   ];
 
