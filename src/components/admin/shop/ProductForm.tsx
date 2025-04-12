@@ -10,19 +10,16 @@ import {
   DialogTitle,
   DialogFooter
 } from '@/components/ui/dialog';
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
+import { Form } from '@/components/ui/form';
 import { Button } from '@/components/ui/button';
-import { Checkbox } from '@/components/ui/checkbox';
 import { Product } from '@/services/api/shop';
+
+// Import field components
+import BasicInfoFields from './form-fields/BasicInfoFields';
+import DescriptionField from './form-fields/DescriptionField';
+import PriceFields from './form-fields/PriceFields';
+import MetadataFields from './form-fields/MetadataFields';
+import StatusFields from './form-fields/StatusFields';
 
 const formSchema = z.object({
   title: z.string().min(1, 'Title is required'),
@@ -126,174 +123,19 @@ const ProductForm = ({
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <FormField
-                control={form.control}
-                name="title"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Title</FormLabel>
-                    <FormControl>
-                      <Input 
-                        {...field} 
-                        onBlur={() => !editingProduct && generateSlug()}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="slug"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Slug</FormLabel>
-                    <FormControl>
-                      <div className="flex space-x-2">
-                        <Input {...field} />
-                        {!editingProduct && (
-                          <Button 
-                            type="button" 
-                            variant="outline" 
-                            onClick={generateSlug}
-                          >
-                            Generate
-                          </Button>
-                        )}
-                      </div>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-
-            <FormField
-              control={form.control}
-              name="description"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Description</FormLabel>
-                  <FormControl>
-                    <Textarea {...field} rows={5} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
+            <BasicInfoFields 
+              form={form} 
+              editingProduct={!!editingProduct} 
+              onGenerateSlug={generateSlug} 
             />
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <FormField
-                control={form.control}
-                name="price"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Price ($)</FormLabel>
-                    <FormControl>
-                      <Input type="number" step="0.01" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="sale_price"
-                render={({ field }) => {
-                  return (
-                    <FormItem>
-                      <FormLabel>Sale Price ($) - Optional</FormLabel>
-                      <FormControl>
-                        <Input 
-                          type="number" 
-                          step="0.01" 
-                          {...field} 
-                          value={field.value === null ? '' : field.value}
-                          onChange={(e) => {
-                            const value = e.target.value === '' ? null : parseFloat(e.target.value);
-                            field.onChange(value);
-                          }}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  );
-                }}
-              />
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <FormField
-                control={form.control}
-                name="image"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Image URL</FormLabel>
-                    <FormControl>
-                      <Input {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="category"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Category</FormLabel>
-                    <FormControl>
-                      <Input {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <FormField
-                control={form.control}
-                name="in_stock"
-                render={({ field }) => (
-                  <FormItem className="flex flex-row items-start space-x-3 space-y-0 p-4 border rounded-md">
-                    <FormControl>
-                      <Checkbox
-                        checked={field.value}
-                        onCheckedChange={field.onChange}
-                      />
-                    </FormControl>
-                    <div className="space-y-1 leading-none">
-                      <FormLabel>In Stock</FormLabel>
-                      <p className="text-sm text-muted-foreground">
-                        Is this product available for purchase?
-                      </p>
-                    </div>
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="featured"
-                render={({ field }) => (
-                  <FormItem className="flex flex-row items-start space-x-3 space-y-0 p-4 border rounded-md">
-                    <FormControl>
-                      <Checkbox
-                        checked={field.value}
-                        onCheckedChange={field.onChange}
-                      />
-                    </FormControl>
-                    <div className="space-y-1 leading-none">
-                      <FormLabel>Featured Product</FormLabel>
-                      <p className="text-sm text-muted-foreground">
-                        This product will be displayed in the featured section
-                      </p>
-                    </div>
-                  </FormItem>
-                )}
-              />
-            </div>
+            
+            <DescriptionField form={form} />
+            
+            <PriceFields form={form} />
+            
+            <MetadataFields form={form} />
+            
+            <StatusFields form={form} />
 
             <DialogFooter>
               <Button variant="outline" type="button" onClick={handleClose}>

@@ -56,7 +56,7 @@ const ProductTable = ({ products, loading, onEdit, onDelete }: ProductTableProps
                     <span>${product.price}</span>
                   )}
                 </TableCell>
-                <TableCell>{product.category}</TableCell>
+                <TableCell>{product.category.name}</TableCell>
                 <TableCell>{product.in_stock ? 'Yes' : 'No'}</TableCell>
                 <TableCell>{product.featured ? 'Yes' : 'No'}</TableCell>
                 <TableCell className="text-right">
