@@ -1,5 +1,5 @@
 
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   Card, 
   CardContent, 
@@ -25,7 +25,7 @@ import {
 } from '@/components/ui/sheet';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { CheckCircle, XCircle, Eye, MailOpen, Mail, AlertCircle } from 'lucide-react';
+import { CheckCircle, XCircle, Eye, MailOpen, Mail, AlertCircle, User, Phone } from 'lucide-react';
 import { ProductRequest, fetchProductRequests, updateProductRequestStatus, fetchProducts, Product } from '@/services/api/shop';
 import { useToast } from '@/hooks/use-toast';
 import { format } from 'date-fns';
