@@ -3,20 +3,38 @@ import { Button } from '@/components/ui/button';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { fetchProjectData } from '@/services/api';
+import { fetchProjectData } from '@/services/api/projects';
 
 const ProjectsSection = () => {
   const [projects, setProjects] = useState([]);
 
   useEffect(() => {
     const loadProjects = async () => {
-      const data = await fetchProjectData();
-      const shuffled = data.sort(() => 0.5 - Math.random());
-      setProjects(shuffled.slice(0, 6));
+      try {
+        const data = await fetchProjectData();
+        if (Array.isArray(data)) {
+          const shuffled = data.sort(() => 0.5 - Math.random());
+          setProjects(shuffled.slice(0, 6));
+        } else {
+          console.error("Invalid data format:", data);
+          setProjects([]); // Set an empty array as fallback
+        }
+      } catch (error) {
+        console.error("Error fetching project data:", error);
+        setProjects([]); // Set an empty array as fallback
+      }
     };
     loadProjects();
   }, []);
-
+  // useEffect(() => {
+  //   const loadProjects = async () => {
+  //     const data = await fetchProjectData();
+  //     const shuffled = data.sort(() => 0.5 - Math.random());
+  //     setProjects(shuffled.slice(0, 6));
+  //   };
+  //   loadProjects();
+  // }, []);
+console.log(projects)
   // Animation variants
   const fadeIn = {
     hidden: { opacity: 0, y: 20 },
@@ -65,7 +83,7 @@ const ProjectsSection = () => {
           variants={staggerContainer}
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
         >
-          {projects.map((project, i) => (
+          {projects?.map((project, i) => (
             <motion.div
               key={i}
               variants={fadeIn}
@@ -96,7 +114,7 @@ const ProjectsSection = () => {
 
                 <h3 className="text-xl font-semibold mb-2 group-hover:text-primary transition-colors duration-300"> {project.title.length > 60 ? `${project.title.slice(0, 60)}...` : project.title}</h3>
                 <p className="text-muted-foreground text-sm mb-4">
-                  {project.description.length > 200 ? `${project.description.slice(0, 200)}...` : project.description}
+                  {project.short_description.length > 200 ? `${project.short_description.slice(0, 200)}...` : project.short_description}
                 </p>
 
 

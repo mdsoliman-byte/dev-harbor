@@ -11,6 +11,7 @@ interface ProductCardProps {
   product: Product;
   index: number;
   onRequestAccess: (product: Product) => void;
+  
 }
 
 const ProductCard = ({ product, index, onRequestAccess }: ProductCardProps) => {
@@ -29,7 +30,9 @@ const ProductCard = ({ product, index, onRequestAccess }: ProductCardProps) => {
           />
           <div className="absolute top-4 right-4">
             <span className="px-3 py-1 bg-primary/80 text-primary-foreground text-xs font-medium rounded-full backdrop-blur-sm">
-              {product.category}
+              {/* {product.category} */}
+
+             {product.category?.name || "Unknown Category"}
             </span>
           </div>
         </div>
@@ -57,8 +60,8 @@ const ProductCard = ({ product, index, onRequestAccess }: ProductCardProps) => {
           </p>
           <div className="flex justify-between items-center mt-3">
             <div className="text-xs flex items-center text-muted-foreground">
-              {getCategoryIcon(product.category)}
-              <span className="ml-1">{product.category}</span>
+              {getCategoryIcon(product.category?.slug || "")}
+              <span className="ml-1">{product.category?.name}</span>
             </div>
             <div className="font-semibold">
               {product.sale_price !== null ? (

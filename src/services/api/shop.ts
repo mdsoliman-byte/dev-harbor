@@ -1,6 +1,10 @@
 
 import api from './config';
-
+export interface ProductCategory {
+  id: number;
+  name: string;
+  slug: string;
+}
 export interface Product {
   id: number;
   title: string;
@@ -9,16 +13,12 @@ export interface Product {
   price: number;
   sale_price: number | null;
   image: string;
-  category: string;
+  category: ProductCategory;
   in_stock: boolean;
   featured: boolean;
 }
 
-export interface ProductCategory {
-  id: number;
-  name: string;
-  slug: string;
-}
+
 
 export interface ProductRequest {
   id?: number;
@@ -115,7 +115,7 @@ export const fetchProductRequests = async (): Promise<ProductRequest[]> => {
 };
 
 export const updateProductRequestStatus = async (
-  id: number, 
+  id: number,
   status: 'pending' | 'approved' | 'rejected'
 ): Promise<ProductRequest> => {
   try {
@@ -137,7 +137,7 @@ const defaultProducts: Product[] = [
     price: 29.99,
     sale_price: 19.99,
     image: "/placeholder.svg",
-    category: "eBooks",
+    category: { id: 1, name: "eBooks", slug: "ebooks" },
     in_stock: true,
     featured: true
   },
@@ -149,7 +149,7 @@ const defaultProducts: Product[] = [
     price: 59.99,
     sale_price: null,
     image: "/placeholder.svg",
-    category: "Themes",
+    category: { id: 2, name: "Themes", slug: "themes" },
     in_stock: true,
     featured: false
   },
@@ -161,11 +161,12 @@ const defaultProducts: Product[] = [
     price: 199.99,
     sale_price: 149.99,
     image: "/placeholder.svg",
-    category: "Courses",
+    category: { id: 3, name: "Courses", slug: "courses" },
     in_stock: true,
     featured: true
   }
 ];
+
 
 const defaultProductCategories: ProductCategory[] = [
   { id: 1, name: "eBooks", slug: "ebooks" },
