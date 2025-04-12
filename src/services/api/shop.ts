@@ -1,4 +1,3 @@
-
 import api from './config';
 export interface ProductCategory {
   id: number;
@@ -18,7 +17,16 @@ export interface Product {
   featured: boolean;
 }
 
-
+export interface ThemeSettings {
+  primaryColor: string;
+  secondaryColor: string;
+  accentColor: string;
+  fontFamily: string;
+  titleColor: string;
+  textColor: string;
+  backgroundColor: string;
+  isDarkMode: boolean;
+}
 
 export interface ProductRequest {
   id?: number;
@@ -93,7 +101,6 @@ export const deleteProduct = async (slug: string): Promise<void> => {
   }
 };
 
-// Product request functions
 export const submitProductRequest = async (request: ProductRequest): Promise<ProductRequest> => {
   try {
     const response = await api.post('shop/request/', request);
@@ -127,7 +134,26 @@ export const updateProductRequestStatus = async (
   }
 };
 
-// Default shop data
+export const fetchThemeSettings = async (): Promise<ThemeSettings> => {
+  try {
+    const response = await api.get('theme/settings/');
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching theme settings:', error);
+    return defaultThemeSettings;
+  }
+};
+
+export const updateThemeSettings = async (settings: Partial<ThemeSettings>): Promise<ThemeSettings> => {
+  try {
+    const response = await api.put('theme/settings/update/', settings);
+    return response.data;
+  } catch (error) {
+    console.error('Error updating theme settings:', error);
+    throw error;
+  }
+};
+
 const defaultProducts: Product[] = [
   {
     id: 1,
@@ -167,10 +193,20 @@ const defaultProducts: Product[] = [
   }
 ];
 
-
 const defaultProductCategories: ProductCategory[] = [
   { id: 1, name: "eBooks", slug: "ebooks" },
   { id: 2, name: "Themes", slug: "themes" },
   { id: 3, name: "Courses", slug: "courses" },
   { id: 4, name: "Templates", slug: "templates" }
 ];
+
+const defaultThemeSettings: ThemeSettings = {
+  primaryColor: '#4A4AE9',
+  secondaryColor: '#22223B',
+  accentColor: '#9A8C98',
+  fontFamily: 'Inter',
+  titleColor: '#22223B',
+  textColor: '#333333',
+  backgroundColor: '#F2E9E4',
+  isDarkMode: false
+};

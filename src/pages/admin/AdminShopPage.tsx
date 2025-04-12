@@ -8,7 +8,7 @@ import {
   CardTitle 
 } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Plus, ShoppingBag, FileText } from 'lucide-react';
+import { Plus, ShoppingBag, FileText, Palette } from 'lucide-react';
 import {
   Tabs,
   TabsContent,
@@ -17,8 +17,9 @@ import {
 } from "@/components/ui/tabs";
 import { Product } from '@/services/api/shop';
 import ProductTable from '@/components/admin/shop/ProductTable';
-import ProductForm from '@/components/admin/shop/ProductForm';
+import ProductForm, { ProductFormValues } from '@/components/admin/shop/ProductForm';
 import ProductRequestManagement from '@/components/admin/shop/ProductRequestManagement';
+import ThemeSettingsForm from '@/components/admin/theme/ThemeSettingsForm';
 import { useProducts } from '@/hooks/useProducts';
 
 const AdminShopPage = () => {
@@ -43,11 +44,22 @@ const AdminShopPage = () => {
     setDialogOpen(true);
   };
 
-  const handleFormSubmit = async (data: Partial<Product>) => {
+  const handleFormSubmit = async (data: ProductFormValues) => {
+    // Convert the form data to match what the API expects
+    const productData: Partial<Product> = {
+      ...data,
+      // Convert the category string to a ProductCategory object
+      category: {
+        id: 0, // This will be set by the backend
+        name: data.category,
+        slug: data.category.toLowerCase().replace(/\s+/g, '-')
+      }
+    };
+    
     if (editingProduct) {
-      await handleUpdateProduct(editingProduct.slug, data);
+      await handleUpdateProduct(editingProduct.slug, productData);
     } else {
-      await handleCreateProduct(data);
+      await handleCreateProduct(productData);
     }
     setDialogOpen(false);
     setEditingProduct(null);
@@ -57,13 +69,15 @@ const AdminShopPage = () => {
     <div className="p-4">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold">Shop Management</h1>
-        <Button onClick={() => handleOpenDialog()}>
-          <Plus className="mr-2 h-4 w-4" /> Add New Product
-        </Button>
+        {activeTab === "products" && (
+          <Button onClick={() => handleOpenDialog()}>
+            <Plus className="mr-2 h-4 w-4" /> Add New Product
+          </Button>
+        )}
       </div>
 
       <Tabs defaultValue="products" value={activeTab} onValueChange={setActiveTab} className="w-full mb-6">
-        <TabsList className="grid w-full md:w-auto grid-cols-2 md:flex">
+        <TabsList className="grid w-full md:w-auto grid-cols-3 md:flex">
           <TabsTrigger value="products" className="flex items-center">
             <ShoppingBag className="mr-2 h-4 w-4" />
             Products
@@ -71,6 +85,10 @@ const AdminShopPage = () => {
           <TabsTrigger value="requests" className="flex items-center">
             <FileText className="mr-2 h-4 w-4" />
             Access Requests
+          </TabsTrigger>
+          <TabsTrigger value="theme" className="flex items-center">
+            <Palette className="mr-2 h-4 w-4" />
+            Theme Settings
           </TabsTrigger>
         </TabsList>
         
@@ -93,6 +111,10 @@ const AdminShopPage = () => {
         
         <TabsContent value="requests">
           <ProductRequestManagement />
+        </TabsContent>
+
+        <TabsContent value="theme">
+          <ThemeSettingsForm />
         </TabsContent>
       </Tabs>
 

@@ -36,14 +36,15 @@ const formSchema = z.object({
   featured: z.boolean().default(false),
 });
 
-type FormValues = z.infer<typeof formSchema>;
+// This type represents the shape of the form values
+export type ProductFormValues = z.infer<typeof formSchema>;
 
 interface ProductFormProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   loading: boolean;
   editingProduct: Product | null;
-  onSubmit: (data: FormValues) => Promise<void>;
+  onSubmit: (data: ProductFormValues) => Promise<void>;
 }
 
 const ProductForm = ({ 
@@ -53,7 +54,7 @@ const ProductForm = ({
   editingProduct, 
   onSubmit 
 }: ProductFormProps) => {
-  const form = useForm<FormValues>({
+  const form = useForm<ProductFormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       title: '',
@@ -78,7 +79,7 @@ const ProductForm = ({
         price: editingProduct.price,
         sale_price: editingProduct.sale_price,
         image: editingProduct.image,
-        category: editingProduct.category,
+        category: editingProduct.category?.name || '',
         in_stock: editingProduct.in_stock,
         featured: editingProduct.featured,
       });
