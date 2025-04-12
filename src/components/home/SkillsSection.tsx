@@ -103,7 +103,7 @@ const SkillsSection = () => {
           ) : (
             // Show actual skills
             skills.map((skill, i) => {
-              const IconComponent = iconMap[skill.icon] || Code;
+              const IconComponent = iconMap[skill?.icon] || Code;
               
               return (
                 <motion.div 
@@ -120,7 +120,7 @@ const SkillsSection = () => {
                   <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-3">
                     <IconComponent className="h-6 w-6 text-primary" />
                   </div>
-                  <h3 className="text-center font-medium">{skill.title}</h3>
+                  <h3 className="text-center font-medium">{skill.name}</h3>
                 </motion.div>
               );
             })
