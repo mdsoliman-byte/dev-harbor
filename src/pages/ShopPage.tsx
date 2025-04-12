@@ -31,7 +31,7 @@ const ShopPage = () => {
   // Filter products by category and search query
   const filteredProducts = products
     .filter(product => 
-      selectedCategory === "All" || product.category === selectedCategory
+      selectedCategory === "All" || product.category.name === selectedCategory
     )
     .filter(product => 
       searchQuery === "" || 
