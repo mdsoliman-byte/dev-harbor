@@ -60,7 +60,7 @@ const ProductRequestForm = ({ product, onSuccess, onCancel }: ProductRequestForm
       
       toast({
         title: 'Request Sent Successfully!',
-        description: 'We'll get back to you soon with access to the PDF.',
+        description: "We'll get back to you soon with access to the PDF.",
       });
       
       onSuccess();
