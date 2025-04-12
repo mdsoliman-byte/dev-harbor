@@ -40,19 +40,21 @@ const SkillFilters: React.FC<SkillFiltersProps> = ({
               onValueChange={setSelectedCategory}
             >
               <SelectTrigger>
+                {/* This placeholder will show when no value is selected */}
                 <SelectValue placeholder="All Categories" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">All Categories</SelectItem>
                 {categories.map(category => (
-                  <SelectItem key={category} value={category}>{category}</SelectItem>
+                  <SelectItem key={category} value={category}>
+                    {category}
+                  </SelectItem>
                 ))}
               </SelectContent>
             </Select>
           </div>
           {(searchTerm || selectedCategory) && (
-            <Button 
-              variant="outline" 
+            <Button
+              variant="outline"
               onClick={() => {
                 setSearchTerm('');
                 setSelectedCategory('');

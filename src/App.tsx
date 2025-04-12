@@ -76,6 +76,7 @@ const App = () => (
                     <Route path="/admin/skills" element={<AdminLayout><AdminSkillsPage /></AdminLayout>} />
                     <Route path="/admin/contact" element={<AdminLayout><AdminContactPage /></AdminLayout>} />
                     <Route path="/admin/shop" element={<AdminLayout><AdminShopPage /></AdminLayout>} />
+                    <Route path="/admin/settings" element={<AdminLayout></AdminLayout>} />
                   </Route>
                   
                   <Route path="*" element={<NotFound />} />

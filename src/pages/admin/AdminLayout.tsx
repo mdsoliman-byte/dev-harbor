@@ -1,6 +1,6 @@
 import { PropsWithChildren, useEffect, useState } from 'react';
 import { Navigate, useLocation, useNavigate } from 'react-router-dom';
-import { LayoutDashboard, FileText, User, Settings,ContactRound , Store , LogOut, Menu, X, Info, FolderKanban,BicepsFlexed  } from 'lucide-react';
+import { LayoutDashboard, FileText, User, Settings, ContactRound, Store, LogOut, Menu, X, Info, FolderKanban, BicepsFlexed } from 'lucide-react';
 import { logout, isAdminAuthenticated } from '@/services/api';
 import { Button } from '@/components/ui/button';
 import { ThemeToggle } from '@/components/ThemeProvider';
@@ -20,51 +20,54 @@ const AdminLayout = ({ children }: PropsWithChildren) => {
   }
 
   const navItems = [
-    { 
-      path: '/admin/dashboard', 
-      label: 'Dashboard', 
-      icon: LayoutDashboard 
+    {
+      path: '/admin/dashboard',
+      label: 'Dashboard',
+      icon: LayoutDashboard
     },
-    { 
-      path: '/admin/blog', 
-      label: 'Blog Posts', 
-      icon: FileText 
-    },
-    { 
-      path: '/admin/projects', 
-      label: 'Projects', 
-      icon: FolderKanban 
-    },
-    { 
-      path: '/admin/home', 
+    {
+      path: '/admin/home',
       label: 'Home',
-      icon: User 
+      icon: User
     },
     {
       path: '/admin/about',
       label: 'About',
       icon: Info
     },
-    { 
-      path: '/admin/settings', 
-      label: 'Settings', 
-      icon: Settings 
+    {
+      path: '/admin/projects',
+      label: 'Projects',
+      icon: FolderKanban
     },
-    { 
-      path: '/admin/Contact', 
-      label: 'Contact', 
-      icon: ContactRound  
+    {
+      path: '/admin/skills',
+      label: 'Skills',
+      icon: BicepsFlexed
     },
-    { 
-      path: '/admin/Shop', 
-      label: 'Shop', 
-      icon: Store   
+    {
+      path: '/admin/Shop',
+      label: 'Shop',
+      icon: Store
     },
-    { 
-      path: '/admin/skills', 
-      label: 'skills', 
-      icon: BicepsFlexed   
+    {
+      path: '/admin/blog',
+      label: 'Blog Posts',
+      icon: FileText
     },
+    {
+      path: '/admin/Contact',
+      label: 'Contact',
+      icon: ContactRound
+    },
+    {
+      path: '/admin/settings',
+      label: 'Settings',
+      icon: Settings
+    },
+
+
+
   ];
 
   const handleLogout = () => {
@@ -74,13 +77,12 @@ const AdminLayout = ({ children }: PropsWithChildren) => {
 
   return (
     <div className="min-h-screen flex  md:flex-row ">
-      <aside 
-        className={`fixed inset-y-0 left-0 z-50 w-64 bg-background/90 backdrop-blur-md border-r border-border transform transition-transform duration-300 ease-in-out md:relative ${
-          sidebarOpen ? 'translate-x-0' : '-translate-x-full md:w-10'
-        }`}
+      <aside
+        className={`fixed inset-y-0 left-0 z-50 w-64 bg-background/90 backdrop-blur-md border-r border-border transform transition-transform duration-300 ease-in-out md:relative ${sidebarOpen ? 'translate-x-0' : '-translate-x-full md:w-10'
+          }`}
       >
         <div className="flex items-center justify-between h-16 px-4 border-b border-border">
-          <motion.h1 
+          <motion.h1
             className={`font-bold ${sidebarOpen ? 'text-lg' : 'hidden md:block text-center w-full'}`}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -97,22 +99,21 @@ const AdminLayout = ({ children }: PropsWithChildren) => {
             <X className="h-5 w-5" />
           </Button>
         </div>
-        
+
         <div className="p-4 overflow-y-auto h-[calc(100vh-8rem)]">
           <nav className="space-y-2">
             {navItems.map((item) => (
-              <motion.div 
+              <motion.div
                 key={item.path}
                 initial={{ x: -20, opacity: 0 }}
                 animate={{ x: 0, opacity: 1 }}
                 transition={{ duration: 0.3 }}
                 className="mb-1"
               >
-                <Button 
+                <Button
                   variant={location.pathname === item.path ? "default" : "ghost"}
-                  className={`w-full justify-start transition-all duration-200 ${
-                    !sidebarOpen ? 'justify-center px-2' : ''
-                  }`}
+                  className={`w-full justify-start transition-all duration-200 ${!sidebarOpen ? 'justify-center px-2' : ''
+                    }`}
                   onClick={() => navigate(item.path)}
                 >
                   <item.icon className={`h-5 w-5 ${!sidebarOpen ? 'mr-0' : 'mr-2'}`} />
@@ -122,10 +123,10 @@ const AdminLayout = ({ children }: PropsWithChildren) => {
             ))}
           </nav>
         </div>
-        
+
         <div className="absolute bottom-0 w-full p-4 border-t border-border">
-          <Button 
-            variant="outline" 
+          <Button
+            variant="outline"
             className="w-full flex items-center justify-center gap-2"
             onClick={handleLogout}
           >
@@ -134,7 +135,7 @@ const AdminLayout = ({ children }: PropsWithChildren) => {
           </Button>
         </div>
       </aside>
-      
+
       <div className={`flex-1 transition-all duration-300 ${sidebarOpen ? 'md:ml-2' : 'md:ml-0'}`}>
         <header className="h-16 bg-background/80 backdrop-blur-md border-b border-border flex items-center justify-between px-4">
           <Button
@@ -145,7 +146,7 @@ const AdminLayout = ({ children }: PropsWithChildren) => {
           >
             <Menu className="h-5 w-5" />
           </Button>
-          
+
           <Button
             variant="ghost"
             size="icon"
@@ -154,14 +155,14 @@ const AdminLayout = ({ children }: PropsWithChildren) => {
           >
             <Menu className="h-5 w-5" />
           </Button>
-          
+
           <div className="flex items-center gap-2">
             <LanguageTranslator />
             <WeatherWidget />
             <ThemeToggle />
           </div>
         </header>
-        
+
         <main className="p-4 md:p-6 overflow-auto max-h-[calc(100vh-4rem)]">
           {children}
         </main>

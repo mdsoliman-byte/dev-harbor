@@ -49,11 +49,11 @@ const Sidebar = ({ isOpen, setIsOpen }: SidebarProps) => {
   
   const navItems = [
     { to: '/', icon: Home, label: 'Home' },
+    { to: '/about', icon: User, label: 'About' },
     { to: '/projects', icon: Briefcase, label: 'Projects' },
     { to: '/skills', icon: Code, label: 'Skills' },
-    { to: '/blog', icon: FileText, label: 'Blog' },
     { to: '/shop', icon: ShoppingBag, label: 'Shop' },
-    { to: '/about', icon: User, label: 'About' },
+    { to: '/blog', icon: FileText, label: 'Blog' },
     { to: '/contact', icon: Mail, label: 'Contact' },
   ];
 
