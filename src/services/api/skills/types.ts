@@ -2,11 +2,12 @@
 // Skills types
 export interface Skill {
   id: number;
-  title: string;
+  name: string;
   description: string;
   icon: string;
   category: string;
   isEditing?: boolean; // UI state field for admin dashboard
+  progress?: string; // UI state field for admin dashboard
 }
 
 // Parameters for filtering skills

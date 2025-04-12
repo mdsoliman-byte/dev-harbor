@@ -26,7 +26,7 @@ export const fetchSkillsData = async (params?: SkillParams): Promise<Skill[]> =>
       if (params.search) {
         const searchTerm = params.search.toLowerCase();
         skills = skills.filter((skill: Skill) => 
-          skill.title.toLowerCase().includes(searchTerm) || 
+          skill.name.toLowerCase().includes(searchTerm) || 
           skill.description.toLowerCase().includes(searchTerm)
         );
       }

@@ -5,45 +5,51 @@ import { Skill } from './types';
 export const defaultSkillsData: Skill[] = [
   {
     id: 1,
-    title: "Frontend Development",
+    name: "Frontend Development",
     description: "React, Next.js, Vue.js",
     icon: "Code",
-    category: "Development"
+    category: "Development",
+    progress: "80",
   },
   {
     id: 2,
-    title: "Backend Development",
+    name: "Backend Development",
     description: "Node.js, Express, Django",
     icon: "Database",
-    category: "Development"
+    category: "Development",
+    progress: "80",
   },
   {
     id: 3,
-    title: "Data Science",
+    name: "Data Science",
     description: "Python, R, Machine Learning",
     icon: "BarChart",
-    category: "Data"
+    category: "Data",
+    progress: "80",
   },
   {
     id: 4,
-    title: "DevOps",
+    name: "DevOps",
     description: "Docker, Kubernetes, CI/CD",
     icon: "Terminal",
-    category: "Infrastructure"
+    category: "Infrastructure",
+    progress: "80",
   },
   {
     id: 5,
-    title: "UI/UX Design",
+    name: "UI/UX Design",
     description: "Figma, Adobe XD, User Research",
     icon: "PenTool",
-    category: "Design"
+    category: "Design",
+    progress: "80",
   },
   {
     id: 6,
-    title: "Mobile Development",
+    name: "Mobile Development",
     description: "React Native, Flutter, Swift",
     icon: "Smartphone",
-    category: "Development"
+    category: "Development",
+    progress: "80",
   }
 ];
 

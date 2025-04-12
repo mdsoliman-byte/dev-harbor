@@ -114,7 +114,7 @@ const SkillsPage = () => {
                     className="glass-morphism rounded-lg p-5"
                   >
                     <div className="flex justify-between items-center mb-2">
-                      <h3 className="font-medium">{skill.title}</h3>
+                      <h3 className="font-medium">{skill.name}</h3>
                       <span className="text-sm text-muted-foreground">Expert</span>
                     </div>
                     <p className="text-sm text-muted-foreground mb-4">{skill.description}</p>
@@ -122,7 +122,7 @@ const SkillsPage = () => {
                       <motion.div 
                         className="bg-primary h-2 rounded-full"
                         initial={{ width: 0 }}
-                        animate={{ width: "85%" }}
+                        animate={{ width: `${Number(skill?.progress) || 0}%` }}
                         transition={{ duration: 1, delay: skillIndex * 0.05 + categoryIndex * 0.1 }}
                       />
                     </div>
