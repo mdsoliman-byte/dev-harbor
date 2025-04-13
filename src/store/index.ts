@@ -1,5 +1,6 @@
 
 import { configureStore } from '@reduxjs/toolkit';
+// Import directly from the file path instead of trying to access it by name
 import authReducer from './slices/authSlice';
 
 // Create the store with the imported reducer
