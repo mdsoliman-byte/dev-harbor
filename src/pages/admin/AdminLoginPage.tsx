@@ -1,89 +1,70 @@
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Lock, User } from 'lucide-react';
-import { login, isAdminAuthenticated } from '@/services/api';
+import { useDispatch, useSelector } from 'react-redux';
+import { loginUser, clearError } from '@/store/slices/authSlice';
+import { RootState, AppDispatch } from '@/store';
 import { useToast } from '@/hooks/use-toast';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { useEffect } from 'react';
 
 const AdminLoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const dispatch = useDispatch<AppDispatch>();
   const { toast } = useToast();
+  
+  const { isLoading, isAuthenticated, isAdmin, error } = useSelector(
+    (state: RootState) => state.auth
+  );
 
   // Check if already logged in
   useEffect(() => {
-    if (isAdminAuthenticated()) {
+    if (isAuthenticated && isAdmin) {
       navigate('/admin/dashboard');
     }
-  }, [navigate]);
+  }, [isAuthenticated, isAdmin, navigate]);
 
-  // const handleSubmit = async (e: React.FormEvent) => {
-  //   e.preventDefault();
-  //   setIsLoading(true);
+  // Show error toast when auth error occurs
+  useEffect(() => {
+    if (error) {
+      toast({
+        title: 'Login failed',
+        description: error,
+        variant: 'destructive',
+      });
+      dispatch(clearError());
+    }
+  }, [error, toast, dispatch]);
 
-  //   try {
-  //     await login({ email, password });
-  //     toast({
-  //       title: 'Login successful',
-  //       description: 'Welcome to the admin dashboard',
-  //     });
-  //     // Force navigation to dashboard after successful login
-  //     navigate('/admin/dashboard', { replace: true });
-  //   } catch (error) {
-  //     toast({
-  //       title: 'Login failed',
-  //       description: 'Invalid email or password',
-  //       variant: 'destructive',
-  //     });
-  //   } finally {
-  //     setIsLoading(false);
-  //   }
-  // };
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsLoading(true);
-
-    try {
-      const result = await login({ email, password });
-      // Ensure we have a user object before checking role
-      if (result.user) {
-        if (result.user.user_type === 'admin') {
-          toast({
-            title: 'Login successful',
-            description: 'Welcome to the admin dashboard',
-          });
-          navigate('/admin/dashboard', { replace: true });
-        } else {
-          toast({
-            title: 'Login successful',
-            description: 'Welcome',
-          });
-          navigate('/', { replace: true });
-        }
+    
+    const result = await dispatch(loginUser({ email, password }));
+    
+    if (loginUser.fulfilled.match(result)) {
+      const user = result.payload.user;
+      
+      if (user && user.user_type === 'admin') {
+        toast({
+          title: 'Login successful',
+          description: 'Welcome to the admin dashboard',
+        });
+        navigate('/admin/dashboard', { replace: true });
       } else {
         toast({
-          title: 'Login failed',
-          description: 'User information missing in response',
+          title: 'Access denied',
+          description: 'You do not have admin privileges',
           variant: 'destructive',
         });
       }
-    } catch (error) {
-      toast({
-        title: 'Login failed',
-        description: 'Invalid email or password',
-        variant: 'destructive',
-      });
-    } finally {
-      setIsLoading(false);
     }
   };
+
   return (
     <div className="min-h-screen flex items-center justify-center px-4 py-12 bg-background relative">
       {/* Background image with overlay */}

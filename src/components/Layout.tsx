@@ -7,11 +7,13 @@ import { Menu, X } from 'lucide-react';
 import { Button } from './ui/button';
 import WeatherWidget from './header/WeatherWidget';
 import LanguageTranslator, { TranslationProvider, useTranslation } from './header/LanguageTranslator';
+import useAuth from '@/hooks/useAuth';
 
 const Layout = ({ children }: PropsWithChildren) => {
   const location = useLocation();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const { translate } = useTranslation();
+  const { isAuthenticated } = useAuth();
   
   // Scroll to top on route change
   useEffect(() => {

@@ -18,21 +18,14 @@ export const login = async (credentials: { email: string; password: string }) =>
 
         const { access_token, refresh_token, user } = response.data;
 
-        if (access_token) {
-            localStorage.setItem('refreshToken', refresh_token);
-
-            if (user && user.user_type === 'admin') {
-                localStorage.setItem('adminToken', access_token);
-                localStorage.setItem('adminUser', JSON.stringify(user || { email: credentials.email }));
-            } else {
-                localStorage.setItem('userToken', access_token);
-                localStorage.setItem('userInfo', JSON.stringify(user || { email: credentials.email }));
-            }
-            return response.data;
-        } else {
+        if (!access_token) {
             console.error('Access token missing in login response:', response.data);
             throw new Error('Authentication failed: Access token missing');
         }
+        
+        // Return data for Redux to handle
+        return response.data;
+        
     } catch (error: any) {
         console.error('Login failed:', error.response?.data || error.message);
         throw error;
@@ -40,15 +33,11 @@ export const login = async (credentials: { email: string; password: string }) =>
 };
 
 export const logout = () => {
-    const isAdmin = !!localStorage.getItem('adminToken');
-    localStorage.removeItem('adminToken');
-    localStorage.removeItem('userToken');
-    localStorage.removeItem('refreshToken');
-    localStorage.removeItem('adminUser');
-    localStorage.removeItem('userInfo');
-    window.location.href = isAdmin ? '/auth/login' : '/login';
+    // This is now handled by Redux
+    console.log('Logout called from API service');
 };
 
+// These functions are now handled by Redux and useAuth hook
 export const isAdminAuthenticated = () => {
     const token = localStorage.getItem('adminToken');
     console.log('Admin token found:', !!token);
@@ -67,5 +56,16 @@ export const getAdminUser = () => {
     } catch (e) {
         console.error('Error parsing admin user:', e);
         return null;
+    }
+};
+
+// New function to attempt token refresh
+export const refreshAccessToken = async (refreshToken: string) => {
+    try {
+        const response = await api.post('auth/refresh/', { refresh_token: refreshToken });
+        return response.data;
+    } catch (error) {
+        console.error('Token refresh failed:', error);
+        throw error;
     }
 };
