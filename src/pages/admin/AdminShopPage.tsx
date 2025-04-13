@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { 
   Card, 
@@ -17,10 +16,11 @@ import {
 } from "@/components/ui/tabs";
 import { Product } from '@/services/api/shop';
 import ProductTable from '@/components/admin/shop/ProductTable';
-import ProductForm, { ProductFormValues } from '@/components/admin/shop/ProductForm';
+import ProductForm from '@/components/admin/shop/ProductForm';
 import ProductRequestManagement from '@/components/admin/shop/ProductRequestManagement';
 import ThemeSettingsForm from '@/components/admin/theme/ThemeSettingsForm';
 import { useProducts } from '@/hooks/useProducts';
+import { ProductFormValues } from '@/components/admin/shop/form/productFormSchema';
 
 const AdminShopPage = () => {
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -45,12 +45,10 @@ const AdminShopPage = () => {
   };
 
   const handleFormSubmit = async (data: ProductFormValues) => {
-    // Convert the form data to match what the API expects
     const productData: Partial<Product> = {
       ...data,
-      // Convert the category string to a ProductCategory object
       category: {
-        id: 0, // This will be set by the backend
+        id: 0,
         name: data.category,
         slug: data.category.toLowerCase().replace(/\s+/g, '-')
       }
