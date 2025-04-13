@@ -4,6 +4,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 import { X, Home, Briefcase, Code, FileText, User, Mail, ShoppingBag } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { useTranslation } from './header/LanguageTranslator';
 
 interface NavItemProps {
   to: string;
@@ -42,19 +43,20 @@ interface SidebarProps {
 const Sidebar = ({ isOpen, setIsOpen }: SidebarProps) => {
   const location = useLocation();
   const isMobile = useIsMobile();
+  const { translate } = useTranslation();
   
   const closeSidebar = () => {
     setIsOpen(false);
   };
   
   const navItems = [
-    { to: '/', icon: Home, label: 'Home' },
-    { to: '/about', icon: User, label: 'About' },
-    { to: '/projects', icon: Briefcase, label: 'Projects' },
-    { to: '/skills', icon: Code, label: 'Skills' },
-    { to: '/shop', icon: ShoppingBag, label: 'Shop' },
-    { to: '/blog', icon: FileText, label: 'Blog' },
-    { to: '/contact', icon: Mail, label: 'Contact' },
+    { to: '/', icon: Home, label: translate('nav.home') },
+    { to: '/about', icon: User, label: translate('nav.about') },
+    { to: '/projects', icon: Briefcase, label: translate('nav.projects') },
+    { to: '/skills', icon: Code, label: translate('nav.skills') },
+    { to: '/shop', icon: ShoppingBag, label: translate('nav.shop') },
+    { to: '/blog', icon: FileText, label: translate('nav.blog') },
+    { to: '/contact', icon: Mail, label: translate('nav.contact') },
   ];
 
   return (
@@ -73,9 +75,6 @@ const Sidebar = ({ isOpen, setIsOpen }: SidebarProps) => {
         isOpen ? "translate-x-0" : "-translate-x-full",
       )}>
         <div className="flex flex-col h-full">
-          {/* Close button for mobile - only visible on mobile */}
-          
-
           <div className="p-6">
             <h1 className="text-xl font-semibold">MD SOLIMAN</h1>
             <p className="text-sm text-muted-foreground mt-1">Data Scientist</p>

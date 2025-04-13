@@ -71,12 +71,4 @@ const Layout = ({ children }: PropsWithChildren) => {
   );
 };
 
-const LayoutWithTranslation = ({ children }: PropsWithChildren) => {
-  return (
-    <TranslationProvider>
-      <Layout>{children}</Layout>
-    </TranslationProvider>
-  );
-};
-
-export default LayoutWithTranslation;
+export default Layout;

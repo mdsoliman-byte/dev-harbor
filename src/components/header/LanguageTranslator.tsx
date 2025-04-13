@@ -1,17 +1,16 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, createContext, useContext } from 'react';
 import { Globe, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { Switch } from '@/components/ui/switch';
 import { toast } from '@/hooks/use-toast';
-import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 
 type Language = {
   code: string;
   name: string;
 };
 
-// Reduced to just English and Bangla
+// Two languages - English and Bangla
 const languages: Language[] = [
   { code: 'en', name: 'English' },
   { code: 'bn', name: 'বাংলা' } // Bangla
@@ -21,9 +20,11 @@ const languages: Language[] = [
 export const TranslationContext = React.createContext<{
   currentLanguage: string;
   translate: (key: string) => string;
+  toggleLanguage: () => void;
 }>({
   currentLanguage: 'en',
   translate: (key) => key,
+  toggleLanguage: () => {}
 });
 
 // Dictionary of translations
@@ -37,10 +38,13 @@ const translations: Record<string, Record<string, string>> = {
     'nav.shop': 'Shop',
     'nav.about': 'About',
     'nav.contact': 'Contact',
+    'nav.dashboard': 'Dashboard',
+    'nav.settings': 'Settings',
     'lang.select': 'Select Language',
     'weather': 'Weather',
     'theme': 'Theme',
     'sidebar.toggle': 'Toggle sidebar',
+    'settings': 'Settings'
   },
   bn: {
     // Bangla translations
@@ -51,15 +55,18 @@ const translations: Record<string, Record<string, string>> = {
     'nav.shop': 'দোকান',
     'nav.about': 'সম্পর্কে',
     'nav.contact': 'যোগাযোগ',
+    'nav.dashboard': 'ড্যাশবোর্ড',
+    'nav.settings': 'সেটিংস',
     'lang.select': 'ভাষা নির্বাচন করুন',
     'weather': 'আবহাওয়া',
     'theme': 'থিম',
     'sidebar.toggle': 'সাইডবার টগল',
+    'settings': 'সেটিংস'
   }
 };
 
 export const useTranslation = () => {
-  return React.useContext(TranslationContext);
+  return useContext(TranslationContext);
 };
 
 export const TranslationProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -82,73 +89,47 @@ export const TranslationProvider: React.FC<{ children: React.ReactNode }> = ({ c
     return translations[currentLanguage][key] || key; // Fallback to key if translation not found
   };
 
-  const updateLanguage = (lang: string) => {
-    setCurrentLanguage(lang);
-    localStorage.setItem('selectedLanguage', lang);
-    document.documentElement.lang = lang;
+  const toggleLanguage = () => {
+    const newLanguage = currentLanguage === 'en' ? 'bn' : 'en';
+    setCurrentLanguage(newLanguage);
+    localStorage.setItem('selectedLanguage', newLanguage);
+    document.documentElement.lang = newLanguage;
+    
+    // Force re-render of all components to apply new translations
+    window.location.reload();
   };
 
   return (
-    <TranslationContext.Provider value={{ currentLanguage, translate }}>
+    <TranslationContext.Provider value={{ currentLanguage, translate, toggleLanguage }}>
       {children}
     </TranslationContext.Provider>
   );
 };
 
 const LanguageTranslator = () => {
-  const { currentLanguage, translate } = useTranslation();
+  const { currentLanguage, toggleLanguage } = useTranslation();
   const [isTranslating, setIsTranslating] = useState(false);
   
-  const handleLanguageChange = (value: string) => {
-    if (!value || value === currentLanguage) return;
+  const handleToggle = () => {
     setIsTranslating(true);
-    
-    // Small delay to show translation effect
     setTimeout(() => {
-      localStorage.setItem('selectedLanguage', value);
-      window.location.reload(); // Reload to apply translations everywhere
+      toggleLanguage();
     }, 300);
   };
 
   return (
-    <Popover>
-      <PopoverTrigger asChild>
-        <Button 
-          variant="outline" 
-          size="icon" 
-          className="rounded-full glass-morphism relative overflow-hidden mr-2"
-        >
-          {isTranslating ? 
-            <Loader2 className="h-4 w-4 animate-spin" /> : 
-            <Globe className="h-4 w-4" />
-          }
-          <span className="sr-only">Change language</span>
-        </Button>
-      </PopoverTrigger>
-      <PopoverContent className="w-48">
-        <div className="space-y-2">
-          <h3 className="font-medium text-center mb-3">{translate('lang.select')}</h3>
-          
-          <ToggleGroup 
-            type="single" 
-            value={currentLanguage}
-            onValueChange={handleLanguageChange}
-            className="justify-center w-full"
-          >
-            {languages.map((lang) => (
-              <ToggleGroupItem 
-                key={lang.code} 
-                value={lang.code} 
-                aria-label={lang.name}
-                className="w-16 text-center"
-              >
-                {lang.code.toUpperCase()}
-              </ToggleGroupItem>
-            ))}
-          </ToggleGroup>
-        </div>
-      </PopoverContent>
-    </Popover>
+    <div className="flex items-center gap-2 mr-2 px-2 py-1 rounded-full bg-background/50 border border-border">
+      <span className="text-xs font-medium">{currentLanguage === 'en' ? 'EN' : 'BN'}</span>
+      {isTranslating ? (
+        <Loader2 className="h-4 w-4 animate-spin" />
+      ) : (
+        <Switch
+          checked={currentLanguage === 'bn'}
+          onCheckedChange={handleToggle}
+          aria-label="Toggle language"
+        />
+      )}
+    </div>
   );
 };
 
