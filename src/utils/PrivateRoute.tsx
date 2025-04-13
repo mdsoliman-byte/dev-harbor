@@ -1,7 +1,7 @@
 
 import { Navigate, Outlet } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { RootState } from '@/store';
+import type { RootState } from '@/store';
 
 const PrivateRoute = () => {
   const { isAuthenticated, isAdmin, isLoading } = useSelector(

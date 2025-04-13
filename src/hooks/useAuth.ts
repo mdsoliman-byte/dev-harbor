@@ -2,7 +2,7 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { RootState } from '@/store';
+import type { RootState } from '@/store';
 import { logout, updateAuthState } from '@/store/slices/authSlice';
 import { isTokenExpired } from '@/utils/authUtils';
 
