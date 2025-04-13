@@ -1,9 +1,9 @@
 
 import React from 'react';
-import { FormField, FormItem, FormLabel, FormControl } from '@/components/ui/form';
+import { FormField, FormItem, FormLabel, FormControl, FormMessage } from '@/components/ui/form';
 import { Checkbox } from '@/components/ui/checkbox';
 import { UseFormReturn } from 'react-hook-form';
-import { ProductFormValues } from '../ProductForm';
+import { ProductFormValues } from '../form/productFormSchema';
 
 interface StatusFieldsProps {
   form: UseFormReturn<ProductFormValues>;

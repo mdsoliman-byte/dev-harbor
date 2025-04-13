@@ -4,7 +4,7 @@ import { FormField, FormItem, FormLabel, FormControl, FormMessage } from '@/comp
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { UseFormReturn } from 'react-hook-form';
-import { ProductFormValues } from '../ProductForm';
+import { ProductFormValues } from '../form/productFormSchema';
 
 interface BasicInfoFieldsProps {
   form: UseFormReturn<ProductFormValues>;
