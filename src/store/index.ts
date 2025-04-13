@@ -1,12 +1,11 @@
 
 import { configureStore } from '@reduxjs/toolkit';
-// Import directly from the file path instead of trying to access it by name
-import authReducer from './slices/authSlice';
+import authSlice from './slices/authSlice';
 
 // Create the store with the imported reducer
 export const store = configureStore({
   reducer: {
-    auth: authReducer,
+    auth: authSlice,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

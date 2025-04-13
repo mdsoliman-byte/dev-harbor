@@ -1,22 +1,24 @@
+
 import { PropsWithChildren, useEffect, useState } from 'react';
 import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { LayoutDashboard, FileText, User, Settings, ContactRound, Store, LogOut, Menu, X, Info, FolderKanban, BicepsFlexed } from 'lucide-react';
-import { logout, isAdminAuthenticated } from '@/services/api';
 import { Button } from '@/components/ui/button';
 import { ThemeToggle } from '@/components/ThemeProvider';
 import { motion } from 'framer-motion';
 import { NavigationMenu, NavigationMenuList, NavigationMenuItem, NavigationMenuLink, navigationMenuTriggerStyle } from '@/components/ui/navigation-menu';
 import WeatherWidget from '@/components/header/WeatherWidget';
 import LanguageTranslator, { useTranslation } from '@/components/header/LanguageTranslator';
+import useAuth from '@/hooks/useAuth';
 
 const AdminLayout = ({ children }: PropsWithChildren) => {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const location = useLocation();
   const navigate = useNavigate();
   const { translate } = useTranslation();
+  const { isAuthenticated, isAdmin, logout } = useAuth();
 
   // Redirect if not authenticated
-  if (!isAdminAuthenticated()) {
+  if (!isAuthenticated || !isAdmin) {
     return <Navigate to="/auth/login" replace />;
   }
 
@@ -70,7 +72,6 @@ const AdminLayout = ({ children }: PropsWithChildren) => {
 
   const handleLogout = () => {
     logout();
-    navigate('/login');
   };
 
   return (
