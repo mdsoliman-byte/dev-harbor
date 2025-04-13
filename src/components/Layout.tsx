@@ -6,11 +6,12 @@ import { ThemeToggle } from './ThemeProvider';
 import { Menu, X } from 'lucide-react';
 import { Button } from './ui/button';
 import WeatherWidget from './header/WeatherWidget';
-import LanguageTranslator from './header/LanguageTranslator';
+import LanguageTranslator, { TranslationProvider, useTranslation } from './header/LanguageTranslator';
 
 const Layout = ({ children }: PropsWithChildren) => {
   const location = useLocation();
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const { translate } = useTranslation();
   
   // Scroll to top on route change
   useEffect(() => {
@@ -59,7 +60,7 @@ const Layout = ({ children }: PropsWithChildren) => {
                 ) : (
                   <Menu className="h-5 w-5" />
                 )}
-                <span className="sr-only">Toggle sidebar</span>
+                <span className="sr-only">{translate('sidebar.toggle')}</span>
               </Button>
             </div>
             {children}
@@ -70,4 +71,12 @@ const Layout = ({ children }: PropsWithChildren) => {
   );
 };
 
-export default Layout;
+const LayoutWithTranslation = ({ children }: PropsWithChildren) => {
+  return (
+    <TranslationProvider>
+      <Layout>{children}</Layout>
+    </TranslationProvider>
+  );
+};
+
+export default LayoutWithTranslation;

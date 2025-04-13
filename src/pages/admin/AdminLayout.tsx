@@ -7,12 +7,13 @@ import { ThemeToggle } from '@/components/ThemeProvider';
 import { motion } from 'framer-motion';
 import { NavigationMenu, NavigationMenuList, NavigationMenuItem, NavigationMenuLink, navigationMenuTriggerStyle } from '@/components/ui/navigation-menu';
 import WeatherWidget from '@/components/header/WeatherWidget';
-import LanguageTranslator from '@/components/header/LanguageTranslator';
+import LanguageTranslator, { useTranslation } from '@/components/header/LanguageTranslator';
 
 const AdminLayout = ({ children }: PropsWithChildren) => {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const location = useLocation();
   const navigate = useNavigate();
+  const { translate } = useTranslation();
 
   // Redirect if not authenticated
   if (!isAdminAuthenticated()) {
@@ -22,52 +23,49 @@ const AdminLayout = ({ children }: PropsWithChildren) => {
   const navItems = [
     {
       path: '/admin/dashboard',
-      label: 'Dashboard',
+      label: translate('nav.dashboard'),
       icon: LayoutDashboard
     },
     {
       path: '/admin/home',
-      label: 'Home',
+      label: translate('nav.home'),
       icon: User
     },
     {
       path: '/admin/about',
-      label: 'About',
+      label: translate('nav.about'),
       icon: Info
     },
     {
       path: '/admin/projects',
-      label: 'Projects',
+      label: translate('nav.projects'),
       icon: FolderKanban
     },
     {
       path: '/admin/skills',
-      label: 'Skills',
+      label: translate('nav.skills'),
       icon: BicepsFlexed
     },
     {
       path: '/admin/Shop',
-      label: 'Shop',
+      label: translate('nav.shop'),
       icon: Store
     },
     {
       path: '/admin/blog',
-      label: 'Blog Posts',
+      label: translate('nav.blog'),
       icon: FileText
     },
     {
       path: '/admin/Contact',
-      label: 'Contact',
+      label: translate('nav.contact'),
       icon: ContactRound
     },
     {
       path: '/admin/settings',
-      label: 'Settings',
+      label: translate('settings'),
       icon: Settings
     },
-
-
-
   ];
 
   const handleLogout = () => {

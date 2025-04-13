@@ -3,73 +3,111 @@ import React, { useState, useEffect } from 'react';
 import { Globe, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { Label } from '@/components/ui/label';
 import { toast } from '@/hooks/use-toast';
+import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 
 type Language = {
   code: string;
   name: string;
 };
 
+// Reduced to just English and Bangla
 const languages: Language[] = [
   { code: 'en', name: 'English' },
-  { code: 'es', name: 'Spanish' },
-  { code: 'fr', name: 'French' },
-  { code: 'de', name: 'German' },
-  { code: 'it', name: 'Italian' },
-  { code: 'pt', name: 'Portuguese' },
-  { code: 'ru', name: 'Russian' },
-  { code: 'zh', name: 'Chinese' },
-  { code: 'ja', name: 'Japanese' },
-  { code: 'ar', name: 'Arabic' }
+  { code: 'bn', name: 'বাংলা' } // Bangla
 ];
 
-const LanguageTranslator = () => {
-  const [selectedLanguage, setSelectedLanguage] = useState('en');
-  const [isTranslating, setIsTranslating] = useState(false);
+// Create a context to make translations available throughout the app
+export const TranslationContext = React.createContext<{
+  currentLanguage: string;
+  translate: (key: string) => string;
+}>({
+  currentLanguage: 'en',
+  translate: (key) => key,
+});
+
+// Dictionary of translations
+const translations: Record<string, Record<string, string>> = {
+  en: {
+    // English translations (default)
+    'nav.home': 'Home',
+    'nav.projects': 'Projects',
+    'nav.skills': 'Skills',
+    'nav.blog': 'Blog',
+    'nav.shop': 'Shop',
+    'nav.about': 'About',
+    'nav.contact': 'Contact',
+    'lang.select': 'Select Language',
+    'weather': 'Weather',
+    'theme': 'Theme',
+    'sidebar.toggle': 'Toggle sidebar',
+  },
+  bn: {
+    // Bangla translations
+    'nav.home': 'হোম',
+    'nav.projects': 'প্রজেক্টস',
+    'nav.skills': 'দক্ষতা',
+    'nav.blog': 'ব্লগ',
+    'nav.shop': 'দোকান',
+    'nav.about': 'সম্পর্কে',
+    'nav.contact': 'যোগাযোগ',
+    'lang.select': 'ভাষা নির্বাচন করুন',
+    'weather': 'আবহাওয়া',
+    'theme': 'থিম',
+    'sidebar.toggle': 'সাইডবার টগল',
+  }
+};
+
+export const useTranslation = () => {
+  return React.useContext(TranslationContext);
+};
+
+export const TranslationProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [currentLanguage, setCurrentLanguage] = useState('en');
   
-  // Load previously selected language
   useEffect(() => {
     const savedLanguage = localStorage.getItem('selectedLanguage');
-    if (savedLanguage) {
-      setSelectedLanguage(savedLanguage);
-      applyTranslation(savedLanguage);
+    if (savedLanguage && (savedLanguage === 'en' || savedLanguage === 'bn')) {
+      setCurrentLanguage(savedLanguage);
+      document.documentElement.lang = savedLanguage;
+      document.documentElement.dir = 'ltr'; // Both languages are left-to-right
     }
   }, []);
 
-  const handleLanguageChange = (value: string) => {
-    setSelectedLanguage(value);
-    localStorage.setItem('selectedLanguage', value);
-    applyTranslation(value);
+  const translate = (key: string): string => {
+    if (!translations[currentLanguage]) {
+      return key; // Fallback to key if language not found
+    }
+    
+    return translations[currentLanguage][key] || key; // Fallback to key if translation not found
   };
 
-  const applyTranslation = async (langCode: string) => {
+  const updateLanguage = (lang: string) => {
+    setCurrentLanguage(lang);
+    localStorage.setItem('selectedLanguage', lang);
+    document.documentElement.lang = lang;
+  };
+
+  return (
+    <TranslationContext.Provider value={{ currentLanguage, translate }}>
+      {children}
+    </TranslationContext.Provider>
+  );
+};
+
+const LanguageTranslator = () => {
+  const { currentLanguage, translate } = useTranslation();
+  const [isTranslating, setIsTranslating] = useState(false);
+  
+  const handleLanguageChange = (value: string) => {
+    if (!value || value === currentLanguage) return;
     setIsTranslating(true);
     
-    try {
-      // In a real application, this would call a translation API
-      // For this demo, we'll simulate translation with a delay
-      await new Promise(resolve => setTimeout(resolve, 500));
-      
-      // For demo purposes, we're not actually translating the content
-      // In a real app, you'd update the text content based on translations
-      
-      toast({
-        title: "Language Changed",
-        description: `Website language set to ${languages.find(l => l.code === langCode)?.name || langCode}`,
-      });
-      
-    } catch (error) {
-      console.error('Translation error:', error);
-      toast({
-        title: "Translation Error",
-        description: "Failed to translate the content. Please try again.",
-        variant: "destructive"
-      });
-    } finally {
-      setIsTranslating(false);
-    }
+    // Small delay to show translation effect
+    setTimeout(() => {
+      localStorage.setItem('selectedLanguage', value);
+      window.location.reload(); // Reload to apply translations everywhere
+    }, 300);
   };
 
   return (
@@ -87,22 +125,27 @@ const LanguageTranslator = () => {
           <span className="sr-only">Change language</span>
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-56">
+      <PopoverContent className="w-48">
         <div className="space-y-2">
-          <h3 className="font-medium text-center mb-3">Select Language</h3>
+          <h3 className="font-medium text-center mb-3">{translate('lang.select')}</h3>
           
-          <RadioGroup 
-            value={selectedLanguage} 
+          <ToggleGroup 
+            type="single" 
+            value={currentLanguage}
             onValueChange={handleLanguageChange}
-            className="space-y-1"
+            className="justify-center w-full"
           >
             {languages.map((lang) => (
-              <div key={lang.code} className="flex items-center space-x-2">
-                <RadioGroupItem value={lang.code} id={`lang-${lang.code}`} />
-                <Label htmlFor={`lang-${lang.code}`}>{lang.name}</Label>
-              </div>
+              <ToggleGroupItem 
+                key={lang.code} 
+                value={lang.code} 
+                aria-label={lang.name}
+                className="w-16 text-center"
+              >
+                {lang.code.toUpperCase()}
+              </ToggleGroupItem>
             ))}
-          </RadioGroup>
+          </ToggleGroup>
         </div>
       </PopoverContent>
     </Popover>
