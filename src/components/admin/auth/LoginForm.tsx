@@ -7,12 +7,19 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useState } from 'react';
 import { useAuth } from '@/hooks/useAuth';
+import { useNavigate } from 'react-router-dom';
+import { login as reduxLogin } from '@/store/authSlice';
+import * as authService from '@/services/api/auth';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '@/store/store';
 
 const LoginForm = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const { toast } = useToast();
-  const { login } = useAuth();
+  const {  } = useAuth();
+  const navigate = useNavigate();
+  const dispatch = useDispatch<AppDispatch>();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -27,26 +34,21 @@ const LoginForm = () => {
       return;
     }
 
-    // Call the login function from the useAuth hook
     try {
-      // Replace this with your actual API call
-      const response = await fetch('/api/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, password }),
-      });
+      const user = await authService.login(email, password);
 
-      if (!response.ok) {
-        throw new Error('Invalid credentials');
+      if (user.userType === 'admin') {
+        dispatch(reduxLogin('adminToken')); // Replace 'adminToken' with actual token if needed
+        navigate('/admin/dashboard');
+      } else if (user.userType === 'user') {
+        navigate('/manager');
+      } else {
+        throw new Error('Invalid user type');
       }
 
-      const data = await response.json();
-      login(data.token); // Dispatch the login action with the token
       toast({
         title: "Login successful",
-        description: "Welcome to the admin dashboard",
+        description: "Welcome!",
       });
     } catch (error: any) {
       toast({

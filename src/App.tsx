@@ -1,4 +1,4 @@
-import React, { useEffect } from "react"; 
+import React, { useEffect, StrictMode } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -30,6 +30,7 @@ import AdminAboutPage from "./pages/admin/AdminAboutPage";
 import AdminSkillsPage from "./pages/admin/AdminSkillsPage";
 import AdminContactPage from "./pages/admin/AdminContactPage";
 import AdminShopPage from "./pages/admin/AdminShopPage";
+import ManagerPage from "./pages/ManagerPage";
 
 // Create a new QueryClient instance
 const queryClient = new QueryClient({
@@ -44,12 +45,12 @@ const queryClient = new QueryClient({
 const App = () => {
   useEffect(() => {
     // Set admin credentials in local storage
-    localStorage.setItem('adminEmail', 'admin@example.com');
-    localStorage.setItem('adminPassword', 'password');
+    localStorage.setItem("adminEmail", "admin@example.com");
+    localStorage.setItem("adminPassword", "password");
   }, []);
 
   return (
-    <React.StrictMode>
+    <StrictMode>
       <QueryClientProvider client={queryClient}>
         <ThemeProvider defaultTheme="system">
           <TooltipProvider>
@@ -69,22 +70,23 @@ const App = () => {
                       <Route path="/shop" element={<Layout><ShopPage /></Layout>} />
                       <Route path="/about" element={<Layout><AboutPage /></Layout>} />
                       <Route path="/contact" element={<Layout><ContactPage /></Layout>} />
-                      
+
                       <Route path="/auth/login" element={<AdminLoginPage />} />
                       <Route element={<PrivateRoute />}>
                         <Route path="/admin/dashboard" element={<AdminLayout><AdminDashboardPage /></AdminLayout>} />
-                      <Route path="/admin/blog" element={<AdminLayout><AdminBlogPage /></AdminLayout>} />
-                      <Route path="/admin/projects" element={<AdminLayout><AdminProjectsPage /></AdminLayout>} />
-                      <Route path="/admin/home" element={<AdminLayout><AdminHomePage /></AdminLayout>} />
-                      <Route path="/admin/about" element={<AdminLayout><AdminAboutPage /></AdminLayout>} />
-                      <Route path="/admin/skills" element={<AdminLayout><AdminSkillsPage /></AdminLayout>} />
-                      <Route path="/admin/contact" element={<AdminLayout><AdminContactPage /></AdminLayout>} />
-                      <Route path="/admin/shop" element={<AdminLayout><AdminShopPage /></AdminLayout>} />
-                      <Route path="/admin/settings" element={<AdminLayout></AdminLayout>} />
-                    </Route>
+                        <Route path="/admin/blog" element={<AdminLayout><AdminBlogPage /></AdminBlogPage>} />
+                        <Route path="/admin/projects" element={<AdminLayout><AdminProjectsPage /></AdminProjectsPage>} />
+                        <Route path="/admin/home" element={<AdminLayout><AdminHomePage /></AdminHomePage>} />
+                        <Route path="/admin/about" element={<AdminLayout><AdminAboutPage /></AdminAboutPage>} />
+                        <Route path="/admin/skills" element={<AdminLayout><AdminSkillsPage /></AdminSkillsPage>} />
+                        <Route path="/admin/contact" element={<AdminLayout><AdminContactPage /></AdminContactPage>} />
+                        <Route path="/admin/shop" element={<AdminLayout><AdminShopPage /></AdminShopPage>} />
+                        <Route path="/admin/settings" element={<AdminLayout />} />
+                      </Route>
 
-                    <Route path="*" element={<NotFound />} />
-                  </Routes>
+                      <Route path="/manager" element={<Layout><ManagerPage /></Layout>} />
+                      <Route path="*" element={<NotFound />} />
+                    </Routes>
                 </ShopProvider>
               </AnimatePresence>
             </BrowserRouter>
@@ -92,7 +94,7 @@ const App = () => {
         </TooltipProvider>
       </ThemeProvider>
     </QueryClientProvider>
-  </React.StrictMode>
+    </StrictMode>
   );
 }
 
