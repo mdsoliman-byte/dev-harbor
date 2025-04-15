@@ -74,14 +74,14 @@ const App = () => {
                       <Route path="/auth/login" element={<AdminLoginPage />} />
                       <Route element={<PrivateRoute />}>
                         <Route path="/admin/dashboard" element={<AdminLayout><AdminDashboardPage /></AdminLayout>} />
-                        <Route path="/admin/blog" element={<AdminLayout><AdminBlogPage /></AdminBlogPage>} />
-                        <Route path="/admin/projects" element={<AdminLayout><AdminProjectsPage /></AdminProjectsPage>} />
-                        <Route path="/admin/home" element={<AdminLayout><AdminHomePage /></AdminHomePage>} />
-                        <Route path="/admin/about" element={<AdminLayout><AdminAboutPage /></AdminAboutPage>} />
-                        <Route path="/admin/skills" element={<AdminLayout><AdminSkillsPage /></AdminSkillsPage>} />
-                        <Route path="/admin/contact" element={<AdminLayout><AdminContactPage /></AdminContactPage>} />
-                        <Route path="/admin/shop" element={<AdminLayout><AdminShopPage /></AdminShopPage>} />
-                        <Route path="/admin/settings" element={<AdminLayout />} />
+                        <Route path="/admin/blog" element={<AdminLayout><AdminBlogPage /></AdminLayout>} />
+                        <Route path="/admin/projects" element={<AdminLayout><AdminProjectsPage /></AdminLayout>} />
+                        <Route path="/admin/home" element={<AdminLayout><AdminHomePage /></AdminLayout>} />
+                        <Route path="/admin/about" element={<AdminLayout><AdminAboutPage /></AdminLayout>} />
+                        <Route path="/admin/skills" element={<AdminLayout><AdminSkillsPage /></AdminLayout>} />
+                        <Route path="/admin/contact" element={<AdminLayout><AdminContactPage /></AdminLayout>} />
+                        <Route path="/admin/shop" element={<AdminLayout><AdminShopPage /></AdminLayout>} />
+                        <Route path="/admin/settings" element={<AdminLayout /> } />
                       </Route>
 
                       <Route path="/manager" element={<Layout><ManagerPage /></Layout>} />
