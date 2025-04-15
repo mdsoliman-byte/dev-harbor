@@ -8,7 +8,7 @@ import { Label } from '@/components/ui/label';
 import { useState } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
-import { login as reduxLogin } from '@/store/authSlice';
+import { login } from '@/store/authSlice';
 import * as authService from '@/services/api/auth';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '@/store/store';
