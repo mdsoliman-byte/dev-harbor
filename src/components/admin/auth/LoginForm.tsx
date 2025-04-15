@@ -30,7 +30,7 @@ const LoginForm = () => {
     // Call the login function from the useAuth hook
     try {
       // Replace this with your actual API call
-      const response = await fetch('/api/login', {
+      const response = await fetch('/api/auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
