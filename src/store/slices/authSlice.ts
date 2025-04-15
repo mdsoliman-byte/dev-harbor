@@ -1,6 +1,6 @@
 
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
-import { login as loginAPI } from '@/services/api';
+import { login  } from '@/services/api/auth';
 import { decodeJWT } from '@/utils/authUtils';
 
 // Types
@@ -37,7 +37,7 @@ export const loginUser = createAsyncThunk(
   'auth/login',
   async (credentials: { email: string; password: string }, { rejectWithValue }) => {
     try {
-      const response = await loginAPI(credentials);
+      const response = await login(credentials);
       return response;
     } catch (error: any) {
       return rejectWithValue(
@@ -48,7 +48,7 @@ export const loginUser = createAsyncThunk(
 );
 
 // Auth slice
-const authSlice = createSlice({
+export const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
@@ -136,7 +136,5 @@ const authSlice = createSlice({
 export const { logout, clearError, updateAuthState } = authSlice.actions;
 
 // Export the reducer as a named export
-export const reducer = authSlice.reducer;
-
-// For backwards compatibility
-export default authSlice.reducer;
+export const {reducer} = authSlice;
+export default authSlice;
