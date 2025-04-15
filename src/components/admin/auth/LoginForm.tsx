@@ -1,56 +1,80 @@
 
-import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Lock, User } from 'lucide-react';
-import { useDispatch } from 'react-redux';
-import { loginUser } from '@/store/slices/authSlice';
-import { AppDispatch } from '@/store';
 import { useToast } from '@/hooks/use-toast';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import { db } from '@/firebase';
+import { collection, doc, getDoc } from "firebase/firestore";
 
 const LoginForm = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
-  const dispatch = useDispatch<AppDispatch>();
   const { toast } = useToast();
-  
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    const result = await dispatch(loginUser({ email, password }));
-    
-    if (loginUser.fulfilled.match(result)) {
-      const user = result.payload.user;
-      
-      if (user && user.user_type === 'admin') {
-        toast({
-          title: 'Login successful',
-          description: 'Welcome to the admin dashboard',
-        });
-        navigate('/admin/dashboard', { replace: true });
+
+    // Basic validation
+    if (!email || !password) {
+      toast({
+        title: "Error",
+        description: "Please fill in all fields.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    try {
+      const configCollection = collection(db, 'config');
+      const configDoc = doc(configCollection, 'adminCredentials');
+      const docSnap = await getDoc(configDoc);
+
+      if (docSnap.exists()) {
+        const data = docSnap.data();
+        if (email === data.email && password === data.password) {
+          toast({
+            title: "Login successful",
+            description: "Welcome to the admin dashboard",
+          });
+          navigate('/admin/dashboard', { replace: true });
+        } else {
+          toast({
+            title: "Login failed",
+            description: "Invalid credentials",
+            variant: "destructive",
+          });
+        }
       } else {
         toast({
-          title: 'Access denied',
-          description: 'You do not have admin privileges',
-          variant: 'destructive',
+          title: "Login failed",
+          description: "Admin credentials not found in Firebase",
+          variant: "destructive",
         });
       }
+    } catch (error) {
+      console.error("Error fetching admin credentials from Firebase:", error);
+      toast({
+        title: "Login failed",
+        description: "Error fetching admin credentials from Firebase",
+        variant: "destructive",
+      });
     }
   };
 
   return (
-    <motion.form 
-      onSubmit={handleSubmit} 
+    <motion.form
+      onSubmit={handleSubmit}
       className="space-y-6"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ delay: 0.4, duration: 0.5 }}
     >
-      <motion.div 
+      <motion.div
         className="space-y-2"
         initial={{ x: -20, opacity: 0 }}
         animate={{ x: 0, opacity: 1 }}
@@ -72,8 +96,8 @@ const LoginForm = () => {
           />
         </div>
       </motion.div>
-      
-      <motion.div 
+
+      <motion.div
         className="space-y-2"
         initial={{ x: -20, opacity: 0 }}
         animate={{ x: 0, opacity: 1 }}
@@ -95,14 +119,14 @@ const LoginForm = () => {
           />
         </div>
       </motion.div>
-      
+
       <motion.div
         initial={{ y: 20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ delay: 0.7, duration: 0.4 }}
       >
-        <Button 
-          type="submit" 
+        <Button
+          type="submit"
           className="w-full relative overflow-hidden group"
         >
           <span className="relative z-10">

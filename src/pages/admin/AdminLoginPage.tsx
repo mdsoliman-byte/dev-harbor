@@ -1,10 +1,7 @@
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { useSelector, useDispatch } from 'react-redux';
-import { clearError } from '@/store/slices/authSlice';
-import { RootState, AppDispatch } from '@/store';
 import { useToast } from '@/hooks/use-toast';
 import LoginHeader from '@/components/admin/auth/LoginHeader';
 import LoginForm from '@/components/admin/auth/LoginForm';
@@ -12,31 +9,18 @@ import LoginFooter from '@/components/admin/auth/LoginFooter';
 
 const AdminLoginPage = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch<AppDispatch>();
   const { toast } = useToast();
-  
-  const { isLoading, isAuthenticated, isAdmin, error } = useSelector(
-    (state: RootState) => state.auth
-  );
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   // Check if already logged in
   useEffect(() => {
+    // Placeholder for actual authentication check
     if (isAuthenticated && isAdmin) {
       navigate('/admin/dashboard');
     }
   }, [isAuthenticated, isAdmin, navigate]);
-
-  // Show error toast when auth error occurs
-  useEffect(() => {
-    if (error) {
-      toast({
-        title: 'Login failed',
-        description: error,
-        variant: 'destructive',
-      });
-      dispatch(clearError());
-    }
-  }, [error, toast, dispatch]);
 
   return (
     <div className="min-h-screen flex items-center justify-center px-4 py-12 bg-background relative">

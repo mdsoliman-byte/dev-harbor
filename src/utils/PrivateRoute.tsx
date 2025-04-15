@@ -1,12 +1,9 @@
 
 import { Navigate, Outlet } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import type { RootState } from '@/store';
+import { useAuth } from '@/hooks/useAuth';
 
 const PrivateRoute = () => {
-  const { isAuthenticated, isAdmin, isLoading } = useSelector(
-    (state: RootState) => state.auth
-  );
+  const { isAuthenticated, isAdmin, isLoading } = useAuth();
   
   // Show loading while checking auth status
   if (isLoading) {

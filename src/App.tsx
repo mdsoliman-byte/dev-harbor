@@ -19,8 +19,22 @@ import { AnimatePresence } from "framer-motion";
 import { ThemeProvider } from "./components/ThemeProvider";
 import { ShopProvider } from "./contexts/ShopContext";
 import { TranslationProvider } from "./components/header/LanguageTranslator";
-import { Provider } from 'react-redux';
-import { store } from './store';
+import { setConfig } from './firebase';
+import { initializeApp } from "firebase/app";
+import { getFirestore } from "firebase/firestore";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCk2LhDHBEl2TK2Xru54II_RTE8TSoMz0M",
+  authDomain: "portfolio-15aa6.firebaseapp.com",
+  projectId: "portfolio-15aa6",
+  storageBucket: "portfolio-15aa6.firebasestorage.app",
+  messagingSenderId: "173560042696",
+  appId: "1:173560042696:web:59523f57fb56d06e2801fd",
+  measurementId: "G-PPGN5G6WSQ"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 
 // Admin imports
 import PrivateRoute from "./utils/PrivateRoute";
@@ -45,9 +59,27 @@ const queryClient = new QueryClient({
   },
 });
 
-const App = () => (
-  <React.StrictMode>
-    <Provider store={store}>
+import { useEffect } from 'react';
+
+const App = () => {
+  useEffect(() => {
+    const storeAdminCredentials = async () => {
+      try {
+        await setConfig({
+          email: 'admin@example.com',
+          password: 'password',
+        });
+        console.log('Admin credentials stored in Firebase');
+      } catch (error) {
+        console.error('Error storing admin credentials in Firebase:', error);
+      }
+    };
+
+    storeAdminCredentials();
+  }, []);
+
+  return (
+    <React.StrictMode>
       <QueryClientProvider client={queryClient}>
         <ThemeProvider defaultTheme="system">
           <TooltipProvider>
@@ -79,19 +111,19 @@ const App = () => (
                         <Route path="/admin/contact" element={<AdminLayout><AdminContactPage /></AdminLayout>} />
                         <Route path="/admin/shop" element={<AdminLayout><AdminShopPage /></AdminLayout>} />
                         <Route path="/admin/settings" element={<AdminLayout></AdminLayout>} />
-                      </Route>
-                      
-                      <Route path="*" element={<NotFound />} />
-                    </Routes>
-                  </ShopProvider>
-                </AnimatePresence>
-              </BrowserRouter>
-            </TranslationProvider>
-          </TooltipProvider>
-        </ThemeProvider>
-      </QueryClientProvider>
-    </Provider>
+                    </Route>
+                    
+                    <Route path="*" element={<NotFound />} />
+                  </Routes>
+                </ShopProvider>
+              </AnimatePresence>
+            </BrowserRouter>
+          </TranslationProvider>
+        </TooltipProvider>
+      </ThemeProvider>
+    </QueryClientProvider>
   </React.StrictMode>
-);
+  );
+}
 
 export default App;

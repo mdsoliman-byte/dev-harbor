@@ -1,6 +1,6 @@
 
 import axios from 'axios';
-import { store } from '@/store';
+
 
 export const API_URL = 'http://localhost:8000/api/';
 
@@ -30,9 +30,8 @@ api.interceptors.request.use(
         const isPublic = publicEndpoints.some(endpoint => config.url?.includes(endpoint));
 
         if (!isPublic) {
-            // Get token from Redux store
-            const state = store.getState();
-            const token = state.auth.token;
+            // Get token from local storage
+            const token = localStorage.getItem('adminToken');
 
             if (token) {
                 config.headers.Authorization = `Bearer ${token}`;
@@ -55,8 +54,7 @@ api.interceptors.response.use(
             originalRequest._retry = true;
             
             try {
-                const state = store.getState();
-                const refreshToken = state.auth.refreshToken;
+                const refreshToken = localStorage.getItem('refreshToken');
                 
                 if (refreshToken) {
                     // Try to refresh the token
@@ -67,11 +65,7 @@ api.interceptors.response.use(
                     const { access_token } = response.data;
                     
                     // Update token in local storage
-                    if (state.auth.isAdmin) {
-                        localStorage.setItem('adminToken', access_token);
-                    } else {
-                        localStorage.setItem('userToken', access_token);
-                    }
+                    localStorage.setItem('adminToken', access_token);
                     
                     // Update auth header and retry request
                     originalRequest.headers.Authorization = `Bearer ${access_token}`;
@@ -81,7 +75,7 @@ api.interceptors.response.use(
                 console.error('Token refresh failed:', refreshError);
                 
                 // Force logout if refresh token is invalid
-                store.dispatch({ type: 'auth/logout' });
+                localStorage.removeItem('adminToken');
                 return Promise.reject(refreshError);
             }
         }
