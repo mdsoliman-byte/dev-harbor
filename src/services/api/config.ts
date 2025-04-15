@@ -1,8 +1,10 @@
 
 import axios from 'axios';
 
-
-export const API_URL = 'https://8000-idx-portfoliobackendgit-1744754619441.cluster-ejd22kqny5htuv5dfowoyipt52.cloudworkstations.dev/api/';
+const isLocalhost = window.location.origin.includes('localhost');
+export const API_URL = isLocalhost
+    ? 'http://localhost:8080/api/'
+    : 'https://8000-idx-portfoliobackendgit-1744754619441.cluster-ejd22kqny5htuv5dfowoyipt52.cloudworkstations.dev/api/';
 
 const api = axios.create({
     baseURL: API_URL,
