@@ -1,4 +1,4 @@
-import React from "react"; 
+import React, { useEffect } from "react"; 
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -19,29 +19,11 @@ import { AnimatePresence } from "framer-motion";
 import { ThemeProvider } from "./components/ThemeProvider";
 import { ShopProvider } from "./contexts/ShopContext";
 import { TranslationProvider } from "./components/header/LanguageTranslator";
-import { setConfig } from './firebase';
-import { initializeApp } from "firebase/app";
-import { getFirestore } from "firebase/firestore";
-
-const firebaseConfig = {
-  apiKey: "AIzaSyCk2LhDHBEl2TK2Xru54II_RTE8TSoMz0M",
-  authDomain: "portfolio-15aa6.firebaseapp.com",
-  projectId: "portfolio-15aa6",
-  storageBucket: "portfolio-15aa6.firebasestorage.app",
-  messagingSenderId: "173560042696",
-  appId: "1:173560042696:web:59523f57fb56d06e2801fd",
-  measurementId: "G-PPGN5G6WSQ"
-};
-
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-
-// Admin imports
-import PrivateRoute from "./utils/PrivateRoute";
 import AdminLoginPage from "./pages/admin/AdminLoginPage";
 import AdminLayout from "./pages/admin/AdminLayout";
 import AdminDashboardPage from "./pages/admin/AdminDashboardPage";
 import AdminBlogPage from "./pages/admin/AdminBlogPage";
+import PrivateRoute from "./utils/PrivateRoute";
 import AdminProjectsPage from "./pages/admin/AdminProjectsPage";
 import AdminHomePage from "./pages/admin/AdminHomePage";
 import AdminAboutPage from "./pages/admin/AdminAboutPage";
@@ -59,23 +41,11 @@ const queryClient = new QueryClient({
   },
 });
 
-import { useEffect } from 'react';
-
 const App = () => {
   useEffect(() => {
-    const storeAdminCredentials = async () => {
-      try {
-        await setConfig({
-          email: 'admin@example.com',
-          password: 'password',
-        });
-        console.log('Admin credentials stored in Firebase');
-      } catch (error) {
-        console.error('Error storing admin credentials in Firebase:', error);
-      }
-    };
-
-    storeAdminCredentials();
+    // Set admin credentials in local storage
+    localStorage.setItem('adminEmail', 'admin@example.com');
+    localStorage.setItem('adminPassword', 'password');
   }, []);
 
   return (
@@ -103,16 +73,16 @@ const App = () => {
                       <Route path="/auth/login" element={<AdminLoginPage />} />
                       <Route element={<PrivateRoute />}>
                         <Route path="/admin/dashboard" element={<AdminLayout><AdminDashboardPage /></AdminLayout>} />
-                        <Route path="/admin/blog" element={<AdminLayout><AdminBlogPage /></AdminLayout>} />
-                        <Route path="/admin/projects" element={<AdminLayout><AdminProjectsPage /></AdminLayout>} />
-                        <Route path="/admin/home" element={<AdminLayout><AdminHomePage /></AdminLayout>} />
-                        <Route path="/admin/about" element={<AdminLayout><AdminAboutPage /></AdminLayout>} />
-                        <Route path="/admin/skills" element={<AdminLayout><AdminSkillsPage /></AdminLayout>} />
-                        <Route path="/admin/contact" element={<AdminLayout><AdminContactPage /></AdminLayout>} />
-                        <Route path="/admin/shop" element={<AdminLayout><AdminShopPage /></AdminLayout>} />
-                        <Route path="/admin/settings" element={<AdminLayout></AdminLayout>} />
+                      <Route path="/admin/blog" element={<AdminLayout><AdminBlogPage /></AdminLayout>} />
+                      <Route path="/admin/projects" element={<AdminLayout><AdminProjectsPage /></AdminLayout>} />
+                      <Route path="/admin/home" element={<AdminLayout><AdminHomePage /></AdminLayout>} />
+                      <Route path="/admin/about" element={<AdminLayout><AdminAboutPage /></AdminLayout>} />
+                      <Route path="/admin/skills" element={<AdminLayout><AdminSkillsPage /></AdminLayout>} />
+                      <Route path="/admin/contact" element={<AdminLayout><AdminContactPage /></AdminLayout>} />
+                      <Route path="/admin/shop" element={<AdminLayout><AdminShopPage /></AdminLayout>} />
+                      <Route path="/admin/settings" element={<AdminLayout></AdminLayout>} />
                     </Route>
-                    
+
                     <Route path="*" element={<NotFound />} />
                   </Routes>
                 </ShopProvider>

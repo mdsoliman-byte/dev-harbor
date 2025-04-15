@@ -7,10 +7,10 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-import { db } from '@/firebase';
-import { collection, doc, getDoc } from "firebase/firestore";
 
 const LoginForm = () => {
+  localStorage.setItem('adminEmail', 'admin@example.com');
+  localStorage.setItem('adminPassword', 'password');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
@@ -29,38 +29,21 @@ const LoginForm = () => {
       return;
     }
 
-    try {
-      const configCollection = collection(db, 'config');
-      const configDoc = doc(configCollection, 'adminCredentials');
-      const docSnap = await getDoc(configDoc);
+    // Get admin credentials from local storage
+    const adminEmail = localStorage.getItem('adminEmail') || 'admin@example.com';
+    const adminPassword = localStorage.getItem('adminPassword') || 'password';
 
-      if (docSnap.exists()) {
-        const data = docSnap.data();
-        if (email === data.email && password === data.password) {
-          toast({
-            title: "Login successful",
-            description: "Welcome to the admin dashboard",
-          });
-          navigate('/admin/dashboard', { replace: true });
-        } else {
-          toast({
-            title: "Login failed",
-            description: "Invalid credentials",
-            variant: "destructive",
-          });
-        }
-      } else {
-        toast({
-          title: "Login failed",
-          description: "Admin credentials not found in Firebase",
-          variant: "destructive",
-        });
-      }
-    } catch (error) {
-      console.error("Error fetching admin credentials from Firebase:", error);
+    if (email === adminEmail && password === adminPassword) {
+      localStorage.setItem('adminToken', 'adminToken');
+      toast({
+        title: "Login successful",
+        description: "Welcome to the admin dashboard",
+      });
+      navigate('/admin/dashboard', { replace: true });
+    } else {
       toast({
         title: "Login failed",
-        description: "Error fetching admin credentials from Firebase",
+        description: "Invalid credentials",
         variant: "destructive",
       });
     }
