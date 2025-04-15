@@ -7,12 +7,19 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useState } from 'react';
 import { useAuth } from '@/hooks/useAuth';
+import { useNavigate } from 'react-router-dom';
+import { login as reduxLogin } from '@/store/authSlice';
+import * as authService from '@/services/api/auth';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '@/store/store';
 
 const LoginForm = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const { toast } = useToast();
-  const { login } = useAuth();
+  const navigate = useNavigate();
+  const dispatch = useDispatch<AppDispatch>();
+  const { isAuthenticated } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -27,10 +34,9 @@ const LoginForm = () => {
       return;
     }
 
-    // Call the login function from the useAuth hook
     try {
       // Replace this with your actual API call
-      const response = await fetch('/api/auth/login', {
+      const response = await fetch('/api/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -46,8 +52,9 @@ const LoginForm = () => {
       login(data.token); // Dispatch the login action with the token
       toast({
         title: "Login successful",
-        description: "Welcome to the admin dashboard",
+        description: "Welcome!",
       });
+      navigate('/admin/dashboard');
     } catch (error: any) {
       toast({
         title: "Login failed",
