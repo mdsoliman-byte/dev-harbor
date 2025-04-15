@@ -1,8 +1,10 @@
 
 import React from 'react'; // Add explicit React import
 import { createRoot } from 'react-dom/client'
-import App from './App.tsx'
-import './index.css'
+import App from './App.tsx';
+import './index.css';
+import { Provider } from 'react-redux';
+import store from './store/store';
 
 // This ensures we have a valid root element to mount the app
 const rootElement = document.getElementById("root");
@@ -15,7 +17,9 @@ if (!rootElement) {
 try {
   createRoot(document.getElementById("root")!).render(
     <React.StrictMode>
-      <App />
+      <Provider store={store}>
+        <App />
+      </Provider>
     </React.StrictMode>
   );
   console.log("App mounted successfully");

@@ -5,16 +5,14 @@ import { useToast } from '@/hooks/use-toast';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
+import { useAuth } from '@/hooks/useAuth';
 
 const LoginForm = () => {
-  localStorage.setItem('adminEmail', 'admin@example.com');
-  localStorage.setItem('adminPassword', 'password');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const navigate = useNavigate();
   const { toast } = useToast();
+  const { login } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -29,21 +27,31 @@ const LoginForm = () => {
       return;
     }
 
-    // Get admin credentials from local storage
-    const adminEmail = localStorage.getItem('adminEmail') || 'admin@example.com';
-    const adminPassword = localStorage.getItem('adminPassword') || 'password';
+    // Call the login function from the useAuth hook
+    try {
+      // Replace this with your actual API call
+      const response = await fetch('/api/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
+      });
 
-    if (email === adminEmail && password === adminPassword) {
-      localStorage.setItem('adminToken', 'adminToken');
+      if (!response.ok) {
+        throw new Error('Invalid credentials');
+      }
+
+      const data = await response.json();
+      login(data.token); // Dispatch the login action with the token
       toast({
         title: "Login successful",
         description: "Welcome to the admin dashboard",
       });
-      navigate('/admin/dashboard', { replace: true });
-    } else {
+    } catch (error: any) {
       toast({
         title: "Login failed",
-        description: "Invalid credentials",
+        description: error.message || "Invalid credentials",
         variant: "destructive",
       });
     }
