@@ -2,13 +2,15 @@
 import axios from 'axios';
 
 
-export const API_URL = 'http://localhost:8000/api/';
+export const API_URL = 'https://8000-idx-portfoliobackendgit-1744754619441.cluster-ejd22kqny5htuv5dfowoyipt52.cloudworkstations.dev/api/';
 
 const api = axios.create({
     baseURL: API_URL,
     headers: {
         'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
     },
+    withCredentials: true,
 });
 
 // Add request interceptor to include auth token in requests

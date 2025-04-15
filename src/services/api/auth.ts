@@ -19,7 +19,7 @@ export const login = async (email: string, password: string) => {
       throw new Error('Invalid credentials');
     }
 
-    return response.data.token;
+    return response.data;
   } catch (error: any) {
     console.error('Login failed:', error.response?.data || error.message);
     throw error;
