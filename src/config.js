@@ -1,14 +1,3 @@
-const users = [
-  {
-    email: 'admin@example.com',
-    password: 'password',
-    userType: 'admin',
-  },
-  {
-    email: 'user@example.com',
-    password: 'password',
-    userType: 'user',
-  },
-];
+const users = [];
 
 export default users;

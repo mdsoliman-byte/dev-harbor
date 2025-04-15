@@ -1,6 +1,5 @@
 
 import api from './config';
-import users from '../../config';
 
 export const fetchLoginStatus = async () => {
   try {
@@ -14,17 +13,15 @@ export const fetchLoginStatus = async () => {
 
 export const login = async (email: string, password: string) => {
   try {
-    const user = users.find(
-      (user) => user.email === email && user.password === password
-    );
+    const response = await api.post('auth/login/', { email, password });
 
-    if (!user) {
+    if (response.status !== 200) {
       throw new Error('Invalid credentials');
     }
 
-    return user;
+    return response.data.token;
   } catch (error: any) {
-    console.error('Login failed:', error.message);
+    console.error('Login failed:', error.response?.data || error.message);
     throw error;
   }
 };

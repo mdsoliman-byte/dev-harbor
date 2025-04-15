@@ -17,9 +17,9 @@ const LoginForm = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const { toast } = useToast();
-  const {  } = useAuth();
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
+  const { isAuthenticated } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -35,21 +35,13 @@ const LoginForm = () => {
     }
 
     try {
-      const user = await authService.login(email, password);
-
-      if (user.userType === 'admin') {
-        dispatch(reduxLogin('adminToken')); // Replace 'adminToken' with actual token if needed
-        navigate('/admin/dashboard');
-      } else if (user.userType === 'user') {
-        navigate('/manager');
-      } else {
-        throw new Error('Invalid user type');
-      }
-
+      const token = await authService.login(email, password);
+      dispatch(reduxLogin(token));
       toast({
         title: "Login successful",
         description: "Welcome!",
       });
+      navigate('/admin/dashboard');
     } catch (error: any) {
       toast({
         title: "Login failed",
