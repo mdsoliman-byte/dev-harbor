@@ -41,7 +41,6 @@ const translations: Record<string, Record<string, string>> = {
     'nav.dashboard': 'Dashboard',
     'nav.settings': 'Settings',
     'lang.select': 'Select Language',
-    'weather': 'Weather',
     'theme': 'Theme',
     'sidebar.toggle': 'Toggle sidebar',
     'settings': 'Settings'
@@ -58,7 +57,6 @@ const translations: Record<string, Record<string, string>> = {
     'nav.dashboard': 'ড্যাশবোর্ড',
     'nav.settings': 'সেটিংস',
     'lang.select': 'ভাষা নির্বাচন করুন',
-    'weather': 'আবহাওয়া',
     'theme': 'থিম',
     'sidebar.toggle': 'সাইডবার টগল',
     'settings': 'সেটিংস'
@@ -109,7 +107,7 @@ export const TranslationProvider: React.FC<{ children: React.ReactNode }> = ({ c
 const LanguageTranslator = () => {
   const { currentLanguage, toggleLanguage } = useTranslation();
   const [isTranslating, setIsTranslating] = useState(false);
-  
+
   const handleToggle = () => {
     setIsTranslating(true);
     setTimeout(() => {

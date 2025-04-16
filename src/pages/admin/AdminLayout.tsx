@@ -6,7 +6,6 @@ import { Button } from '@/components/ui/button';
 import { ThemeToggle } from '@/components/ThemeProvider';
 import { motion } from 'framer-motion';
 import { NavigationMenu, NavigationMenuList, NavigationMenuItem, NavigationMenuLink, navigationMenuTriggerStyle } from '@/components/ui/navigation-menu';
-import WeatherWidget from '@/components/header/WeatherWidget';
 import LanguageTranslator, { useTranslation } from '@/components/header/LanguageTranslator';
 import useAuth from '@/hooks/useAuth';
 
@@ -157,7 +156,6 @@ const AdminLayout = ({ children }: PropsWithChildren) => {
 
           <div className="flex items-center gap-2">
             <LanguageTranslator />
-            <WeatherWidget />
             <ThemeToggle />
           </div>
         </header>
