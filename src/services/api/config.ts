@@ -1,16 +1,14 @@
-
 import axios from 'axios';
 
 const isLocalhost = window.location.origin.includes('localhost');
 export const API_URL = isLocalhost
-    ? 'http://localhost:8080/api/'
+    ? 'http://localhost:8000/api/'
     : 'https://8000-idx-portfoliobackendgit-1744754619441.cluster-ejd22kqny5htuv5dfowoyipt52.cloudworkstations.dev/api/';
 
 const api = axios.create({
     baseURL: API_URL,
     headers: {
         'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': 'https://8000-idx-portfoliobackendgit-1744754619441.cluster-ejd22kqny5htuv5dfowoyipt52.cloudworkstations.dev/api',
     },
     withCredentials: true,
 });

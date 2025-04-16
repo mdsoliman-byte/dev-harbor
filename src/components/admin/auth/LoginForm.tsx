@@ -23,35 +23,40 @@ const LoginForm = () => {
 
     // Basic validation
     if (!email || !password) {
-      toast({
-        title: "Error",
-        description: "Please fill in all fields.",
-        variant: "destructive",
-      });
-      return;
+        toast({
+            title: "Error",
+            description: "Please fill in all fields.",
+            variant: "destructive",
+        });
+        return;
     }
 
     try {
-      const user = await authService.login(email, password);
+        const { token, refreshToken, userType } = await authService.login(email, password);
 
-      if (user.user_type === 'admin') {
-        dispatch(reduxLogin(user.token));
-        navigate('/admin/dashboard');
-      } else if (user.user_type === 'manager') {
-        navigate('/manager');
-      } else {
-        toast({
-          title: "Login failed",
-          description: "Invalid user type",
-          variant: "destructive",
-        });
-      }
+        // Log the response for debugging
+        console.log("Login successful:", { token, refreshToken, userType });
+
+        // Save tokens in local storage
+        dispatch(reduxLogin(token));
+        localStorage.setItem('refreshToken', refreshToken);
+
+        // Redirect based on user type
+        if (userType === 'admin') {
+            navigate('/admin/dashboard');
+        } else {
+            navigate('/');
+        }
     } catch (error: any) {
-      toast({
-        title: "Login failed",
-        description: error.message || "Invalid credentials",
-        variant: "destructive",
-      });
+        console.error("Login error:", error);
+
+        // Handle specific error messages
+        const errorMessage = error.response?.data?.error || "Invalid credentials";
+        toast({
+            title: "Login failed",
+            description: errorMessage,
+            variant: "destructive",
+        });
     }
   };
 

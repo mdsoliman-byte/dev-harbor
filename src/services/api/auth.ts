@@ -1,4 +1,3 @@
-
 import api from './config';
 
 export const fetchLoginStatus = async () => {
@@ -15,11 +14,26 @@ export const login = async (email: string, password: string) => {
   try {
     const response = await api.post('auth/login/', { email, password });
 
+    // Log the full response for debugging
+    console.log("Backend response:", response);
+
     if (response.status !== 200) {
       throw new Error('Invalid credentials');
     }
 
-    return response.data;
+    const { access_token, refresh_token, user } = response.data;
+
+    // Validate the response structure
+    if (!access_token || !refresh_token || !user || !user.user_type) {
+      console.error("Invalid response format:", response.data);
+      throw new Error('Invalid response format');
+    }
+
+    return {
+      token: access_token,
+      refreshToken: refresh_token,
+      userType: user.user_type,
+    };
   } catch (error: any) {
     console.error('Login failed:', error.response?.data || error.message);
     throw error;
