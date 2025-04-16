@@ -25,7 +25,7 @@ export const fetchHeroData = async (): Promise<HeroData> => {
             shortbio: "Default short bio.",
             skills: ["Default Skill 1", "Default Skill 2"],
             available_for_freelance: false,
-            profile_image: "/default-profile.png",
+            profile_image: "",
         };
     }
 };

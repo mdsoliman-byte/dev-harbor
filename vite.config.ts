@@ -12,6 +12,19 @@ export default defineConfig(({ mode }) => ({
     fs: {
       // Allow serving files from one level up from the package root
       allow: ['..', '/', '.', '../..']
+    },
+    cors: {
+      origin: '*',
+      methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+      preflightContinue: false,
+      optionsSuccessStatus: 204,
+    },
+    proxy: {
+      '/api': {
+        target: 'https://8000-idx-portfoliobackendgit-1744754619441.cluster-ejd22kqny5htuv5dfowoyipt52.cloudworkstations.dev/api/',
+        changeOrigin: true,
+        secure: false,
+      },
     }
   },
   plugins: [
