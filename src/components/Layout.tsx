@@ -5,7 +5,6 @@ import Sidebar from './Sidebar';
 import { ThemeToggle } from './ThemeProvider';
 import { Menu, X } from 'lucide-react';
 import { Button } from './ui/button';
-import WeatherWidget from './header/WeatherWidget';
 import LanguageTranslator, { TranslationProvider, useTranslation } from './header/LanguageTranslator';
 import useAuth from '@/hooks/useAuth';
 
@@ -50,7 +49,7 @@ const Layout = ({ children }: PropsWithChildren) => {
             {/* Header with language translator, weather widget, theme toggle and sidebar toggle */}
             <div className="fixed top-4 right-4 z-50 flex items-center gap-2">
               <LanguageTranslator />
-              <WeatherWidget />
+        
               <ThemeToggle />
               <Button 
                 variant="outline" 
