@@ -2,6 +2,8 @@
 import { motion } from 'framer-motion';
 import { ChevronLeft, ChevronRight, Library, FileText, Sparkles, Lightbulb, BookOpen, History, BookCopy, Atom } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { useState, useEffect } from 'react';
+import { fetchProductCategories, fetchProducts, Product } from '@/services/api/shop/productsService';
 
 // Get icon based on category
 const getCategoryIcon = (category: string) => {
@@ -32,20 +34,48 @@ const getCategoryIcon = (category: string) => {
 };
 
 interface CategorySectionProps {
-  categoryOptions: string[];
   selectedCategory: string;
   setSelectedCategory: (category: string) => void;
   setCurrentPage: (page: number) => void;
-  products: any[];
 }
 
-const CategorySection = ({ 
-  categoryOptions, 
-  selectedCategory, 
-  setSelectedCategory, 
+const CategorySection = ({
+  selectedCategory,
+  setSelectedCategory,
   setCurrentPage,
-  products
 }: CategorySectionProps) => {
+  const [categories, setCategories] = useState<string[]>([]);
+  const [products, setProducts] = useState<Product[]>([]);
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const categoriesData = await fetchProductCategories();
+        setCategories(['All', ...categoriesData.map(category => category.name)]);
+      } catch (error) {
+        console.error('Error fetching categories:', error);
+        setCategories(['All']);
+      }
+    };
+
+    const fetchAllProducts = async () => {
+      try {
+        const productsData = await fetchProducts();
+        setProducts(productsData);
+      } catch (error) {
+        console.error('Error fetching products:', error);
+        setProducts([]);
+      }
+    };
+
+    fetchCategories();
+    fetchAllProducts();
+  }, []);
+
+  const filteredProducts = selectedCategory === 'All'
+    ? products
+    : products.filter(product => product.category.name === selectedCategory);
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -64,9 +94,9 @@ const CategorySection = ({
           </Button>
         </div>
       </div>
-      
+
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
-        {categoryOptions.map((category, index) => (
+        {categories.map((category, index) => (
           <motion.div
             key={category}
             initial={{ opacity: 0, y: 20 }}
@@ -89,7 +119,7 @@ const CategorySection = ({
                 <span className="text-xs text-muted-foreground">{products.length} Products</span>
               ) : (
                 <span className="text-xs text-muted-foreground">
-                  {products.filter(product => product.category === category).length} Products
+                  {filteredProducts.length} Products
                 </span>
               )}
             </Button>

@@ -44,16 +44,16 @@ const AdminShopPage = () => {
     setDialogOpen(true);
   };
 
-  const handleFormSubmit = async (data: ProductFormValues) => {
+ const handleFormSubmit = async (data: ProductFormValues) => {
     const productData: Partial<Product> = {
       ...data,
       category: {
         id: 0,
-        name: data.category,
-        slug: data.category.toLowerCase().replace(/\s+/g, '-')
+        name: data.category.name,
+        slug: data.category.name.toLowerCase().replace(/\s+/g, '-')
       }
     };
-    
+
     if (editingProduct) {
       await handleUpdateProduct(editingProduct.slug, productData);
     } else {

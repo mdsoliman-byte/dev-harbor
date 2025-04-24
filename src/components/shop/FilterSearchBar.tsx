@@ -1,15 +1,15 @@
-
 import { motion } from 'framer-motion';
 import { Search } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { useState, useEffect } from 'react';
+import { fetchProductCategories } from '@/services/api/shop/productsService';
 
 interface FilterSearchBarProps {
   searchQuery: string;
   setSearchQuery: (query: string) => void;
   setCurrentPage: (page: number) => void;
-  categoryOptions: string[];
   selectedCategory: string;
   setSelectedCategory: (category: string) => void;
 }
@@ -18,11 +18,25 @@ const FilterSearchBar = ({
   searchQuery,
   setSearchQuery,
   setCurrentPage,
-  categoryOptions,
   selectedCategory,
   setSelectedCategory
 }: FilterSearchBarProps) => {
   const isMobile = useIsMobile();
+  const [categoryOptions, setCategoryOptions] = useState<string[]>([]);
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const categoriesData = await fetchProductCategories();
+        setCategoryOptions(['All', ...categoriesData.map(category => category.name)]);
+      } catch (error) {
+        console.error('Error fetching categories:', error);
+        setCategoryOptions(['All']);
+      }
+    };
+
+    fetchCategories();
+  }, []);
 
   return (
     <motion.div

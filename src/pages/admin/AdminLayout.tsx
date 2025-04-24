@@ -1,4 +1,3 @@
-
 import { PropsWithChildren, useEffect, useState } from 'react';
 import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { LayoutDashboard, FileText, User, Settings, ContactRound, Store, LogOut, Menu, X, Info, FolderKanban, BicepsFlexed } from 'lucide-react';

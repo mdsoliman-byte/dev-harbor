@@ -8,7 +8,11 @@ export const productFormSchema = z.object({
   price: z.coerce.number().min(0, 'Price must be a positive number'),
   sale_price: z.coerce.number().min(0, 'Sale price must be a positive number').nullable(),
   image: z.string().min(1, 'Image URL is required'),
-  category: z.string().min(1, 'Category is required'),
+  category: z.object({
+    id: z.number().optional(),
+    name: z.string().min(1, 'Category is required'),
+    slug: z.string().optional(),
+  }),
   in_stock: z.boolean().default(true),
   featured: z.boolean().default(false),
 });

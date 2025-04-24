@@ -20,7 +20,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ setAccessToken, setUserType }) =>
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
-    console.log('handel submit click')
+    
     e.preventDefault();
 
     // Basic validation
@@ -32,9 +32,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ setAccessToken, setUserType }) =>
         return;
     }
 
-    console.log("Submitting login form with:", { email, password });
-    console.log("Submitting login form with:", { email, password });
-
+    
     try {
         const { token, refreshToken } = await authService.login(email, password);
         

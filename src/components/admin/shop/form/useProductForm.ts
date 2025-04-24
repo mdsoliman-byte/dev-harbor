@@ -21,7 +21,11 @@ export const useProductForm = ({ editingProduct, onSubmit, open }: UseProductFor
       price: 0,
       sale_price: null,
       image: '',
-      category: '',
+      category: {
+        id: 0,
+        name: '',
+        slug: '',
+      },
       in_stock: true,
       featured: false,
     },
@@ -37,7 +41,11 @@ export const useProductForm = ({ editingProduct, onSubmit, open }: UseProductFor
         price: editingProduct.price,
         sale_price: editingProduct.sale_price,
         image: editingProduct.image,
-        category: editingProduct.category?.name || '',
+        category: {
+          id: editingProduct.category?.id,
+          name: editingProduct.category?.name || '',
+          slug: editingProduct.category?.slug,
+        },
         in_stock: editingProduct.in_stock,
         featured: editingProduct.featured,
       });
@@ -49,7 +57,11 @@ export const useProductForm = ({ editingProduct, onSubmit, open }: UseProductFor
         price: 0,
         sale_price: null,
         image: '',
-        category: '',
+        category: {
+          id: 0,
+          name: '',
+          slug: '',
+        },
         in_stock: true,
         featured: false,
       });

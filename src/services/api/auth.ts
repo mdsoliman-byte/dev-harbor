@@ -3,27 +3,20 @@ import api from './config';
 export const login = async (email: string, password: string) => {
   console.log("Login function called");
   try {
-    console.log("Sending login request with:", { email, password });
+    
     const response = await api.post('authentication/login/', { email, password });
-
-    console.log("Login payload:", { email, password });
-
-    // Log the full response for debugging
-    console.log("Backend response:", response);
-    console.log("Backend response data:", response.data);
-
     if (response.status !== 200) {
       throw new Error('Invalid credentials');
     }
 
     const { access_token, refresh_token, user } = response.data;
-    const userType = user?.user_type;
 
     // Validate the response structure
-    if (!access_token || !refresh_token || !user || !userType) {
-      console.error("Invalid response format:", response.data);
+    if (!access_token || !refresh_token || !user || !user.user_type) {
       throw new Error('Invalid response format');
     }
+
+    const userType = user.user_type;
 
     // Store tokens and user info in local storage
     localStorage.setItem('access_token', access_token);

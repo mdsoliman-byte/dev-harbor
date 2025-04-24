@@ -15,18 +15,14 @@ export const fetchHeroData = async (): Promise<HeroData> => {
     try {
         const response = await api.get('home/data/');
         console.log('Hero data:', response.data);
+        if (!response.data) {
+            console.error('Invalid hero data:', response.data);
+            throw new Error('Invalid hero data');
+        }
         return response.data;
     } catch (error) {
         console.error('Error fetching hero data:', error);
-        return {
-            id: 0,
-            title: "Default Title",
-            heading: "Default Heading",
-            shortbio: "Default short bio.",
-            skills: ["Default Skill 1", "Default Skill 2"],
-            available_for_freelance: false,
-            profile_image: "",
-        };
+        throw error;
     }
 };
 

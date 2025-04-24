@@ -23,8 +23,11 @@ const BasicInfoFields = ({ form, editingProduct, onGenerateSlug }: BasicInfoFiel
             <FormLabel>Title</FormLabel>
             <FormControl>
               <Input 
-                {...field} 
-                onBlur={() => !editingProduct && onGenerateSlug()}
+                {...field}
+                onChange={(e) => {
+                  field.onChange(e);
+                  onGenerateSlug();
+                }}
               />
             </FormControl>
             <FormMessage />
